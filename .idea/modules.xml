@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common-parent/common-parent.iml" filepath="$PROJECT_DIR$/common-parent/common-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-CMS/o2o-manager-CMS.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-CMS/o2o-manager-CMS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-mapper/o2o-manager-mapper.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-mapper/o2o-manager-mapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-pojo/o2o-manager-pojo.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-pojo/o2o-manager-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-portal/o2o-manager-portal.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-portal/o2o-manager-portal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-shop/o2o-manager-shop.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-shop/o2o-manager-shop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-utlis/o2o-manager-utlis.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-utlis/o2o-manager-utlis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/o2o-manager/o2o-manager-web/o2o-manager-web.iml" filepath="$PROJECT_DIR$/o2o-manager/o2o-manager-web/o2o-manager-web.iml" />
+    </modules>
+  </component>
+</project>

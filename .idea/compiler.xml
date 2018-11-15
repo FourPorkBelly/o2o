@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="o2o-manager-CMS" />
+        <module name="o2o-manager-mapper" />
+        <module name="o2o-manager-pojo" />
+        <module name="o2o-manager-portal" />
+        <module name="o2o-manager-shop" />
+        <module name="o2o-manager-utlis" />
+        <module name="o2o-manager-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common-parent" target="1.8" />
+      <module name="o2o-manager" target="1.8" />
+      <module name="o2o-manager-CMS" target="1.8" />
+      <module name="o2o-manager-mapper" target="1.8" />
+      <module name="o2o-manager-pojo" target="1.8" />
+      <module name="o2o-manager-portal" target="1.8" />
+      <module name="o2o-manager-shop" target="1.8" />
+      <module name="o2o-manager-utlis" target="1.8" />
+      <module name="o2o-manager-web" target="1.8" />
+      <module name="o2o-utils" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

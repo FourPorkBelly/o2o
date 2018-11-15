@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="o2o-manager-CMS:war">
+    <output-path>$PROJECT_DIR$/o2o-manager/o2o-manager-CMS/target</output-path>
+    <root id="archive" name="o2o-manager-CMS-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="o2o-manager-CMS:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.shop.mapper.UserAwardMapMapper">
+  <resultMap id="BaseResultMap" type="cn.shop.pojo.UserAwardMap">
+    <id column="user_award_id" jdbcType="INTEGER" property="userAwardId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="award_id" jdbcType="INTEGER" property="awardId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="award_name" jdbcType="VARCHAR" property="awardName" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="used_status" jdbcType="INTEGER" property="usedStatus" />
+    <result column="point" jdbcType="INTEGER" property="point" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_award_id, user_id, award_id, shop_id, user_name, award_name, expire_time, create_time, 
+    used_status, point
+  </sql>
+  <select id="selectByExample" parameterType="cn.shop.pojo.UserAwardMapExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_user_award_map
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_award_map
+    where user_award_id = #{userAwardId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user_award_map
+    where user_award_id = #{userAwardId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.shop.pojo.UserAwardMapExample">
+    delete from tb_user_award_map
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.shop.pojo.UserAwardMap">
+    insert into tb_user_award_map (user_award_id, user_id, award_id, 
+      shop_id, user_name, award_name, 
+      expire_time, create_time, used_status, 
+      point)
+    values (#{userAwardId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{awardId,jdbcType=INTEGER}, 
+      #{shopId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, 
+      #{expireTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{usedStatus,jdbcType=INTEGER}, 
+      #{point,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.shop.pojo.UserAwardMap">
+    insert into tb_user_award_map
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userAwardId != null">
+        user_award_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="awardId != null">
+        award_id,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="awardName != null">
+        award_name,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="usedStatus != null">
+        used_status,
+      </if>
+      <if test="point != null">
+        point,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userAwardId != null">
+        #{userAwardId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="awardId != null">
+        #{awardId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="awardName != null">
+        #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="usedStatus != null">
+        #{usedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="point != null">
+        #{point,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.shop.pojo.UserAwardMapExample" resultType="java.lang.Long">
+    select count(*) from tb_user_award_map
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_user_award_map
+    <set>
+      <if test="record.userAwardId != null">
+        user_award_id = #{record.userAwardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.awardId != null">
+        award_id = #{record.awardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.awardName != null">
+        award_name = #{record.awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expireTime != null">
+        expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.usedStatus != null">
+        used_status = #{record.usedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.point != null">
+        point = #{record.point,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_user_award_map
+    set user_award_id = #{record.userAwardId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      award_id = #{record.awardId,jdbcType=INTEGER},
+      shop_id = #{record.shopId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      award_name = #{record.awardName,jdbcType=VARCHAR},
+      expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      used_status = #{record.usedStatus,jdbcType=INTEGER},
+      point = #{record.point,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.shop.pojo.UserAwardMap">
+    update tb_user_award_map
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="awardId != null">
+        award_id = #{awardId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="awardName != null">
+        award_name = #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="usedStatus != null">
+        used_status = #{usedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="point != null">
+        point = #{point,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_award_id = #{userAwardId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.shop.pojo.UserAwardMap">
+    update tb_user_award_map
+    set user_id = #{userId,jdbcType=INTEGER},
+      award_id = #{awardId,jdbcType=INTEGER},
+      shop_id = #{shopId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      award_name = #{awardName,jdbcType=VARCHAR},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      used_status = #{usedStatus,jdbcType=INTEGER},
+      point = #{point,jdbcType=INTEGER}
+    where user_award_id = #{userAwardId,jdbcType=INTEGER}
+  </update>
+</mapper>
