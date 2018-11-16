@@ -54,6 +54,7 @@
         <solrj.version>7.5.0</solrj.version>
         <!-- lombok -->
         <lombok.version>1.16.10</lombok.version>
+        <commons-lang2.version>2.4</commons-lang2.version>
     </properties>
 
     <dependencyManagement>

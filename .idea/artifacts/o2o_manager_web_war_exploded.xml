@@ -16,14 +16,6 @@
           <element id="archive" name="o2o-manager-pojo-1.0-SNAPSHOT.jar">
             <element id="module-output" name="o2o-manager-pojo" />
           </element>
-          <element id="archive" name="o2o-manager-utlis-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="o2o-manager-utlis" />
-          </element>
-          <element id="library" level="project" name="Maven: org.apache.geronimo.bundles:aspectjweaver:1.6.8_2" />
-          <element id="library" level="project" name="Maven: com.github.miemiedev:mybatis-paginator:1.2.15" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.2" />
-          <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:4.1.3" />
-          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:0.9.4" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.4.2" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.3.1" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.37" />
