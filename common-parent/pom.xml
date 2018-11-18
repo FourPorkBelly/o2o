@@ -16,8 +16,13 @@
     <!-- 集中定义版本号 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 时间操作组件 -->
+        <joda-time.version>2.3</joda-time.version>
         <!-- 单元测试 -->
         <junit.version>4.12</junit.version><!--单元测试-->
+
+        <commons-io.version>1.3.2</commons-io.version>
+        <commons-net.version>3.3</commons-net.version>
         <!-- 实现slf4j接口并整合 -->
         <logback-classic.version>1.2.1</logback-classic.version><!--日志  -->
         <!-- 2.数据库 -->
@@ -60,13 +65,29 @@
     <dependencyManagement>
 
         <dependencies>
+            <!-- 时间操作组件 -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
             <!-- 单元测试 -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
             </dependency>
-
+            <!-- Apache工具组件 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons-net.version}</version>
+            </dependency>
             <!-- 1.日志 -->
             <!-- 实现slf4j接口并整合 -->
             <dependency>
@@ -133,6 +154,7 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- 4.Spring -->

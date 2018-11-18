@@ -1,8 +1,11 @@
 package cn.shop.enums;
 
+import lombok.Getter;
+
 /**
  * 使用枚举表述常量数据字典
  */
+@Getter
 public enum ShopStateEnum {
 
 	CHECK(0, "审核中"), OFFLINE(-1, "非法商铺"), SUCCESS(1, "操作成功"), PASS(2, "通过认证"), INNER_ERROR(
@@ -17,15 +20,6 @@ public enum ShopStateEnum {
 		this.state = state;
 		this.stateInfo = stateInfo;
 	}
-
-	public int getState() {
-		return state;
-	}
-
-	public String getStateInfo() {
-		return stateInfo;
-	}
-
 	public static ShopStateEnum stateOf(int index) {
 		for (ShopStateEnum state : values()) {
 			if (state.getState() == index) {

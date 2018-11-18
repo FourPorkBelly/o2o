@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface AreaService {
 
-    List<Area> testAreaList();
+    List<Area> getAreaList();
 }
