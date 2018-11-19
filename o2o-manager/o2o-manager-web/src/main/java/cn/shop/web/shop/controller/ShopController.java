@@ -136,7 +136,7 @@ public class ShopController {
 
     /**
      *
-     *
+     *获取店铺列表
      * @return
      */
     @RequestMapping("/getshoplist")
@@ -145,8 +145,11 @@ public class ShopController {
         Map<String,Object> map = new HashMap<>();
         PersonInfo user = new PersonInfo();
         Shop shop = new Shop();
+        //
+        shop.setOwnerId(8);
         try {
             ShopExecution shopList = shopService.getShopList(shop, 1, 999);
+            map.put("owner",shopList.getShopList().get(0).getOwner());
             map.put("shopList",shopList);
             map.put("success",true);
         }catch (Exception e){
@@ -158,7 +161,7 @@ public class ShopController {
     }
 
     /**
-     *
+     *获取店铺信息
      * @param shopId
      * @return
      */

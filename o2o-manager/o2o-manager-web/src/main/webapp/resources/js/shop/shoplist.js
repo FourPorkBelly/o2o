@@ -2,13 +2,13 @@ $(function () {
 
 	function getlist(e) {
 		$.ajax({
-			url : "/myo2o/shop/list",
+			url : "/shop/getshoplist",
 			type : "get",
 			dataType : "json",
 			success : function(data) {
 				if (data.success) {
 					handleList(data.shopList);
-					handleUser(data.user);
+					handleUser(data.owner);
 				}
 			}
 		});
@@ -20,7 +20,7 @@ $(function () {
 
 	function handleList(data) {
 		var html = '';
-		data.map(function (item, index) {
+		data.shopList.map(function (item, index) {
 			html += '<div class="row row-shop"><div class="col-40">'+ item.shopName +'</div><div class="col-40">'+ shopStatus(item.enableStatus) +'</div><div class="col-20">'+ goShop(item.enableStatus, item.shopId) +'</div></div>';
 
 		});
@@ -29,7 +29,7 @@ $(function () {
 
 	function goShop(status, id) {
 		if (status != 0 && status != -1) {
-			return '<a href="/myo2o/shop/shopmanage?shopId='+ id +'">进入</a>';
+			return '<a href="/shop/shopmanage?shopId='+ id +'">进入</a>';
 		} else {
 			return '';
 		}
@@ -48,14 +48,14 @@ $(function () {
 
 	$('#log-out').click(function () {
 		$.ajax({
-			url : "/myo2o/shop/logout",
+			url : "/shop/logout",
 			type : "post",
 			contentType : false,
 			processData : false,
 			cache : false,
 			success : function(data) {
 				if (data.success) {
-					window.location.href = '/myo2o/shop/ownerlogin';
+					window.location.href = '/shop/ownerlogin';
 				}
 			},
 			error : function(data, error) {
