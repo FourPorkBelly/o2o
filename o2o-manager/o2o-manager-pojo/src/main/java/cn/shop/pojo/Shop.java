@@ -43,5 +43,11 @@ public class Shop {
 
     private String advice;
 
+    // 位置
+    private Area area;
+    //信息
+    private PersonInfo owner;
+    //店铺类型
+    private ShopCategory shopCategory;
 
 }

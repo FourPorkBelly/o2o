@@ -18,7 +18,7 @@
 		<h1 class="title">商店信息</h1>
 	</header>
 	<div class="content">
-		<form action="/shop/registershop" method="POST" id="shopfrom" enctype="multipart/form-data">
+		<form action="" method="POST" id="shopfrom" enctype="multipart/form-data">
 			<div class="list-block">
 				<ul>
 					<li>
@@ -29,6 +29,7 @@
 							<div class="item-inner">
 								<div class="item-title label">商铺名称</div>
 								<div class="item-input">
+									<input type="hidden" name="shopId" id="shopId" value="">
 									<input type="text" id="shop-name" name="shopName"  placeholder="商铺名称">
 								</div>
 							</div>

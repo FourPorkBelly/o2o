@@ -24,7 +24,7 @@ public interface ShopService {
      * @param shopId
      * @return
      */
-    Shop getByShopId(long shopId);
+    Shop getByShopId(Integer shopId);
 
     /**
      * 更新店铺信息
@@ -32,4 +32,11 @@ public interface ShopService {
      * @return
      */
     ShopExecution modifyShop(Shop shop);
+
+    /**
+     *根据条件查询分页显示相应的店铺信息
+     * @param shop
+     * @return
+     */
+    ShopExecution getShopList(Shop shop,int pageIndex,int pageSize);
 }

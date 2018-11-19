@@ -20,6 +20,43 @@
     <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
     <result column="advice" jdbcType="VARCHAR" property="advice" />
   </resultMap>
+  <!-- 查询店铺所有的信息 -->
+
+  <resultMap id="BaseResultMapWidthAreaPersonInfoShopCategory" type="cn.shop.pojo.Shop">
+    <id column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="shop_category_id" jdbcType="INTEGER" property="shopCategoryId" />
+    <result column="parent_category_id" jdbcType="INTEGER" property="parentCategoryId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
+    <result column="shop_addr" jdbcType="VARCHAR" property="shopAddr" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="shop_img" jdbcType="VARCHAR" property="shopImg" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+    <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
+    <result column="advice" jdbcType="VARCHAR" property="advice" />
+
+    <association property="area" column="area_id" javaType="cn.shop.pojo.Area">
+      <id column="area_ida" property="areaId" ></id>
+      <result column="area_namea" property="areaName"></result>
+    </association>
+    <association property="owner" column="owner_id" javaType="cn.shop.pojo.PersonInfo">
+      <id column="user_idp" property="userId" ></id>
+      <result column="namep" property="name"></result>
+    </association>
+    <association property="shopCategory" column="shop_category_id" javaType="cn.shop.pojo.ShopCategory">
+      <id column="shop_category_idsc" property="shopCategoryId"></id>
+      <result column="shop_category_namesc" property="shopCategoryName"></result>
+    </association>
+  </resultMap>
+
+
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -83,6 +120,18 @@
     shop_addr, phone, shop_img, longitude, latitude, priority, create_time, last_edit_time, 
     enable_status, advice
   </sql>
+
+  <!-- 查询店铺的所有信息 -->
+  <sql id="Base_Column_ListWidthAreaPersonInfoShopCategory">
+    s.shop_id, s.owner_id, s.area_id, s.shop_category_id, s.parent_category_id, s.shop_name, s.shop_desc,
+       s.shop_addr, s.phone, s.shop_img, s.longitude, s.latitude, s.priority, s.create_time, s.last_edit_time,
+       s.enable_status, s.advice ,
+       a.area_id area_ida , a.area_name area_namea,
+       sc.shop_category_id shop_category_idsc,sc.shop_category_name shop_category_namesc,
+       p.user_id user_idp,p.name namep
+  </sql>
+
+
   <select id="selectByExample" parameterType="cn.shop.pojo.ShopExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -97,12 +146,42 @@
       order by ${orderByClause}
     </if>
   </select>
+<!-- 根据条件查询 -->
+  <select id="selectByExampleWidthAreaPersonInfoShopCategory" parameterType="cn.shop.pojo.ShopExample" resultMap="BaseResultMapWidthAreaPersonInfoShopCategory">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_ListWidthAreaPersonInfoShopCategory" />
+    from tb_shop s inner join tb_area a on s.area_id = a.area_id
+    inner join tb_person_info p on s.owner_id = p.user_id
+    inner join tb_shop_category sc on s.shop_category_id = sc.shop_category_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_shop
     where shop_id = #{shopId,jdbcType=INTEGER}
   </select>
+<!-- 查询店铺的所有信息 -->
+  <select id="selectByPrimaryKeyWidthAreaPersonInfoShopCategory" parameterType="java.lang.Integer" resultMap="BaseResultMapWidthAreaPersonInfoShopCategory">
+    select
+    <include refid="Base_Column_ListWidthAreaPersonInfoShopCategory" />
+    from tb_shop s inner join tb_area a on s.area_id = a.area_id
+    inner join tb_person_info p on s.owner_id = p.user_id
+    inner join tb_shop_category sc on s.shop_category_id = sc.shop_category_id
+    where s.shop_id = #{shopId,jdbcType=INTEGER}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_shop
     where shop_id = #{shopId,jdbcType=INTEGER}
