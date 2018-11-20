@@ -31,7 +31,7 @@ public interface ShopService {
      * @param shop
      * @return
      */
-    ShopExecution modifyShop(Shop shop);
+    ShopExecution updateShop(Shop shop);
 
     /**
      *根据条件查询分页显示相应的店铺信息

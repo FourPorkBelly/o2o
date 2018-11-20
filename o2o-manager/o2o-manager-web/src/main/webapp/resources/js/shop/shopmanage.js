@@ -8,7 +8,12 @@ $(function () {
             if(data.shopId!=undefined&&data.shopId!=null){
                 shopId = data.shopId;
             }
-            $("#shopinfo").attr('href','/shop/shopedit?shopId='+shopId);
+            $(".shopinfo").each(function (i,s) {
+                var url = $(s).attr("href");
+                $(s).attr("href",url+"?shopId="+shopId);
+            })
+/*
+            $(".shopinfo").attr('href','/shop/shopedit?shopId='+shopId);*/
         }
     })
 })

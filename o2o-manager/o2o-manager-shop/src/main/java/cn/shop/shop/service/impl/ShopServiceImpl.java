@@ -61,7 +61,7 @@ public class ShopServiceImpl implements ShopService {
      * @return
      */
     @Override
-    public ShopExecution modifyShop(Shop shop) {
+    public ShopExecution updateShop(Shop shop) {
         try {
             shopMapper.updateByPrimaryKeySelective(shop);
             shop = getByShopId(shop.getShopId());
