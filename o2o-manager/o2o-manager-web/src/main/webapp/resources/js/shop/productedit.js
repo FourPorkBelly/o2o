@@ -15,8 +15,7 @@ $(function() {
 	}
 
 	function getInfo(id) {
-		$
-				.getJSON(
+		$.getJSON(
 						infoUrl,
 						function(data) {
 							if (data.success) {
