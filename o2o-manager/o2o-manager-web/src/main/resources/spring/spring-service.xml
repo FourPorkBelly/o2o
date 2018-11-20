@@ -33,10 +33,12 @@
             <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
         </tx:attributes>
     </tx:advice>
-    <!-- 切面 -->
+    <!-- 切面
     <aop:config>
         <aop:advisor advice-ref="txAdvice"
                      pointcut="execution(* cn.shop.*.service.*.*(..))"/>
-    </aop:config>
+    </aop:config>-->
+    <!-- 配置基于注解的声明式事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

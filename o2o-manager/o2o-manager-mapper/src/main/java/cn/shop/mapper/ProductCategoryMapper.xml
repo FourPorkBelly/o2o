@@ -110,6 +110,20 @@
       #{productCategoryDesc,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{lastEditTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=INTEGER})
   </insert>
+
+  <!-- 批量添加 -->
+  <insert id="insertList" parameterType="java.util.List">
+    insert into tb_product_category (product_category_id, product_category_name,
+      product_category_desc, priority, create_time,
+      last_edit_time, shop_id)
+    values 
+      <foreach collection="list" item="productCategory" index="index" separator=",">
+        (#{productCategoryId,jdbcType=INTEGER}, #{productCategoryName,jdbcType=VARCHAR},
+        #{productCategoryDesc,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{lastEditTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=INTEGER})
+      </foreach>
+  </insert>
+
   <insert id="insertSelective" parameterType="cn.shop.pojo.ProductCategory">
     insert into tb_product_category
     <trim prefix="(" suffix=")" suffixOverrides=",">

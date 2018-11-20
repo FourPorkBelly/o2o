@@ -14,6 +14,8 @@ public interface ProductCategoryMapper {
 
     int insert(ProductCategory record);
 
+    int insertList(List<ProductCategory> recordList);
+
     int insertSelective(ProductCategory record);
 
     List<ProductCategory> selectByExample(ProductCategoryExample example);

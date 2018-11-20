@@ -84,6 +84,11 @@ public class ShopController {
         return map;
     }
 
+    /**
+     * 修改店铺信息
+     * @param shop
+     * @return
+     */
     @RequestMapping(value = "/modifyshop")
     @ResponseBody
     public Map<String,Object> getShopById(Shop shop){
@@ -136,7 +141,7 @@ public class ShopController {
 
     /**
      *
-     *获取店铺列表
+     *根据用户显示店铺列表
      * @return
      */
     @RequestMapping("/getshoplist")
@@ -161,7 +166,7 @@ public class ShopController {
     }
 
     /**
-     *获取店铺信息
+     *根据id判断店铺是否存在
      * @param shopId
      * @return
      */
