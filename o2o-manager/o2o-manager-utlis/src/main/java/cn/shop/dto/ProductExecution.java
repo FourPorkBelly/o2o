@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.shop.enums.ProductStateEnum;
 import cn.shop.pojo.Product;
+import com.github.pagehelper.PageInfo;
 
 public class ProductExecution {
 	// 结果状态
@@ -19,7 +20,7 @@ public class ProductExecution {
 	private Product product;
 
 	// 获取的product列表(查询商品列表的时候用)
-	private List<Product> productList;
+	private PageInfo<Product> productList;
 
 	public ProductExecution() {
 	}
@@ -39,7 +40,7 @@ public class ProductExecution {
 
 	// 成功的构造器
 	public ProductExecution(ProductStateEnum stateEnum,
-			List<Product> productList) {
+							PageInfo<Product> productList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 		this.productList = productList;
@@ -77,11 +78,11 @@ public class ProductExecution {
 		this.product = product;
 	}
 
-	public List<Product> getProductList() {
+	public PageInfo<Product> getProductList() {
 		return productList;
 	}
 
-	public void setProductList(List<Product> productList) {
+	public void setProductList(PageInfo<Product> productList) {
 		this.productList = productList;
 	}
 

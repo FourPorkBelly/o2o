@@ -1,17 +1,17 @@
 $(function() {
 	var productId = getQueryString('productId');
 	var shopId = 1;
-	var infoUrl = '/myo2o/shop/getproductbyid?productId=' + productId;
-	var categoryUrl = '/myo2o/shop/getproductcategorylistbyshopId?shopId='
+	var infoUrl = '/product/getproductbyid?productId=' + productId;
+	var categoryUrl = '/product/getproductcategorylistbyshopId?shopId='
 			+ shopId;
-	var productPostUrl = '/myo2o/shop/modifyproduct';
+	var productPostUrl = '/product/modifyproduct';
 	var isEdit = false;
 	if (productId) {
 		getInfo(productId);
 		isEdit = true;
 	} else {
 		getCategory(shopId);
-		productPostUrl = '/myo2o/shop/addproduct';
+		productPostUrl = '/product/addproduct';
 	}
 
 	function getInfo(id) {
