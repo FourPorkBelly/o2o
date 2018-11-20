@@ -1,20 +1,20 @@
 package cn.shop.web.shop.controller;
 
+import cn.shop.dto.ProductCategoryExecution;
 import cn.shop.dto.ShopExecution;
 import cn.shop.enums.ShopStateEnum;
 import cn.shop.pojo.Area;
 import cn.shop.pojo.PersonInfo;
+import cn.shop.pojo.ProductCategory;
 import cn.shop.pojo.Shop;
 import cn.shop.shop.service.AreaService;
+import cn.shop.shop.service.ProductCategoryService;
 import cn.shop.shop.service.ShopCategoryService;
 import cn.shop.shop.service.ShopService;
 import cn.shop.utlis.CodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -48,7 +48,8 @@ public class ShopController {
     private Map<String,Object> registerShop(Shop shop){
         PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
         Map<String,Object> map = new HashMap<>();
-        shop.setOwnerId(owner.getUserId());
+        //shop.setOwnerId(owner.getUserId());
+        shop.setOwnerId(8);
         if(!CodeUtil.checkVerifyCode(request)){
             map.put("success",false);
             map.put("errMsg","请输入正确的验证码");
@@ -98,7 +99,7 @@ public class ShopController {
             map.put("errMsg","请输入正确的验证码");
             return map;
         }
-        ShopExecution execution = shopService.modifyShop(shop);
+        ShopExecution execution = shopService.updateShop(shop);
         if(execution.getState()== ShopStateEnum.CHECK.getState()){
             map.put("success",true);
             map.put("errMsg","修改成功");
@@ -183,4 +184,6 @@ public class ShopController {
         }
         return map;
     }
+
+
 }
