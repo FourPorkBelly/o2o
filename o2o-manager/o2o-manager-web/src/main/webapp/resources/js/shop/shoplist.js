@@ -2,7 +2,7 @@ $(function () {
 
 	function getlist(e) {
 		$.ajax({
-			url : "/shop/getshoplist",
+			url : weburl()+"/shop/getshoplist",
 			type : "get",
 			dataType : "json",
 			success : function(data) {

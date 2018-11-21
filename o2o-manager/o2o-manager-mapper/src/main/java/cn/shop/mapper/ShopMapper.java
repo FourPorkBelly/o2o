@@ -18,7 +18,7 @@ public interface ShopMapper {
 
     List<Shop> selectByExample(ShopExample example);
 
-    List<Shop> selectByEmployeeId();
+    List<Shop> selectByEmployeeId(@Param("employeeId") Integer employeeId);
 
     List<Shop> selectByExampleWidthAreaPersonInfoShopCategory(ShopExample example);
 

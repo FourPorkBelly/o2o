@@ -32,17 +32,21 @@ public class WeiXinUserUtil {
 		Properties pro = new Properties();
 		pro.load(WeiXinUserUtil.class.getClassLoader().getResourceAsStream(
 				"weixin.properties"));
+		//测试号信息里的appId
 		String appId = DESUtils
 				.getDecryptString(pro.getProperty("weixinappid"));
 		log.debug("appId:" + appId);
+		//测试号信息里的appsecret
 		String appsecret = DESUtils.getDecryptString(pro
 				.getProperty("weixinappsecret"));
 		log.debug("secret:" + appsecret);
+		//根据传入的code，拼接出访问微信定义好的接口的URL
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
 				+ "&grant_type=authorization_code";
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
+		//相应URL发送请求获取token json字符串
 		String accessToken = jsonObject.getString("access_token");
 		if (null == accessToken) {
 			log.debug("获取用户accessToken失败。");

@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.shop.shop.service.WechatAuthService;
 import cn.shop.shop.service.PersonInfoService;
 
+/**
+ * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=
+ */
 @Controller
 @RequestMapping("/wechat")
 public class WeiXinController {
@@ -42,6 +45,7 @@ public class WeiXinController {
 		log.debug("weixin get...");
 		// 微信加密签名
 		String signature = request.getParameter("signature");
+		System.out.println("signature:"+signature);
 		// 时间戳
 		String timestamp = request.getParameter("timestamp");
 		// 随机数

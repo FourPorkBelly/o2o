@@ -119,6 +119,9 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     public ShopExecution getByEmployeeId(Integer employeeId) {
-        return null;
+        List<Shop> shopList = shopMapper.selectByEmployeeId(employeeId);
+        ShopExecution se = new ShopExecution();
+        se.setShopList(shopList);
+        return se;
     }
 }

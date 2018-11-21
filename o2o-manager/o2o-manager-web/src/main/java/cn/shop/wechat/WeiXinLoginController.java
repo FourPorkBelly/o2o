@@ -53,8 +53,7 @@ public class WeiXinLoginController {
 	@Resource
 	private ShopService shopService;
 
-	@Resource
-	private ShopAuthMapService shopAuthMapService;
+
 
 	private static final String FRONTEND = "1";
 	private static final String SHOPEND = "2";
@@ -62,7 +61,9 @@ public class WeiXinLoginController {
 	@RequestMapping(value = "/logincheck", method = { RequestMethod.GET })
 	public String doGet(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("weixin login get...");
+		//获取微信公众号传输过来的code，通过code课获取access_token，进而获取用户信息
 		String code = request.getParameter("code");
+		//这个state可以用来传我们自定义的消息，方便程序调用。
 		String roleType = request.getParameter("state");
 		log.debug("weixin login code:" + code);
 		WechatAuth auth = null;
@@ -71,10 +72,14 @@ public class WeiXinLoginController {
 		if (null != code) {
 			UserAccessToken token;
 			try {
+				//通过code获取access_token
 				token = WeiXinUserUtil.getUserAccessToken(code);
 				log.debug("weixin login token:" + token.toString());
+				//通过token获取accessToken
 				String accessToken = token.getAccessToken();
+				//通过token获取openId
 				openId = token.getOpenId();
+				//通过access_toKen和openId获取用户昵称等信息
 				user = WeiXinUserUtil.getUserInfo(accessToken, openId);
 				log.debug("weixin login user:" + user.toString());
 				request.getSession().setAttribute("openId", openId);

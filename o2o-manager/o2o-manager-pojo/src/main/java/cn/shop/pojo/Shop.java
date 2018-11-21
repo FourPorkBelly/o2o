@@ -49,8 +49,6 @@ public class Shop {
     private PersonInfo owner;
     //店铺类型
     private ShopCategory shopCategory;
-    //
-    private ShopCategory parentCategory;
-    //
+
     private ShopAuthMap shopAuthMap;
 }
