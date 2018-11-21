@@ -1,6 +1,6 @@
 $(function() {
     $.config = {router: false}
-	var shopId = getQueryString('shopId');
+	var shopId = 1;
 	var isEdit = shopId ? true : false;
     $("#shopId").val("");
 	var shopInfoUrl = '/shop/getshopbyid?shopId='+shopId;
@@ -112,7 +112,7 @@ $(function() {
     	//$("#shopfrom").submit();
 	})
 	/* 图片验证上传 */
-	$("#uploadFile").change(function () {
+	$("#uploadFileImg").change(function () {
 		var img = $(this).val();
         if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(img)) {
             alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
@@ -124,7 +124,7 @@ $(function() {
             {
                 url:ajaxUrl, //用于文件上传的服务器端请求地址
                 secureuri: false, //是否需要安全协议，一般设置为false
-                fileElementId: 'uploadFile', //文件上传域的ID
+                fileElementId: 'uploadFileImg', //文件上传域的ID
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data)  //服务器成功响应处理函数
                 {

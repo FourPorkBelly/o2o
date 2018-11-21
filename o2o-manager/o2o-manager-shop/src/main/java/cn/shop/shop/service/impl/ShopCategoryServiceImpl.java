@@ -17,6 +17,7 @@ import java.util.List;
 public class ShopCategoryServiceImpl implements ShopCategoryService {
     @Autowired
     private ShopCategoryMapper shopCategoryMapper;
+    //获取商铺类别
     @Override
     public List<ShopCategory> getShopCategoryList(ShopCategory shopCategory) {
         ShopCategoryExample example = new ShopCategoryExample();

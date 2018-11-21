@@ -112,4 +112,13 @@ public class ShopServiceImpl implements ShopService {
 
         return shopExecution;
     }
+    /**
+     * 根据employeeId查询商铺信息
+     * @param employeeId
+     * @return
+     */
+    @Override
+    public ShopExecution getByEmployeeId(Integer employeeId) {
+        return null;
+    }
 }

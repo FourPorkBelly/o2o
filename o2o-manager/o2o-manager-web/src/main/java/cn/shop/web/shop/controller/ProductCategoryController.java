@@ -32,13 +32,13 @@ public class ProductCategoryController {
      */
     @ResponseBody
     @RequestMapping("/getproductcategorylist")
-    public Result<List<ProductCategory>> getProductCategoryList(Integer shopId){
+    public Result<List<ProductCategory>> getProductCategoryList(){
         //从session中获取商品用户信息
-
+        Shop currentShop = (Shop) session.getAttribute("currentShop");
         List<ProductCategory> list = null;
-        if (shopId!=null && shopId>0){
+        if(currentShop!=null){
             //用户信息不为空，查询并返回数据
-            list = productCategoryService.getProductCategoryList(shopId);
+            list = productCategoryService.getProductCategoryList(currentShop.getShopId());
             return new Result<List<ProductCategory>>(true,list);
         }else {
             //用户信息为空，返回错误信息
@@ -55,32 +55,40 @@ public class ProductCategoryController {
     @RequestMapping(value = "/addproductcategorys",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addProductCategorys(@RequestBody List<ProductCategory> productCategoryList){
+        //从session中获取商品用户信息
+        Shop currentShop = (Shop) session.getAttribute("currentShop");
         Map<String,Object> map = new HashMap<>();
-        //判断是否存在商品类别
-        if(productCategoryList!=null&&productCategoryList.size()>0){
-            //补全店铺信息
-            for (ProductCategory productCategory : productCategoryList) {
-                productCategory.setShopId(15);
-            }
-            try {
-                ProductCategoryExecution pe = productCategoryService.addProductCategoryList(productCategoryList);
-                //判断是否添加成功
-                if(pe.getState()==ProductCategoryStateEnum.SUCCESS.getState()){
-                    //成功返回true
-                    map.put("success",true);
-                }else {
+        //判断shop是否为空
+        if(currentShop!=null){
+            //判断是否存在商品类别
+            if(productCategoryList!=null&&productCategoryList.size()>0){
+                //补全店铺信息
+                for (ProductCategory productCategory : productCategoryList) {
+                    productCategory.setShopId(currentShop.getShopId());
+                }
+                try {
+                    ProductCategoryExecution pe = productCategoryService.addProductCategoryList(productCategoryList);
+                    //判断是否添加成功
+                    if(pe.getState()==ProductCategoryStateEnum.SUCCESS.getState()){
+                        //成功返回true
+                        map.put("success",true);
+                    }else {
+                        //失败返回false并返回错误信息
+                        map.put("success",false);
+                        map.put("errMsg",pe.getStateInfo());
+                    }
+                }catch (Exception e){
                     //失败返回false并返回错误信息
                     map.put("success",false);
-                    map.put("errMsg",pe.getStateInfo());
+                    map.put("errMsg",e.toString());
                 }
-            }catch (Exception e){
-                //失败返回false并返回错误信息
+            }else {
                 map.put("success",false);
-                map.put("errMsg",e.toString());
+                map.put("errMsg","请输入至少一个商品类别");
             }
-        }else {
+        }else{
             map.put("success",false);
-            map.put("errMsg","请输入至少一个商品类别");
+            map.put("errMsg","商铺信息错误");
         }
         return map;
     }
@@ -95,25 +103,31 @@ public class ProductCategoryController {
     @ResponseBody
     public Map<String,Object> removeProductCategory(Integer productCategoryId){
         Map<String,Object> map = new HashMap<>();
-        int shopId = 15;
-        if(productCategoryId!=null&&productCategoryId>0){
-            try {
-                //调用删除
-                ProductCategoryExecution pe = productCategoryService.deleteProductCategory(shopId, productCategoryId);
-                //判断是否删除成功
-                if (pe.getState()== ProductCategoryStateEnum.SUCCESS.getState()) {
-                    map.putIfAbsent("success",true);
-                }else {
-                    //失败返回错误信息
+        //从session中获取商品用户信息
+        Shop currentShop = (Shop) session.getAttribute("currentShop");
+        if(currentShop!=null){
+            if(productCategoryId!=null&&productCategoryId>0){
+                try {
+                    //调用删除
+                    ProductCategoryExecution pe = productCategoryService.deleteProductCategory(currentShop.getShopId(), productCategoryId);
+                    //判断是否删除成功
+                    if (pe.getState()== ProductCategoryStateEnum.SUCCESS.getState()) {
+                        map.putIfAbsent("success",true);
+                    }else {
+                        //失败返回错误信息
+                        map.putIfAbsent("success",false);
+                        map.put("errMsg",pe.getStateInfo());
+                    }
+                }catch (Exception e){
                     map.putIfAbsent("success",false);
-                    map.put("errMsg",pe.getStateInfo());
+                    map.put("errMsg",e.toString());
                 }
-            }catch (Exception e){
-                map.putIfAbsent("success",false);
-                map.put("errMsg",e.toString());
+            }else {
+                map.put("success",false);
             }
-        }else {
+        }else{
             map.put("success",false);
+            map.put("errMsg","商铺信息错误");
         }
         return map;
     }

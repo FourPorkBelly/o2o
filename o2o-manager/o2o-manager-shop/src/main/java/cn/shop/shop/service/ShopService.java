@@ -39,4 +39,11 @@ public interface ShopService {
      * @return
      */
     ShopExecution getShopList(Shop shop,int pageIndex,int pageSize);
+
+    /**
+     * 根据employeeId查询商铺信息
+     * @param employeeId
+     * @return
+     */
+    ShopExecution getByEmployeeId(Integer employeeId);
 }

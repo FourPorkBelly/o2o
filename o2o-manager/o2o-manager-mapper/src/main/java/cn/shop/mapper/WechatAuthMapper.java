@@ -18,6 +18,8 @@ public interface WechatAuthMapper {
 
     List<WechatAuth> selectByExample(WechatAuthExample example);
 
+    List<WechatAuth> selectByExampleWithPersonInfo(WechatAuthExample example);
+
     WechatAuth selectByPrimaryKey(Integer wechatAuthId);
 
     int updateByExampleSelective(@Param("record") WechatAuth record, @Param("example") WechatAuthExample example);
