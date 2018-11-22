@@ -7,7 +7,9 @@ import cn.shop.mapper.ProductMapper;
 import cn.shop.pojo.Product;
 import cn.shop.pojo.ProductExample;
 import cn.shop.pojo.ProductImg;
+import cn.shop.pojo.ProductImgExample;
 import cn.shop.shop.service.ProductService;
+import cn.shop.utlis.baidu.Point;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +93,36 @@ public class ProductServiceImpl implements ProductService {
             return new ProductExecution(ProductStateEnum.EMPTY);
         }
     }
+
+    /**
+     * 根据id查找商品信息
+     * @param productId
+     * @return
+     */
+    @Override
+    public Product getProductById(int productId) {
+        return productMapper.selectByPrimaryKey(productId);
+    }
+
+    @Transactional
+    protected int updatePro(Product product){
+        return productMapper.updateByPrimaryKeySelective(product);
+    }
+
+    @Override
+    public Product modifyProduct(Product product,String imgArr) {
+        updatePro(product);
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(product.getProductId());
+
+        ProductImg productImg=new ProductImg();
+        productImg.setImgAddr(imgArr);
+        productImg.setCreateTime(new Date());
+        int rs=productImgMapper.updateByExampleSelective(productImg,example);
+        Product product1=productMapper.selectByPrimaryKey(product.getProductId());
+        return product1;
+    }
+
 
 }

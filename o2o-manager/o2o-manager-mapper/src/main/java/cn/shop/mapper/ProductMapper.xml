@@ -215,9 +215,9 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_product
     <set>
-      <if test="record.productId != null">
+      <!--<if test="record.productId != null">
         product_id = #{record.productId,jdbcType=INTEGER},
-      </if>
+      </if>-->
       <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>
