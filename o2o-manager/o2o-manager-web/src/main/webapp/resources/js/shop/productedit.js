@@ -1,24 +1,32 @@
 $(function() {
+	//从url里获取productId的值
 	var productId = getQueryString('productId');
-	var shopId = 1;
+	//测试的商铺id**********************************
+	var shopId = 20;
+	//通过productId获取商品信息的url
 	var infoUrl = '/product/getproductbyid?productId=' + productId;
+	//获取当前店铺商品类别的url
 	var categoryUrl = '/product/getproductcategorylistbyshopId?shopId='
 			+ shopId;
+	//更新商品的url
 	var productPostUrl = '/product/modifyproduct';
+	//由于商品添加与修改是同一个页面
+	//该标识符用来标明本次是添加还是修改
 	var isEdit = false;
 	if (productId) {
 		getInfo(productId);
 		isEdit = true;
 	} else {
 		getCategory(shopId);
-		productPostUrl = '/product/addproduct';
+		productPostUrl = '/product/modifyproduct';
 	}
-
+	//获取需要编辑的商品的信息，并赋值给表单
 	function getInfo(id) {
 		$.getJSON(
 						infoUrl,
 						function(data) {
 							if (data.success) {
+								//从返回的json中获取商品对象的信息，并赋值给表单
 								var product = data.product;
 								$('#product-name').val(product.productName);
 								$('#product-desc').val(product.productDesc);
@@ -26,10 +34,11 @@ $(function() {
 								$('#normal-price').val(product.normalPrice);
 								$('#promotion-price').val(
 										product.promotionPrice);
-
+								//获取原本的商品类别，店铺所有商品类别
 								var optionHtml = '';
 								var optionArr = data.productCategoryList;
 								var optionSelected = product.productCategory.productCategoryId;
+								// 生成商品类别list，并默认选择编辑前的商品类别
 								optionArr
 										.map(function(item, index) {
 											var isSelect = optionSelected === item.productCategoryId ? 'selected'
@@ -53,7 +62,7 @@ $(function() {
 				var productCategoryList = data.productCategoryList;
 				var optionHtml = '';
 				productCategoryList.map(function(item, index) {
-					optionHtml += '<option data-value="'
+					optionHtml += '<option value="'
 							+ item.productCategoryId + '">'
 							+ item.productCategoryName + '</option>';
 				});
@@ -61,64 +70,99 @@ $(function() {
 			}
 		});
 	}
-
+	//针对商品详情图控件组，若最后一个控件发生变化，则生成新的控件（不超过6个）
+	var imgindex=1;
 	$('.detail-img-div').on('change', '.detail-img:last-child', function() {
+        updateimgss(this);
 		if ($('.detail-img').length < 6) {
-			$('#detail-img').append('<input type="file" class="detail-img">');
+			$('#detail-img').append('<input type="file" class="detail-img" name="uploadFile" id="updateimg'+(imgindex++)+'" >');
 		}
+
 	});
-
-	$('#submit').click(
-			function() {
-				var product = {};
-				product.productName = $('#product-name').val();
-				product.productDesc = $('#product-desc').val();
-				product.priority = $('#priority').val();
-				product.normalPrice = $('#normal-price').val();
-				product.promotionPrice = $('#promotion-price').val();
-				product.productCategory = {
-					productCategoryId : $('#category').find('option').not(
-							function() {
-								return !this.selected;
-							}).data('value')
-				};
-				product.productId = productId;
-
-				var thumbnail = $('#small-img')[0].files[0];
-				console.log(thumbnail);
-				var formData = new FormData();
-				formData.append('thumbnail', thumbnail);
-				$('.detail-img').map(
-						function(index, item) {
-							if ($('.detail-img')[index].files.length > 0) {
-								formData.append('productImg' + index,
-										$('.detail-img')[index].files[0]);
-							}
-						});
-				formData.append('productStr', JSON.stringify(product));
-				var verifyCodeActual = $('#j_captcha').val();
-				if (!verifyCodeActual) {
-					$.toast('请输入验证码！');
-					return;
-				}
-				formData.append("verifyCodeActual", verifyCodeActual);
-				$.ajax({
-					url : productPostUrl,
-					type : 'POST',
-					data : formData,
-					contentType : false,
-					processData : false,
-					cache : false,
-					success : function(data) {
-						if (data.success) {
-							$.toast('提交成功！');
-							$('#captcha_img').click();
-						} else {
-							$.toast('提交失败！');
-							$('#captcha_img').click();
-						}
-					}
-				});
-			});
+    $('#submit').click(
+        function() {
+            /* 表单校验 */
+            var productname = $("#product-name").val();
+            if(productname==null||productname==""){
+                $("#product-name").focus();
+                alert("商品名称不能为空");
+                return;
+            }
+            var productdesc = $("#product-desc").val();
+            if(productdesc==null||productdesc==""){
+                $("#product-desc").focus();
+                alert("商品描述不能为空");
+                return;
+            }
+            var productsmall = $("#small-img").val();
+            if(productsmall==null||productsmall==""){
+                $("#small-img").focus();
+                alert("缩略图不能为空");
+                return;
+            }
+            var priority = $("#priority").val();
+            if(priority==null||priority==""){
+                $("#priority").focus();
+                alert("优先级不能为空");
+                return;
+            }
+            var normalprice = $("#normal-price").val();
+            if(normalprice==null||normalprice==""){
+                $("#normal-price").focus();
+                alert("原价不能为空");
+                return;
+            }
+            var updateimg0 = $("#updateimg0").val();
+            if(updateimg0==null||updateimg0==""){
+                $("#normal-price").focus();
+                alert("详细图不能为空");
+                return;
+            }
+            /* 表单提交ajax */
+            jQuery.post(productPostUrl, $("#productForm").serialize(),
+                function(data){
+                    alert(data.errMsg);
+                    window.location.href="productmanage.html"
+                }, "json");
+		})
+	$("#small-img").change(function () {
+        updateimgss(this);
+    })
+    /* 图片验证上传 */
+    function updateimgss(img) {
+    	var imgval = $(img).val();
+        if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(imgval)) {
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+            $(img).val("");
+        }
+        var imgid = $(img).attr("id");
+        var ajaxUrl = "update/upload";
+        $.ajaxFileUpload
+        (
+            {
+                url:ajaxUrl, //用于文件上传的服务器端请求地址
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: imgid, //文件上传域的ID
+                dataType: 'json', //返回值类型 一般设置为json
+                success: function (data)  //服务器成功响应处理函数
+                {
+                    if(data.error==0){
+                        // $("#hximage").show();
+                        // $("#hximage").attr("src",data.url);
+                        if(imgid==small-img){
+                            $("#imgAddr").val(data.url);
+                        }else {
+                            var imgurl = $("#shopImgs").val();
+                            imgurl+=data.url;
+                            $("#shopImgs").val(imgurl);
+                        }
+                    }else {
+                        alert(data.message)
+                    }
+                }
+            }
+        )
+        return false;
+    }
 
 });

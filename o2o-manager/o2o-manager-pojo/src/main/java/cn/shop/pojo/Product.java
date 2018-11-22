@@ -1,7 +1,9 @@
 package cn.shop.pojo;
 
-import java.util.Date;
+import lombok.ToString;
 
+import java.util.Date;
+@ToString
 public class Product {
     private Integer productId;
 
