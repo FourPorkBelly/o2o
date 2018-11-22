@@ -2,7 +2,7 @@ $(function() {
 	var shopId = 20;
 	var listUrl = '/product/queryProduct?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
-	var deleteUrl = '/shop/modifyproduct';
+	var deleteUrl = '/product/deleteproduct';
 
 	function getList() {
 		$.getJSON(listUrl, function(data) {

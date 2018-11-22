@@ -9,7 +9,7 @@ $(function() {
 	var categoryUrl = '/product/getproductcategorylistbyshopId?shopId='
 			+ shopId;
 	//更新商品的url
-	var productPostUrl = '/product/modifyproduct';
+	var productPostUrl = '/product/updateProduct';
 	//由于商品添加与修改是同一个页面
 	//该标识符用来标明本次是添加还是修改
 	var isEdit = false;
@@ -28,6 +28,7 @@ $(function() {
 							if (data.success) {
 								//从返回的json中获取商品对象的信息，并赋值给表单
 								var product = data.product;
+
 								$('#product-name').val(product.productName);
 								$('#product-desc').val(product.productDesc);
 								$('#priority').val(product.priority);
@@ -37,10 +38,12 @@ $(function() {
 								//获取原本的商品类别，店铺所有商品类别
 								var optionHtml = '';
 								var optionArr = data.productCategoryList;
-								var optionSelected = product.productCategory.productCategoryId;
+								var optionSelected = product.productCategoryId;
+								alert(optionSelected);
 								// 生成商品类别list，并默认选择编辑前的商品类别
 								optionArr
 										.map(function(item, index) {
+
 											var isSelect = optionSelected === item.productCategoryId ? 'selected'
 													: '';
 											optionHtml += '<option data-value="'
@@ -121,6 +124,8 @@ $(function() {
             /* 表单提交ajax */
             jQuery.post(productPostUrl, $("#productForm").serialize(),
                 function(data){
+                    // $('#productId').val(data.productId);
+                    alert(data);
                     alert(data.errMsg);
                     window.location.href="productmanage.html"
                 }, "json");

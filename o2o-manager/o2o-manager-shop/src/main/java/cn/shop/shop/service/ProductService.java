@@ -17,5 +17,26 @@ public interface ProductService {
      * @return
      */
     ProductExecution queryProduct(Product productCondition);
+
+    /**
+     * 添加商品信息
+     * @param product
+     * @param imgAddr
+     * @return
+     */
     ProductExecution addProduct(Product product,String imgAddr);
+
+    /**
+     * 根据id获取商品信息
+     * @param productId
+     * @return
+     */
+    Product getProductById(int productId);
+
+    /**
+     * 修改商品信息
+     * @param product
+     * @return
+     */
+    Product modifyProduct(Product product,String imgArr);
 }

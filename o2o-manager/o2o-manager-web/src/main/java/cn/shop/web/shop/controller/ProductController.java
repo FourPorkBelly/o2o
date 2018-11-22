@@ -8,20 +8,15 @@ import cn.shop.pojo.Shop;
 import cn.shop.shop.service.ProductCategoryService;
 import cn.shop.shop.service.ProductService;
 import cn.shop.utlis.CodeUtil;
-import cn.shop.utlis.HttpServletRequestUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,12 +112,13 @@ public class ProductController {
 //                "currentShop");
         Shop currentShop=new Shop();
         currentShop.setShopId(20);
+//        判断product是否传入值，并且shopid不为空
         if (product!=null&&currentShop.getShopId()!=null){
             try {
                 product.setShopId(currentShop.getShopId());
-//                ------------------
-
+//               默认设置商品上架
                 product.setEnableStatus(1);
+//                将图片地址插入product_img表（详情图）
                 ProductExecution pe=productService.addProduct(product,imgAddr);
                 if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
                     modelMap.put("success", true);
@@ -138,6 +134,62 @@ public class ProductController {
             }
         }
         else {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "请输入商品信息");
+        }
+        return modelMap;
+    }
+
+    /**
+     * 根据商品id 获得商品信息
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/getproductbyid", method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String, Object> getProductById(@RequestParam(value = "productId") int productId) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+        if (productId > -1) {
+            Product product = productService.getProductById(productId);
+            List<ProductCategory> productCategoryList = productCategoryService
+                    .getProductCategoryList(product.getShopId());
+//            将商品类别存入map
+            modelMap.put("productCategoryList", productCategoryList);
+//            商品对象存入map
+            modelMap.put("product", product);
+//            返回查询成功，便于判断
+            modelMap.put("success", true);
+        } else {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
+        }
+        return modelMap;
+    }
+    @ResponseBody
+    @RequestMapping(value="/updateProduct")
+    public Map<String, Object> modifyProduct(Product product,String imgArr){
+        System.out.println(product);
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+        if (product != null) {
+            try {
+
+                Product rs = productService.modifyProduct(product,imgArr);
+
+                System.out.println("修改商品——————————————————————————————————————————————-");
+                if (rs!=null) {
+                    modelMap.put("product",rs);
+                    modelMap.put("success", true);
+                } else {
+                    modelMap.put("success", false);
+                    modelMap.put("errMsg", "修改失败");
+                }
+            } catch (RuntimeException e) {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", e.toString());
+                return modelMap;
+            }
+
+        } else {
             modelMap.put("success", false);
             modelMap.put("errMsg", "请输入商品信息");
         }
