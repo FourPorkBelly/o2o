@@ -17,5 +17,5 @@ public interface ProductService {
      * @return
      */
     ProductExecution queryProduct(Product productCondition);
-    ProductExecution addProduct(Product product);
+    ProductExecution addProduct(Product product,String imgAddr);
 }

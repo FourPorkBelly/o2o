@@ -49,11 +49,11 @@ public class ShopController {
         PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
         Map<String,Object> map = new HashMap<>();
         shop.setOwnerId(owner.getUserId());
-        if(!CodeUtil.checkVerifyCode(request)){
-            map.put("success",false);
-            map.put("errMsg","请输入正确的验证码");
-            return map;
-        }
+//        if(!CodeUtil.checkVerifyCode(request)){
+//            map.put("success",false);
+//            map.put("errMsg","请输入正确的验证码");
+//            return map;
+//        }
         ShopExecution execution = shopService.addShop(shop);
         if(execution.getState()== ShopStateEnum.CHECK.getState()){
             map.put("success",true);
