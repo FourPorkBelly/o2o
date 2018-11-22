@@ -98,7 +98,7 @@ public class ShopController {
             map.put("errMsg","请输入正确的验证码");
             return map;
         }
-        ShopExecution execution = shopService.modifyShop(shop);
+        ShopExecution execution = shopService.updateShop(shop);
         if(execution.getState()== ShopStateEnum.CHECK.getState()){
             map.put("success",true);
             map.put("errMsg","修改成功");

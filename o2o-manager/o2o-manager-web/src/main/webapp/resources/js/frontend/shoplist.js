@@ -1,15 +1,15 @@
 $(function() {
 	var loading = false;
 	var maxItems = 999;
-	var pageSize = 10;
-	var listUrl = '/myo2o/frontend/listshops';
-	var searchDivUrl = '/myo2o/frontend/listshopspageinfo';
+	var pageSize = 2;
+	var listUrl = '/shop/listshops';
+	var searchDivUrl = '/shop/shopListinfo';
 	var pageNum = 1;
 	var parentId = getQueryString('parentId');
 	var areaId = '';
 	var shopCategoryId = '';
 	var shopName = '';
-
+	var a=getQueryString('a');
 	function getSearchDivData() {
 		var url = searchDivUrl + '?' + 'parentId=' + parentId;
 		$
@@ -73,10 +73,10 @@ $(function() {
 				$('.list-div').append(html);
 				var total = $('.list-div .card').length;
 				if (total >= maxItems) {
-					// 加载完毕，则注销无限加载事件，以防不必要的加载
-					$.detachInfiniteScroll($('.infinite-scroll'));
 					// 删除加载提示符
-					$('.infinite-scroll-preloader').remove();
+					$('.infinite-scroll-preloader').hide();
+				}else {
+                    $('.infinite-scroll-preloader').show();
 				}
 				pageNum += 1;
 				loading = false;
@@ -102,7 +102,7 @@ $(function() {
 			'click',
 			'.button',
 			function(e) {
-				if (parentId) {// 如果传递过来的是一个父类下的子类
+				if (a) {// 如果传递过来的是一个父类下的子类
 					shopCategoryId = e.target.dataset.categoryId;
 					if ($(e.target).hasClass('button-fill')) {
 						$(e.target).removeClass('button-fill');
@@ -118,7 +118,7 @@ $(function() {
 					parentId = e.target.dataset.categoryId;
 					if ($(e.target).hasClass('button-fill')) {
 						$(e.target).removeClass('button-fill');
-						parentId = '';
+                        parentId='';
 					} else {
 						$(e.target).addClass('button-fill').siblings()
 								.removeClass('button-fill');
@@ -126,10 +126,10 @@ $(function() {
 					$('.list-div').empty();
 					pageNum = 1;
 					addItems(pageSize, pageNum);
-					parentId = '';
 				}
 
 			});
+
 
 	$('#search').on('input', function(e) {
 		shopName = e.target.value;

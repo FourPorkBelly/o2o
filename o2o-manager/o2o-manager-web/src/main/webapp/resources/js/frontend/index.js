@@ -1,5 +1,5 @@
 $(function() {
-    var url = '/myo2o/frontend/listmainpageinfo';
+    var url = '/frontend/listmainpageinfo';
 
     $.getJSON(url, function (data) {
         if (data.success) {
@@ -13,7 +13,7 @@ $(function() {
             });
             $('.swiper-wrapper').html(swiperHtml);
             $(".swiper-container").swiper({
-                autoplay: 1000,
+                autoplay: 3000,
                 autoplayDisableOnInteraction: false
             });
             var shopCategoryList = data.shopCategoryList;
@@ -40,7 +40,7 @@ $(function() {
 
     $('.row').on('click', '.shop-classify', function (e) {
         var shopCategoryId = e.currentTarget.dataset.category;
-        var newUrl = '/myo2o/frontend/shoplist?parentId=' + shopCategoryId;
+        var newUrl = '/frontend/shoplist?a=100&parentId=' + shopCategoryId;
         window.location.href = newUrl;
     });
 
