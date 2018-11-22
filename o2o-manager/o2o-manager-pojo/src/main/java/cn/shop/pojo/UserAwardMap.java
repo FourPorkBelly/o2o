@@ -1,7 +1,11 @@
 package cn.shop.pojo;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Date;
+@Getter
+@Setter
 public class UserAwardMap {
     private Integer userAwardId;
 
@@ -23,83 +27,11 @@ public class UserAwardMap {
 
     private Integer point;
 
-    public Integer getUserAwardId() {
-        return userAwardId;
-    }
+    private PersonInfo personInfo;
 
-    public void setUserAwardId(Integer userAwardId) {
-        this.userAwardId = userAwardId;
-    }
+    private Award award;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    private Shop shop;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getAwardId() {
-        return awardId;
-    }
-
-    public void setAwardId(Integer awardId) {
-        this.awardId = awardId;
-    }
-
-    public Integer getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
-
-    public String getAwardName() {
-        return awardName;
-    }
-
-    public void setAwardName(String awardName) {
-        this.awardName = awardName == null ? null : awardName.trim();
-    }
-
-    public Date getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Date expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUsedStatus() {
-        return usedStatus;
-    }
-
-    public void setUsedStatus(Integer usedStatus) {
-        this.usedStatus = usedStatus;
-    }
-
-    public Integer getPoint() {
-        return point;
-    }
-
-    public void setPoint(Integer point) {
-        this.point = point;
-    }
+    private PersonInfo operator;
 }

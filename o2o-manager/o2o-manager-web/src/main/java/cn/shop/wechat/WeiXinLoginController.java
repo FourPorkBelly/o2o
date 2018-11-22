@@ -34,6 +34,9 @@ import cn.shop.utlis.weixin.message.pojo.UserAccessToken;
 @RequestMapping("wechatlogin")
 /**
  * 从微信菜单点击后调用的接口，可以在url里增加参数（role_type）来表明是从商家还是从玩家按钮进来的，依次区分登陆后跳转不同的页面
+ * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=
+ * http://o2o.mengyuanzhilan.cn/wechatlogin/logincheck
+ * &role_type&response_type=code&scope=snsapi_userinfo
  * 玩家会跳转到index.html页面
  * 商家如果没有注册，会跳转到注册页面，否则跳转到任务管理页面
  * 如果是商家的授权用户登陆，会跳到授权店铺的任务管理页面
