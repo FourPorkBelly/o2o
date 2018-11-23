@@ -201,11 +201,13 @@ public class ShopController {
             map.put("url","/shop/shoplist");
         }else {
             List<Shop> shopList = (List<Shop>) session.getAttribute("shopList");
-            for (Shop shop : shopList) {
-                if (shop.getShopId()==shopId) {
-                    map.put("redirect",false);
-                    session.setAttribute("currentShop",shop);
-                    return map;
+            if(shopList!=null&&shopList.size()>0){
+                for (Shop shop : shopList) {
+                    if (shop.getShopId()==shopId) {
+                        map.put("redirect",false);
+                        session.setAttribute("currentShop",shop);
+                        return map;
+                    }
                 }
             }
             map.put("redirect",true);

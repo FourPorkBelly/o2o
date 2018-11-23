@@ -1,6 +1,6 @@
 $(function() {
     $.config = {router: false}
-	var shopId = 1;
+	var shopId = getQueryString("shopId");
 	var isEdit = shopId ? true : false;
     $("#shopId").val("");
 	var shopInfoUrl = '/shop/getshopbyid?shopId='+shopId;

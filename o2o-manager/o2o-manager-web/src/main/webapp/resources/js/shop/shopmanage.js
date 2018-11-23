@@ -12,8 +12,8 @@ $(function () {
                 var url = $(s).attr("href");
                 $(s).attr("href",url+"?shopId="+shopId);
             })*/
-/*
-            $(".shopinfo").attr('href','/shop/shopedit?shopId='+shopId);*/
+
+            $("#shopedit").attr('href','/shop/shopedit?shopId='+shopId);
         }
     })
 })

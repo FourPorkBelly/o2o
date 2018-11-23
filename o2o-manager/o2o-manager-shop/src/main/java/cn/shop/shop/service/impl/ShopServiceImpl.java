@@ -98,10 +98,12 @@ public class ShopServiceImpl implements ShopService {
             criteria.andOwnerIdEqualTo(shop.getOwnerId());
         }
         ShopExecution shopExecution = new ShopExecution();
+        //传入分页参数
         PageHelper.startPage(pageIndex,pageSize);
 
         List<Shop> list = shopMapper.selectByExampleWidthAreaPersonInfoShopCategory(example);
 
+        //获取分页后的数据
         PageInfo pageInfo = new PageInfo(list);
         if (list!=null&&list.size()>0) {
             shopExecution.setShopList(list);
