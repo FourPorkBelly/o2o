@@ -62,6 +62,7 @@ public class ShopController {
             //如果注册成功则加入session作为权限使用，用户智只能操作自己的店铺
             List<Shop> shopList = (List<Shop>) session.getAttribute("shopList");
             shopList.add(se.getShop());
+            //存入session
             session.setAttribute("shopList",shopList);
             map.put("success",true);
             map.put("errMsg","注册成功");
@@ -120,6 +121,7 @@ public class ShopController {
 
     /**
      * 通过id获取商铺信息
+     * currentShop
      * @param
      * @return
      */
@@ -160,8 +162,11 @@ public class ShopController {
         Map<String,Object> map = new HashMap<>();
         PersonInfo user = new PersonInfo();
         Shop shop = new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(8);
+        owner.setName("李翔");
         //从session中获取用户信息
-        PersonInfo owner = (PersonInfo) session.getAttribute("user");
+        owner = (PersonInfo) session.getAttribute("user");
         //判断用户信息
         owner = new PersonInfo();
         owner.setUserId(8);

@@ -42,6 +42,9 @@ public class ShopAuthMapController {
         if(currentShop!=null&&currentShop.getShopId()!=null){
             //分页取出该店铺下的信息列表
             ShopAuthMapExecution se = shopAuthMapService.getShopAuthMapList(currentShop.getShopId(),pageIndex,pageSize);
+            for (ShopAuthMap shopAuthMap : se.getShopAuthMapList()) {
+                System.out.println(shopAuthMap);
+            }
             map.put("shopAuthMapList",se.getShopAuthMapList());
             map.put("count",se.getCount());
             map.put("success",true);

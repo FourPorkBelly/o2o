@@ -40,7 +40,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
         ShopAuthMapExample.Criteria criteria = example.createCriteria();
         //根据shopid进行查询
         criteria.andShopIdEqualTo(shopId);
-        List<ShopAuthMap> list = shopAuthMapMapper.selectByExample(example);
+        List<ShopAuthMap> list = shopAuthMapMapper.selectByExampleWithPersonInfoShop(example);
         //判断返回结果是否为空
         if(list==null&&list.size()==0){
             sme.setState(ShopAuthMapStateEnum.INNER_ERROR.getState());
@@ -60,7 +60,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
      */
     @Override
     public ShopAuthMap getShopAuthMapById(Integer shopAuthId) {
-        ShopAuthMap shopAuthMap = shopAuthMapMapper.selectByPrimaryKey(shopAuthId);
+        ShopAuthMap shopAuthMap = shopAuthMapMapper.selectByPrimaryKeyWithPersonInfoShop(shopAuthId);
         return shopAuthMap;
     }
     /**

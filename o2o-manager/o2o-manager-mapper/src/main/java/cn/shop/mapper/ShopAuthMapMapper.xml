@@ -12,6 +12,54 @@
     <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
     <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
   </resultMap>
+  <!-- 多表查询 -->
+  <resultMap id="BaseResultMapWithPersonInfoShop" type="cn.shop.pojo.ShopAuthMap">
+    <id column="shop_auth_id" jdbcType="INTEGER" property="shopAuthId" />
+    <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="title_flag" jdbcType="INTEGER" property="titleFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+    <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
+    <association property="shop" column="shop_ids" javaType="cn.shop.pojo.Shop">
+      <id column="shop_ids" jdbcType="INTEGER" property="shopId" />
+      <result column="owner_ids" jdbcType="INTEGER" property="ownerId" />
+      <result column="area_ids" jdbcType="INTEGER" property="areaId" />
+      <result column="shop_category_ids" jdbcType="INTEGER" property="shopCategoryId" />
+      <result column="parent_category_ids" jdbcType="INTEGER" property="parentCategoryId" />
+      <result column="shop_names" jdbcType="VARCHAR" property="shopName" />
+      <result column="shop_descs" jdbcType="VARCHAR" property="shopDesc" />
+      <result column="shop_addrs" jdbcType="VARCHAR" property="shopAddr" />
+      <result column="phones" jdbcType="VARCHAR" property="phone" />
+      <result column="shop_imgs" jdbcType="VARCHAR" property="shopImg" />
+      <result column="longitudes" jdbcType="DOUBLE" property="longitude" />
+      <result column="latitudes" jdbcType="DOUBLE" property="latitude" />
+      <result column="prioritys" jdbcType="INTEGER" property="priority" />
+      <result column="create_times" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="last_edit_times" jdbcType="TIMESTAMP" property="lastEditTime" />
+      <result column="enable_statuss" jdbcType="INTEGER" property="enableStatus" />
+      <result column="advices" jdbcType="VARCHAR" property="advice" />
+    </association>
+    <association property="employee" column="employeeId" javaType="cn.shop.pojo.PersonInfo">
+      <id column="user_idp" jdbcType="INTEGER" property="userId" />
+      <result column="namep" jdbcType="VARCHAR" property="name" />
+      <result column="birthdayp" jdbcType="TIMESTAMP" property="birthday" />
+      <result column="genderp" jdbcType="VARCHAR" property="gender" />
+      <result column="phonep" jdbcType="VARCHAR" property="phone" />
+      <result column="emailp" jdbcType="VARCHAR" property="email" />
+      <result column="profile_imgp" jdbcType="VARCHAR" property="profileImg" />
+      <result column="customer_flagp" jdbcType="INTEGER" property="customerFlag" />
+      <result column="shop_owner_flagp" jdbcType="INTEGER" property="shopOwnerFlag" />
+      <result column="admin_flagp" jdbcType="INTEGER" property="adminFlag" />
+      <result column="create_timep" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="last_edit_timep" jdbcType="TIMESTAMP" property="lastEditTime" />
+      <result column="enable_statusp" jdbcType="INTEGER" property="enableStatus" />
+    </association>
+  </resultMap>
+
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -74,13 +122,41 @@
     shop_auth_id, employee_id, shop_id, name, title, title_flag, create_time, last_edit_time, 
     enable_status
   </sql>
+  <!-- 查询 -->
+  <sql id="Base_Column_ListWithPersonInfoShop">
+       sam.shop_auth_id,sam.employee_id,sam.shop_id,sam.name,sam.title,sam.title_flag,sam.create_time,
+       sam.last_edit_time,sam.last_edit_time,sam.enable_status,
+       s.shop_id shop_ids,s.owner_id owner_ids,s.area_id area_ids,s.shop_category_id shop_category_ids,
+       s.parent_category_id parent_category_ids,s.shop_name shop_names,s.shop_desc shop_descs,s.shop_addr shop_addrs,
+       s.phone phones,s.shop_img shop_imgs,s.longitude longitudes,s.latitude latitudes,s.priority prioritys,
+       s.create_time create_times,s.last_edit_time last_edit_times,s.enable_status enable_statuss,s.advice advices,
+       p.user_id user_idp,p.name namep,p.birthday birthdayp,p.gender genderp,p.phone phonep,p.email email,
+       p.profile_img profile_imgp,p.customer_flag customer_flagp,p.shop_owner_flag shop_owner_flagp,
+       p.admin_flag admin_flagp,p.create_time create_timep,p.last_edit_time last_edit_timep,p.enable_status enable_statusp
+  </sql>
   <select id="selectByExample" parameterType="cn.shop.pojo.ShopAuthMapExample" resultMap="BaseResultMap">
+  select
+  <if test="distinct">
+    distinct
+  </if>
+  <include refid="Base_Column_List" />
+  from tb_shop_auth_map
+  <if test="_parameter != null">
+    <include refid="Example_Where_Clause" />
+  </if>
+  <if test="orderByClause != null">
+    order by ${orderByClause}
+  </if>
+</select>
+<!-- 多表查询 -->
+  <select id="selectByExampleWithPersonInfoShop" parameterType="cn.shop.pojo.ShopAuthMapExample" resultMap="BaseResultMapWithPersonInfoShop">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
-    from tb_shop_auth_map
+    <include refid="Base_Column_ListWithPersonInfoShop" />
+    from tb_shop_auth_map sam inner join tb_shop s on sam.shop_id = s.shop_id
+    inner join tb_person_info p on sam.employee_id = p.user_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,6 +164,15 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="selectByPrimaryKeyWithPersonInfoShop" parameterType="java.lang.Integer" resultMap="BaseResultMapWithPersonInfoShop">
+    select
+    <include refid="Base_Column_ListWithPersonInfoShop" />
+    from tb_shop_auth_map
+    where shop_auth_id = #{shopAuthId,jdbcType=INTEGER}
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
