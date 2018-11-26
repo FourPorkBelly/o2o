@@ -54,6 +54,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper:4.1.3" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jsqlparser:jsqlparser:0.9.4" level="project" />
     <orderEntry type="library" name="Maven: cn.shop:o2o-manager-CMS:1.0-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="o2o-manager-shop" />
     <orderEntry type="module" module-name="o2o-manager-utlis" />
@@ -61,8 +63,6 @@
     <orderEntry type="library" name="Maven: commons-net:commons-net:3.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.bundles:aspectjweaver:1.6.8_2" level="project" />
     <orderEntry type="library" name="Maven: com.github.miemiedev:mybatis-paginator:1.2.15" level="project" />
-    <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper:4.1.3" level="project" />
-    <orderEntry type="library" name="Maven: com.github.jsqlparser:jsqlparser:0.9.4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.json-lib:json-lib:jdk15:2.4" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.0" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.5" level="project" />

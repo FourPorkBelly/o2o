@@ -1,7 +1,7 @@
 $(function() {
 	var loading = false;
 	var maxItems = 999;
-	var pageSize = 2;
+	var pageSize = 10;
 	var listUrl = '/shop/listshops';
 	var searchDivUrl = '/shop/shopListinfo';
 	var pageNum = 1;
@@ -73,7 +73,7 @@ $(function() {
 				$('.list-div').append(html);
 				var total = $('.list-div .card').length;
 				if (total >= maxItems) {
-					// 删除加载提示符
+					// 隐藏加载符
 					$('.infinite-scroll-preloader').hide();
 				}else {
                     $('.infinite-scroll-preloader').show();
@@ -95,7 +95,7 @@ $(function() {
 
 	$('.shop-list').on('click', '.card', function(e) {
 		var shopId = e.currentTarget.dataset.shopId;
-		window.location.href = '/myo2o/frontend/shopdetail?shopId=' + shopId;
+		window.location.href = '/frontend/shopdetail?shopId=' + shopId;
 	});
 
 	$('#shoplist-search-div').on(

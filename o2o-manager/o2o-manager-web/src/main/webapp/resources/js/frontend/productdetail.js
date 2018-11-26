@@ -1,6 +1,6 @@
 $(function() {
 	var productId = getQueryString('productId');
-	var productUrl = '/myo2o/frontend/listproductdetailpageinfo?productId='
+	var productUrl = '/frontend/listproductdetailpageinfo?productId='
 			+ productId;
 
 	$

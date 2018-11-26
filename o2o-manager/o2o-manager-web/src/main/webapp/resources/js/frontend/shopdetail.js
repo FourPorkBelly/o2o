@@ -3,16 +3,17 @@ $(function() {
 	var maxItems = 20;
 	var pageSize = 10;
 
-	var listUrl = '/myo2o/frontend/listproductsbyshop';
+	var listUrl = '/frontend/listproductsbyshop';
 
 	var pageNum = 1;
 	var shopId = getQueryString('shopId');
 	var productCategoryId = '';
 	var productName = '';
 
-	var searchDivUrl = '/myo2o/frontend/listshopdetailpageinfo?shopId='
+	var searchDivUrl = '/frontend/listshopdetailpageinfo?shopId='
 			+ shopId;
-
+	//给商品兑换赋值地址+店铺id
+    $("#awardlist").attr('href','/frontend/awardlist?shopid='+shopId);
 	function getSearchDivData() {
 		var url = searchDivUrl;
 		$
@@ -122,7 +123,7 @@ $(function() {
 					'.card',
 					function(e) {
 						var productId = e.currentTarget.dataset.productId;
-						window.location.href = '/myo2o/frontend/productdetail?productId='
+						window.location.href = '/frontend/productdetail?productId='
 								+ productId;
 					});
 
@@ -136,5 +137,7 @@ $(function() {
 	$('#me').click(function() {
 		$.openPanel('#panel-left-demo');
 	});
+  //  $("#awardlist").attr("href","/frontend/awardlist?shopid"+shopId);
+
 	$.init();
 });
