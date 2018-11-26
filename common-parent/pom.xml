@@ -23,6 +23,8 @@
 
         <commons-io.version>1.3.2</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
+        <!-- md5加密 -->
+        <commons-codec.cersion>1.10</commons-codec.cersion>
         <!-- 实现slf4j接口并整合 -->
         <logback-classic.version>1.2.1</logback-classic.version><!--日志  -->
         <!-- 2.数据库 -->
@@ -88,6 +90,14 @@
                 <artifactId>commons-net</artifactId>
                 <version>${commons-net.version}</version>
             </dependency>
+            <!-- md5加密 -->
+            <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.cersion}</version>
+            </dependency>
+
             <!-- 1.日志 -->
             <!-- 实现slf4j接口并整合 -->
             <dependency>
