@@ -33,13 +33,15 @@ public class WeiXinUserUtil {
 		pro.load(WeiXinUserUtil.class.getClassLoader().getResourceAsStream(
 				"weixin.properties"));
 		//测试号信息里的appId
-		String appId = DESUtils
-				.getDecryptString(pro.getProperty("weixinappid"));
+		/*String appId = DESUtils
+				.getDecryptString(pro.getProperty("weixinappid"));*/
+		String appId ="wxf0be675cc70f0cc1";
 		log.debug("appId:" + appId);
 		//测试号信息里的appsecret
-		String appsecret = DESUtils.getDecryptString(pro
-				.getProperty("weixinappsecret"));
-		log.debug("secret:" + appsecret);
+		/*String appsecret = DESUtils.getDecryptString(pro
+				.getProperty("weixinappsecret"));*/
+		String appsecret = "e5d0a582b49fb9a3f667e38d4b48abba";
+				log.debug("secret:" + appsecret);
 		//根据传入的code，拼接出访问微信定义好的接口的URL
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code

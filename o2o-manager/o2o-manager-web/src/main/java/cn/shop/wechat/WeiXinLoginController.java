@@ -98,7 +98,8 @@ public class WeiXinLoginController {
 		}
 		log.debug("weixin login success.");
 		log.debug("login role_type:" + roleType);
-		if (FRONTEND.equals(roleType)) {
+        System.out.println(user);
+		/*if (FRONTEND.equals(roleType)) {
 			PersonInfo personInfo = WeiXinUserUtil
 					.getPersonInfoFromRequest(user);
 			if (auth == null) {
@@ -140,7 +141,7 @@ public class WeiXinLoginController {
 				request.getSession().setAttribute("shopList", se.getShopList());
 				return "shop/shoplist";
 			}
-		}
+		}*/
 		return null;
 	}
 }
