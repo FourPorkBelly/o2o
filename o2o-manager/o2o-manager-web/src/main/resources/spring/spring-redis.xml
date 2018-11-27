@@ -39,7 +39,7 @@
         <constructor-arg name="timeout" value="${redis.timeout}"></constructor-arg>
         <constructor-arg name="port" value="${redis.port}"></constructor-arg>
     </bean>
-    <bean id="jedisClient" class="cn.zmt.rest.dao.impl.JedisClientSingle"/>
+    <!--<bean id="jedisClient" class="cn.zmt.rest.dao.impl.JedisClientSingle"/>-->
 
 
     <!--&lt;!&ndash; jedis集群版配置 &ndash;&gt;

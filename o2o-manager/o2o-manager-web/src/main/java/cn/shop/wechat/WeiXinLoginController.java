@@ -64,10 +64,13 @@ public class WeiXinLoginController {
 	@RequestMapping(value = "/logincheck", method = { RequestMethod.GET })
 	public String doGet(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("weixin login get...");
+		System.out.println("微信登录授权方法被调用");
 		//获取微信公众号传输过来的code，通过code课获取access_token，进而获取用户信息
 		String code = request.getParameter("code");
+		System.out.println("code:"+code);
 		//这个state可以用来传我们自定义的消息，方便程序调用。
 		String roleType = request.getParameter("state");
+		System.out.println("state:"+roleType);
 		log.debug("weixin login code:" + code);
 		WechatAuth auth = null;
 		WeiXinUser user = null;
