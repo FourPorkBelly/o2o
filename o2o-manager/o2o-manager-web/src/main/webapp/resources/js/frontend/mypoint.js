@@ -2,14 +2,13 @@ $(function() {
     var loading = false;
     var maxItems = 999;
     var pageSize = 10;
-    var listUrl = '/myo2o/frontend/listusershopmapsbycustomer';
+    var listUrl = '/frontend/listusershopmapsbycustomer';
 
     var pageNum = 1;
-    var shopName = '';
 
     function addItems(pageSize, pageIndex) {
         // 生成新条目的HTML
-        var url = listUrl + '?' + 'pageIndex=' + pageIndex + '&pageSize=' + pageSize + '&shopName=' + shopName;
+        var url = listUrl + '?' + 'pageIndex=' + pageIndex + '&pageSize=' + pageSize ;
         loading = true;
         $.getJSON(url, function (data) {
             if (data.success) {

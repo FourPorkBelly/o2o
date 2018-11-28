@@ -121,7 +121,7 @@
       #{enableStatus,jdbcType=INTEGER}, #{point,jdbcType=INTEGER}, #{productCategoryId,jdbcType=INTEGER}, 
       #{shopId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.shop.pojo.Product">
+  <insert id="insertSelective"  parameterType="cn.shop.pojo.Product"  useGeneratedKeys="true" keyProperty="productId">
     insert into tb_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
@@ -215,9 +215,9 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_product
     <set>
-      <if test="record.productId != null">
+      <!--<if test="record.productId != null">
         product_id = #{record.productId,jdbcType=INTEGER},
-      </if>
+      </if>-->
       <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>

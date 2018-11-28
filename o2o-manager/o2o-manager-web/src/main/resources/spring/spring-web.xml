@@ -16,7 +16,6 @@
 
     <!-- 2.静态资源默认servlet配置 (1)加入对静态资源的处理：js,gif,png (2)允许使用"/"做整体映射 -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
-    <mvc:resources mapping="/upload/**" location="/upload/" />
     <mvc:default-servlet-handler />
 
     <!-- 3.定义视图解析器 -->
@@ -49,7 +48,7 @@
         </property>
     </bean>
     <!-- 4.扫描web相关的bean -->
-    <context:component-scan base-package="cn.shop.web.*.controller,cn.shop.wechat" />
+    <context:component-scan base-package="cn.shop.web.*.controller" />
     <!--&lt;!&ndash; 5.权限拦截器 &ndash;&gt;
     <mvc:interceptors>
         <mvc:interceptor>

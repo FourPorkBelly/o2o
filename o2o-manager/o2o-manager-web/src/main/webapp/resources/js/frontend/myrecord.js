@@ -3,15 +3,15 @@ $(function() {
 	var maxItems = 20;
 	var pageSize = 10;
 
-	var listUrl = '/myo2o/frontend/listuserproductmapsbycustomer';
+	var listUrl = '/frontend/listuserproductmapsbycustomer';
 
 	var pageNum = 1;
-	var productName = '';
+	//var productName = '';
 
 	function addItems(pageSize, pageIndex) {
 		// 生成新条目的HTML
-		var url = listUrl + '?shopId=1&' + 'pageIndex=' + pageIndex
-				+ '&pageSize=' + pageSize + '&productName=' + productName;
+		var url = listUrl + '?shopId=1&' + 'pageIndex=' + pageNum
+				+ '&pageSize=' + pageSize ;
 		loading = true;
 		$.getJSON(url, function(data) {
 			if (data.success) {
@@ -20,7 +20,7 @@ $(function() {
 				data.userProductMapList.map(function(item, index) {
 					html += '' + '<div class="card" data-product-id='
 							+ item.productId + '>'
-							+ '<div class="card-header">' + item.shop.shopName
+							+ '<div class="card-header">香喷喷奶茶店'
 							+ '</div>' + '<div class="card-content">'
 							+ '<div class="list-block media-list">' + '<ul>'
 							+ '<li class="item-content">'

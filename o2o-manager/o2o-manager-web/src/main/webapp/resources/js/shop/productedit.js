@@ -1,5 +1,5 @@
 $(function() {
-	var productId = 1;
+	var productId = getQueryString('productId');
 	var shopId = 1;
 	var infoUrl = '/myo2o/shop/getproductbyid?productId=' + productId;
 	var categoryUrl = '/myo2o/shop/getproductcategorylistbyshopId?shopId='
