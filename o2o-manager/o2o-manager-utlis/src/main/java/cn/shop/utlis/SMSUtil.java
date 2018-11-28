@@ -125,7 +125,7 @@ public class SMSUtil {
 	 *            随机验证码
 	 */
 	public static String send(String to, String code) throws IOException {
-		String smsContent = "【校园商铺】您的验证码为"+code+"，请于5分钟内正确输入，如非本人操作，请忽略此短信。";
+		String smsContent = "【o2o校园商铺】您的验证码为"+code+"，请于5分钟内正确输入，如非本人操作，请忽略此短信。";
 		String tmpSmsContent = null;
 		tmpSmsContent = URLEncoder.encode(smsContent, "UTF-8");
 		String body = "accountSid=" + ACCOUNT_SID + "&to=" + to

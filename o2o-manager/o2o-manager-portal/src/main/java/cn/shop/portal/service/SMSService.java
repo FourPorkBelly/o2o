@@ -7,5 +7,7 @@ import java.util.Map;
  * @creation time 2018/11/26 - 14:11
  */
 public interface SMSService {
-    Map<String,Object> verifySMS(String phone);
+    Map<String,Object> getVerifySMS(String phone);
+
+    public Map<String, Object> verifySMS(String verification);
 }
