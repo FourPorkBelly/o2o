@@ -16,7 +16,8 @@ public interface UserShopMapPotalService {
      * @Author:         oy
      * @CreateDate:     2018/11/26 0026 下午 3:53
      */
-    List<UserShopMap> selectByExample(Integer userShopId, Integer shopid);
+    List<UserShopMap> selectByExample(Integer userShopId, Integer shopid,Integer pagenum,Integer pagesize);
     int insertSelective(UserShopMap record);
     int updateByExample( UserShopMap record);
+    long countByExample(Integer integer);
 }

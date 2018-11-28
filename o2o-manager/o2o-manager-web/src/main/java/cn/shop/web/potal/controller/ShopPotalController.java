@@ -47,6 +47,7 @@ public class ShopPotalController {
         //父级iD为空的时候查询一级分类
         if (parentId == -1) {
             try {
+                //获取一级分类
                 shopCategoryList = shopCategoryService.getShopCategoryListByparent(null);
             } catch (Exception e) {
                 map.put("success", false);

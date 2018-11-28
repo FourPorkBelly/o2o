@@ -56,8 +56,9 @@ public class AwardPotalController {
         Integer point=0;
         if(shopid!=null&&shopid>-1){
             //查询此用户有在这个店铺是否有积分
-            if(userShopMaoPotalService.selectByExample(8,shopid).size()>0){
-             userShopMap=userShopMaoPotalService.selectByExample(8,shopid).get(0);
+            if(userShopMaoPotalService.selectByExample(8,shopid,null,null).size()>0){
+                //得到积分
+             userShopMap=userShopMaoPotalService.selectByExample(8,shopid,null,null).get(0);
              point=userShopMap.getPoint();
             }
             //将数据返回到页面
@@ -70,7 +71,7 @@ public class AwardPotalController {
         return map;
     }
     /**
-     * @Description:    兑换过奖品
+     * @Description:    兑换奖品
      * @Author:         oy
      * @CreateDate:     2018/11/28 0028 上午 11:03
      */
@@ -86,9 +87,9 @@ public class AwardPotalController {
         //创建一个积分对象
         UserShopMap userShopMap=null;
         //查询是在此店铺是否有积分
-        if(userShopMaoPotalService.selectByExample(8,shop.getShopId()).size()>0){
+        if(userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).size()>0){
             //得到商铺积分
-            userShopMap=userShopMaoPotalService.selectByExample(8,shop.getShopId()).get(0);
+            userShopMap=userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).get(0);
             //判断积分是否足够
             if(userShopMap.getPoint()>award.getPoint()||userShopMap.getPoint()==award.getPoint()){
                 //修改用户在店铺的积分
@@ -96,10 +97,10 @@ public class AwardPotalController {
                 if(userShopMaoPotalService.updateByExample(userShopMap)>0){
                     //添加积分消费记录
                     UserAwardMap userAwardMap=new UserAwardMap();
-                    userAwardMap.setUserId(8);
+                    userAwardMap.setUserId(11);
                     userAwardMap.setAwardId(award.getAwardId());
                     userAwardMap.setShopId(shop.getShopId());
-                    userAwardMap.setUserName("杨翔");
+                    userAwardMap.setUserName("音策");
                     userAwardMap.setAwardName(award.getAwardName());
                     userAwardMap.setExpireTime(award.getExpireTime());
                     userAwardMap.setCreateTime(new Date());

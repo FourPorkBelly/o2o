@@ -1,6 +1,10 @@
 package cn.shop.potal.service;
 
 import cn.shop.pojo.UserProductMap;
+import cn.shop.pojo.UserProductMapExample;
+
+import java.util.List;
+
 /**
  * @Description:   用户消费记录
  * @Author:         oy
@@ -8,4 +12,6 @@ import cn.shop.pojo.UserProductMap;
  */
 public interface UserProductMapPotalService {
     int insertSelective(UserProductMap record);
+    List<UserProductMap> selectByExample(UserProductMap userProductMap,Integer pagenum,Integer pageize);
+    long countByExample(UserProductMap userProductMap);
 }

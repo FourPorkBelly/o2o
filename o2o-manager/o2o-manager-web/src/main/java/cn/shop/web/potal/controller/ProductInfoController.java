@@ -130,7 +130,6 @@ public class ProductInfoController {
         //查询此商品的积分
         Product product=productPotalService.selectByPrimaryKey(productId);
         //查询店铺
-
         Shop shop=shopService.getByShopId(product.getShopId());
         //查询改用户在此店铺是否有积分
         UserShopMap userShopMap=null;
@@ -143,11 +142,11 @@ public class ProductInfoController {
         userProductMap.setProductName(product.getProductName());
         userProductMap.setPoint(product.getPoint());
         userProductMap.setCreateTime(new Date());
-
-        if(userShopMapPotalService.selectByExample(11,shop.getShopId()).size()>0){
+        //查询此用户在此店铺是否有积分
+        if(userShopMapPotalService.selectByExample(11,shop.getShopId(),null,null).size()>0){
             //赋值
-            userShopMap=userShopMapPotalService.selectByExample(11,shop.getShopId()).get(0);
-            //原因积分加上现有积分
+            userShopMap=userShopMapPotalService.selectByExample(11,shop.getShopId(),null,null).get(0);
+            //原因积分加上商品积分
             userShopMap.setPoint(userShopMap.getPoint()+product.getPoint());
             //修改在以有的用户上加积分
             if(userShopMapPotalService.updateByExample(userShopMap)>0){
