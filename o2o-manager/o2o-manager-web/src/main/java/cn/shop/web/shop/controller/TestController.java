@@ -28,7 +28,7 @@ public class TestController {
 
     @ResponseBody
     @RequestMapping("/testphonesms")
-    public Object testPhoneSMS(String verify){
-        return smsService.verifySMS(verify);
+    public Object testPhoneSMS(String phone,String verify){
+        return smsService.verifySMS(phone,verify);
     }
 }

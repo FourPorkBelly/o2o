@@ -9,5 +9,5 @@ import java.util.Map;
 public interface SMSService {
     Map<String,Object> getVerifySMS(String phone);
 
-    public Map<String, Object> verifySMS(String verification);
+    public Map<String, Object> verifySMS(String phone,String verification);
 }

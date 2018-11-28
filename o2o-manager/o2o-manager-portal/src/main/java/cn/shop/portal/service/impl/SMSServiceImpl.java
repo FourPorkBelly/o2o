@@ -48,9 +48,10 @@ public class SMSServiceImpl implements SMSService {
             }else{
                 try {
                     //将验证码md5加密后存入redis
-                    jedisClient.set(PHONE_CHECK_CODE, DigestUtils.md5Hex(checkCode));
+                    //手机号作为尾缀区分多个手机号获取的验证码
+                    jedisClient.set(PHONE_CHECK_CODE+":"+phone, DigestUtils.md5Hex(checkCode));
                     //设置key的有效期
-                    jedisClient.expire(PHONE_CHECK_CODE,300);
+                    jedisClient.expire(PHONE_CHECK_CODE+":"+phone,300);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -72,13 +73,13 @@ public class SMSServiceImpl implements SMSService {
      * @return
      */
     @Override
-    public Map<String, Object> verifySMS(String verification) {
+    public Map<String, Object> verifySMS(String phone,String verification) {
         Map<String, Object> map = new HashMap<>();
         //验证码md5加密
         verification = DigestUtils.md5Hex(verification);
         try {
             //从redis中获取验证码信息
-            String phoneSMS = jedisClient.get(PHONE_CHECK_CODE);
+            String phoneSMS = jedisClient.get(PHONE_CHECK_CODE+":"+phone);
             if(phoneSMS==null){
                 map.put("sucess",false);
                 map.put("errMsg","验证码已过期");
@@ -87,7 +88,7 @@ public class SMSServiceImpl implements SMSService {
                     map.put("sucess",true);
                     map.put("errMsg","验证通过");
                     //验证通过后清空redis
-                    jedisClient.del(PHONE_CHECK_CODE);
+                    jedisClient.del(PHONE_CHECK_CODE+":"+phone);
                 }else{
                     map.put("sucess",false);
                     map.put("errMsg","请输入正确的验证码");
