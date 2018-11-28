@@ -2,10 +2,12 @@ package cn.shop.utlis.weixin;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.Properties;
 
 import cn.shop.pojo.PersonInfo;
 import cn.shop.utlis.weixin.message.pojo.UserAccessToken;
+import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class WeiXinUserUtil {
 
 	public static UserAccessToken getUserAccessToken(String code)
 			throws IOException {
+		/*
+		* https://api.weixin.qq.com/sns/oauth2/access_token?secret=e5d0a582b49fb9a3f667e38d4b48abba&appid=wxf0be675cc70f0cc1&grant_type=authorization_code&code=06159AFe1mvmNr0mlvFe1vTzFe159AFI
+		* */
 		Properties pro = new Properties();
 		pro.load(WeiXinUserUtil.class.getClassLoader().getResourceAsStream(
 				"weixin.properties"));
@@ -46,6 +51,7 @@ public class WeiXinUserUtil {
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
 				+ "&grant_type=authorization_code";
+		System.out.println("URL:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
 		//相应URL发送请求获取token json字符串
@@ -54,6 +60,7 @@ public class WeiXinUserUtil {
 			log.debug("获取用户accessToken失败。");
 			return null;
 		}
+		System.out.println("jsonObject:"+jsonObject);
 		UserAccessToken token = new UserAccessToken();
 		token.setAccessToken(accessToken);
 		token.setExpiresIn(jsonObject.getString("expires_in"));
@@ -66,7 +73,9 @@ public class WeiXinUserUtil {
 	public static WeiXinUser getUserInfo(String accessToken, String openId) {
 		String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
 				+ accessToken + "&openid=" + openId + "&lang=zh_CN";
+		System.out.println("url:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
+		System.out.println("jsonObject:"+jsonObject);
 		WeiXinUser user = new WeiXinUser();
 		String openid = jsonObject.getString("openid");
 		if (openid == null) {
