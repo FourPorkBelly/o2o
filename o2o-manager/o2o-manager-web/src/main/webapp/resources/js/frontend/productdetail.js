@@ -35,8 +35,8 @@ $(function() {
 		$.openPanel('#panel-left-demo');
 	});
 	$("#purchase").click(function () {
-        $.confirm('确定购买么?', function() {
-        	alert(point+"--"+productId);
+        $.confirm('确定购买吗?', function() {
+        	// alert(point+"--"+productId);
             $.ajax({
                 url : '/frontend/purchaseproduct',
                 type : 'POST',
@@ -48,7 +48,6 @@ $(function() {
                 success : function(data) {
                     if (data.success) {
                         $.toast('购买成功！');
-                        getList();
                     } else {
                         $.toast('购买失败！');
                     }
