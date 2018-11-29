@@ -37,7 +37,9 @@ public class UserProductMapPotalServiceImpl implements UserProductMapPotalServic
     @Override
     public List<UserProductMap> selectByExample(UserProductMap userProductMap,Integer pagenum,Integer pagesize) {
         UserProductMapExample userProductMapExample = new UserProductMapExample();
+        userProductMapExample.setOrderByClause("create_time desc");
         UserProductMapExample.Criteria criteria=userProductMapExample.createCriteria();
+
         if(userProductMap.getUserId()!=null&&userProductMap.getUserId()>-1){
             //根据用户ID
             criteria.andUserIdEqualTo(userProductMap.getUserId());
@@ -59,7 +61,6 @@ public class UserProductMapPotalServiceImpl implements UserProductMapPotalServic
     public long countByExample(UserProductMap userProductMap) {
         UserProductMapExample userProductMapExample = new UserProductMapExample();
         UserProductMapExample.Criteria criteria=userProductMapExample.createCriteria();
-        userProductMapExample.setOrderByClause("create_time asc");
         if(userProductMap.getUserId()!=null&&userProductMap.getUserId()>-1){
             //根据用户ID
             criteria.andUserIdEqualTo(userProductMap.getUserId());
