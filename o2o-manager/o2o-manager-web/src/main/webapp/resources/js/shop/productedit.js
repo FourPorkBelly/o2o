@@ -1,17 +1,17 @@
 $(function() {
 	var productId = getQueryString('productId');
 	var shopId = 1;
-	var infoUrl = '/myo2o/shop/getproductbyid?productId=' + productId;
-	var categoryUrl = '/myo2o/shop/getproductcategorylistbyshopId?shopId='
+	var infoUrl = '/product/getproductbyid?productId=' + productId;
+	var categoryUrl = '/product/getproductcategorylistbyshopId?shopId='
 			+ shopId;
-	var productPostUrl = '/myo2o/shop/modifyproduct';
+	var productPostUrl = '/product/modifyproduct';
 	var isEdit = false;
 	if (productId) {
 		getInfo(productId);
 		isEdit = true;
 	} else {
 		getCategory(shopId);
-		productPostUrl = '/myo2o/shop/addproduct';
+		productPostUrl = '/product/addproduct';
 	}
 
 	function getInfo(id) {
@@ -25,14 +25,15 @@ $(function() {
 								$('#product-desc').val(product.productDesc);
 								$('#priority').val(product.priority);
 								$('#normal-price').val(product.normalPrice);
-								$('#promotion-price').val(
-										product.promotionPrice);
+								$('#promotion-price').val(product.promotionPrice);
+								$("#imgAddr").attr("src",product.imgAddr);
+                                $("#imgAddr").show();
 
+                                //多图片回显
 								var optionHtml = '';
 								var optionArr = data.productCategoryList;
-								var optionSelected = product.productCategory.productCategoryId;
-								optionArr
-										.map(function(item, index) {
+								var optionSelected = product.productCategoryId;
+								optionArr.map(function(item, index) {
 											var isSelect = optionSelected === item.productCategoryId ? 'selected'
 													: '';
 											optionHtml += '<option data-value="'

@@ -7,6 +7,7 @@ $(function() {
 	// var shopInfoUrl = '/myo2o/shop/getshopbyid?shopId=' + shopId;
 	var initUrl = '/shop/getshopinitinfo';
 	var editShopUrl = '/shop/registershop';
+	var shoplist = "shop/shoplist";
 	if (isEdit) {
 		editShopUrl = '/shop/modifyshop';
 	}
@@ -102,14 +103,17 @@ $(function() {
             $("#shop-desc").focus();
             alert("店铺简介不能为空");
             return;
-        }
 
+        }
         /* 表单提交ajax */
         jQuery.post(editShopUrl, $("#shopfrom").serialize(),
             function(data){
                 alert(data.errMsg);
+                if(data.success){
+                    window.location.href="/shop/shoplist.html";
+                }
             }, "json");
-    	//$("#shopfrom").submit();
+        //$("#shopfrom").submit();
 	})
 	/* 图片验证上传 */
 	$("#uploadFileImg").change(function () {

@@ -1,5 +1,5 @@
 $(function() {
-	var shopId = 20;
+	var shopId = 1;
 	var listUrl = '/product/queryProduct?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
 	var deleteUrl = '/product/deleteproduct';

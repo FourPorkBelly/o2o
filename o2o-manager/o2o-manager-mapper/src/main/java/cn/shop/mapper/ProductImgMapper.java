@@ -16,6 +16,8 @@ public interface ProductImgMapper {
 
     int insertSelective(ProductImg record);
 
+    int insertList(List<ProductImg> productImgList);
+
     List<ProductImg> selectByExample(ProductImgExample example);
 
     ProductImg selectByPrimaryKey(Integer productImgId);
