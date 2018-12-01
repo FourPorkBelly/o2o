@@ -8,6 +8,6 @@ import cn.shop.portal.service.impl.SMSServiceImpl;
 public class TestSMS {
     public static void main(String[] args) {
         SMSService smsService = new SMSServiceImpl();
-        smsService.verifySMS("15197001326");
+        smsService.verifySMS("","15197001326");
     }
 }

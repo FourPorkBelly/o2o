@@ -50,7 +50,7 @@ public class WeiXinUserUtil {
 		//根据传入的code，拼接出访问微信定义好的接口的URL
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
-				+ "&grant_type=authorization_code";
+				+ "&grant_type=authorization_code&connect_redirect=1";
 		System.out.println("URL:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());

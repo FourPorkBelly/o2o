@@ -98,7 +98,7 @@
 								<div class="item-title label">缩略图</div>
 								<div class="item-input">
 									<input type="file" id="small-img" class="updateimg" name="uploadFile"><br>
-									<img src="" style="width: 60px;height: 60px" id="imgAddr">
+									<img src="" style="width: 60px;height: 60px" id="imgAddr" hidden>
 									<input type="hidden" name="imgAddr" id="shopImg">
 								</div>
 							</div>
@@ -112,8 +112,10 @@
 							<div class="item-inner detail-img-div">
 								<div class="item-title label">详情图片</div>
 								<div class="item-input" id="detail-img">
-									<input type="file" class="detail-img" id="updateimg0" name="uploadFile">
 									<input type="hidden" name="imgAddrs" id="shopImgs">
+									<img id="imgsrc0" src="" width="60px" height="60px" hidden><br/>
+									<input type="file" class="detail-img" id="updateimg0" name="uploadFile" indexx="0">
+
 									<!-- <input type="file" class="detail-img" id="detail-img-1">
                                     <input type="file" class="detail-img" id="detail-img-2"> -->
 								</div>
