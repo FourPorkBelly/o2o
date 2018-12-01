@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>商铺信息</title>
+    <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css" media="all">
+</head>
+
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="demoTable">
+    搜索商户：
+    <div class="layui-inline">
+        <input class="layui-input" name="shopName" id="demoReload" autocomplete="off">
+    </div>
+    <div class="layui-btn" data-type="reload">搜索</div>
+</div>
+    <table class="layui-hide" lay-filter="demo" id="test">
+    </table>
+    <script src="../resources/plugins/layui/layui.js"></script>
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+            table.render({
+                elem: '#test'
+                ,url: '/cmsshop/queryShopList'
+                ,method:'get'
+                ,title:'店铺表'
+                ,cols: [[
+                     {field:'shopId', title: '商铺ID', width:80,  fixed: true}
+                    ,{field:'ownerId', title: '店主', width:70, fixed: true}
+                    ,{field:'areaId', title: '区域', width:70, fixed: true}
+                    ,{field:'shopCategoryId', title: '商铺类别', width:100, fixed: true}
+                    ,{field:'shopName', title: '商铺名', width:100, fixed: true}
+                    ,{field:'shopDesc', title: '商铺排序', width:100, fixed: true}
+                    ,{field:'shopAddr', title: '商铺地址', width:100, fixed: true}
+                    ,{field:'phone', title: '电话', width:70, fixed: true}
+                    ,{field:'shopImg', title: '商铺图片', width:100, fixed: true}
+                    // ,{field:'priority', title: '商铺优先级', width:100, fixed: true}
+                    // ,{fixed: 'createTime', title:'创建时间', width:100, fixed: true}
+                    // ,{fixed: 'lastEditTime', title:'最后修改时间', width:100, fixed: true}
+                    ,{fixed: 'enableStatus', title:'商铺状态', width:100, fixed: true}
+                ]]
+                ,page: true
+                ,height:492
+                ,width:1352
+            });
+            var $ = layui.$, active = {
+                reload: function(){
+                    var demoReload = $('#demoReload');
+                    layer.alert(demoReload.val());
+                    table.reload('testReload', {
+                        where: {
+                            shopName: demoReload.val()
+                        }
+                    });
+                }
+            };
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

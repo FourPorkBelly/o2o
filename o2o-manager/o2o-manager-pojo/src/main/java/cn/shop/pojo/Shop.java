@@ -1,8 +1,10 @@
 package cn.shop.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 @Getter
@@ -34,9 +36,9 @@ public class Shop {
     private Double latitude;
 
     private Integer priority;
-
+//    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd") //出参
     private Date createTime;
-
+//    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd") //出参
     private Date lastEditTime;
 
     private Integer enableStatus;

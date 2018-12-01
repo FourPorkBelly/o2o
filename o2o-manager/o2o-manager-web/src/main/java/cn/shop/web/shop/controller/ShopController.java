@@ -48,7 +48,8 @@ public class ShopController {
     private Map<String,Object> registerShop(Shop shop){
         PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
         Map<String,Object> map = new HashMap<>();
-        shop.setOwnerId(owner.getUserId());
+//        shop.setOwnerId(owner.getUserId());
+        shop.setOwnerId(8);
 //        if(!CodeUtil.checkVerifyCode(request)){
 //            map.put("success",false);
 //            map.put("errMsg","请输入正确的验证码");

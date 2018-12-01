@@ -39,4 +39,5 @@ public interface ProductService {
      * @return
      */
     Product modifyProduct(Product product,String imgArr);
+    Integer deleteProduct(Integer productId);
 }

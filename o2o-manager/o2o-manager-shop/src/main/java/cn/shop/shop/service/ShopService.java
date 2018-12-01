@@ -3,7 +3,6 @@ package cn.shop.shop.service;
 import cn.shop.dto.ShopExecution;
 import cn.shop.pojo.Shop;
 
-import java.io.File;
 
 /**
  * 店铺信息

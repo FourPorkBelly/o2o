@@ -73,19 +73,22 @@ public class ProductController {
 //        从session中得到店铺信息
 //        Shop currentShop = (Shop) request.getSession().getAttribute(
 //                "currentShop");
+
 //        测试的值
-        Shop currentShop = new Shop();
+        Shop currentShop=new Shop();
         currentShop.setShopId(20);
 //        如果店铺不为空并且店铺ID部位空，查询该店铺的商铺类别
         if ((currentShop != null) && (currentShop.getShopId() != null)) {
-            List<ProductCategory> productCategoryList = productCategoryService
-                    .getProductCategoryList(currentShop.getShopId());
+            List<ProductCategory> productCategoryList=productCategoryService.getProductCategoryList(shopId);
+            for (ProductCategory p:productCategoryList){
+                System.out.println(p.getProductCategoryName());
+            }
 //            将商品类别存入map
-            modelMap.put("productCategoryList", productCategoryList);
+            modelMap.put("productCategoryList",productCategoryList);
 //            返回查询成功，便于判断
-            modelMap.put("success", true);
+            modelMap.put("success",true);
         } else {
-            modelMap.put("success", false);
+            modelMap.put("success",false);
 //            返回错误信息
             modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
         }
@@ -118,12 +121,16 @@ public class ProductController {
                 product.setShopId(currentShop.getShopId());
 //               默认设置商品上架
                 product.setEnableStatus(1);
-//                将图片地址插入product_img表（详情图）
+//                将图片地址插入product_img表 pe对象（详情图）
                 ProductExecution pe=productService.addProduct(product,imgAddr);
+//                判断结果状态是否等于枚举(0操作成功)
                 if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
+//                    添加成功则返回成功
+
                     modelMap.put("success", true);
                     modelMap.put("errMsg", "添加成功");
                 } else {
+//                    添加失败返回false的success  并将错误信息
                     modelMap.put("success", false);
                     modelMap.put("errMsg", pe.getStateInfo());
                 }
@@ -165,19 +172,17 @@ public class ProductController {
         }
         return modelMap;
     }
+
     @ResponseBody
-    @RequestMapping(value="/updateProduct")
-    public Map<String, Object> modifyProduct(Product product,String imgArr){
+    @RequestMapping(value="/updateProduct",method = RequestMethod.POST)
+    public Map<String, Object> modifyProduct(Product product,@RequestParam(value = "imgAddrs")String imgAddr){
         System.out.println(product);
         Map<String, Object> modelMap = new HashMap<String, Object>();
         if (product != null) {
             try {
-
-                Product rs = productService.modifyProduct(product,imgArr);
-
-                System.out.println("修改商品——————————————————————————————————————————————-");
+                Product rs = productService.modifyProduct(product,imgAddr);
                 if (rs!=null) {
-                    modelMap.put("product",rs);
+//                    如果插入成功则返回成功
                     modelMap.put("success", true);
                 } else {
                     modelMap.put("success", false);
@@ -188,10 +193,32 @@ public class ProductController {
                 modelMap.put("errMsg", e.toString());
                 return modelMap;
             }
-
         } else {
             modelMap.put("success", false);
             modelMap.put("errMsg", "请输入商品信息");
+        }
+        return modelMap;
+    }
+
+    /**
+     * 下架商品
+     * @param productId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteproduct",method = RequestMethod.GET)
+    public Map<String, Object> deleteproduct(Integer productId){
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        if (productId!=0){
+//
+            int rs=productService.deleteProduct(productId);
+            if (rs>0){
+                modelMap.put("success", false);
+            }else {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", "下架失败");
+            }
         }
         return modelMap;
     }

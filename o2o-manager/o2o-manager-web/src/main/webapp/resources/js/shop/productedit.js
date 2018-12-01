@@ -27,8 +27,10 @@ $(function() {
 						function(data) {
 							if (data.success) {
 								//从返回的json中获取商品对象的信息，并赋值给表单
-								var product = data.product;
 
+								var product = data.product;
+								$('#imgAddr').val(product.imgAddr);
+                                // $('#imgAddrs').val(data.imgAddrs);
 								$('#product-name').val(product.productName);
 								$('#product-desc').val(product.productDesc);
 								$('#priority').val(product.priority);
@@ -39,7 +41,7 @@ $(function() {
 								var optionHtml = '';
 								var optionArr = data.productCategoryList;
 								var optionSelected = product.productCategoryId;
-								alert(optionSelected);
+								// alert(optionSelected);
 								// 生成商品类别list，并默认选择编辑前的商品类别
 								optionArr
 										.map(function(item, index) {
@@ -97,12 +99,12 @@ $(function() {
                 alert("商品描述不能为空");
                 return;
             }
-            var productsmall = $("#small-img").val();
-            if(productsmall==null||productsmall==""){
-                $("#small-img").focus();
-                alert("缩略图不能为空");
-                return;
-            }
+            // var productsmall = $("#small-img").val();
+            // if(productsmall==null||productsmall==""){
+            //     $("#small-img").focus();
+            //     alert("缩略图不能为空");
+            //     return;
+            // }
             var priority = $("#priority").val();
             if(priority==null||priority==""){
                 $("#priority").focus();
@@ -115,17 +117,19 @@ $(function() {
                 alert("原价不能为空");
                 return;
             }
-            var updateimg0 = $("#updateimg0").val();
-            if(updateimg0==null||updateimg0==""){
-                $("#normal-price").focus();
-                alert("详细图不能为空");
-                return;
-            }
+            // var updateimg0 = $("#updateimg0").val();
+            // if(updateimg0==null||updateimg0==""){
+            //     $("#normal-price").focus();
+            //     alert("详细图不能为空");
+            //     return;
+            // }
             /* 表单提交ajax */
+            // var ssss = $("#productForm").serialize();
+			alert(productPostUrl);
             jQuery.post(productPostUrl, $("#productForm").serialize(),
                 function(data){
                     // $('#productId').val(data.productId);
-                    alert(data);
+
                     alert(data.errMsg);
                     window.location.href="productmanage.html"
                 }, "json");
@@ -152,8 +156,9 @@ $(function() {
                 success: function (data)  //服务器成功响应处理函数
                 {
                     if(data.error==0){
-                        // $("#hximage").show();
-                        // $("#hximage").attr("src",data.url);
+                        $('#imgAddr').val(data.url);
+                        $("#slimg").show();
+                        $("#slimg").attr("src",data.url);
                         if(imgid==small-img){
                             $("#imgAddr").val(data.url);
                         }else {
@@ -169,5 +174,4 @@ $(function() {
         )
         return false;
     }
-
 });

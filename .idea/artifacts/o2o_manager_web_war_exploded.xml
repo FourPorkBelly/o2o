@@ -29,9 +29,6 @@
           <element id="archive" name="o2o-manager-CMS-1.0-SNAPSHOT.jar">
             <element id="module-output" name="o2o-manager-CMS" />
           </element>
-          <element id="archive" name="o2o-manager-shop-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="o2o-manager-shop" />
-          </element>
           <element id="archive" name="o2o-manager-utlis-1.0-SNAPSHOT.jar">
             <element id="module-output" name="o2o-manager-utlis" />
           </element>
@@ -55,6 +52,9 @@
           <element id="library" level="project" name="Maven: com.google.zxing:core:3.3.0" />
           <element id="library" level="project" name="Maven: com.beust:jcommander:1.48" />
           <element id="library" level="project" name="Maven: com.github.jai-imageio:jai-imageio-core:1.3.1" />
+          <element id="archive" name="o2o-manager-shop-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="o2o-manager-shop" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.3.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.7.RELEASE" />

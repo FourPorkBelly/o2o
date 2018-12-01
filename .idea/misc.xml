@@ -3,6 +3,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/o2o-manager/o2o-manager-CMS" />
     <file type="web" url="file://$PROJECT_DIR$/o2o-manager/o2o-manager-web" />
+    <file type="web" url="file://$PROJECT_DIR$/o2oCMS/o2o-CMS-web" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

@@ -335,4 +335,8 @@
       enable_status = #{enableStatus,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="queryUserInfo"  resultType="cn.shop.pojo.PersonInfo">
+    select * from tb_person_info limit #{pageIndex},#{pageSize}
+
+  </select>
 </mapper>

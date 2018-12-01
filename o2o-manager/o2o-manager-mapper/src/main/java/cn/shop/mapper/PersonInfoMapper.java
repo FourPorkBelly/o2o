@@ -27,4 +27,5 @@ public interface PersonInfoMapper {
     int updateByPrimaryKeySelective(PersonInfo record);
 
     int updateByPrimaryKey(PersonInfo record);
+    List<PersonInfo> queryUserInfo(@Param("person")PersonInfo personInfo,@Param("pageIndex")int pageIndex,@Param("pageSize")int pageSize);
 }

@@ -124,5 +124,14 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
+    @Override
+    public Integer deleteProduct(Integer productId) {
+        Product product=productMapper.selectByPrimaryKey(productId);
+//        0下架  1商品可见
+        product.setEnableStatus(0);
+        Integer rs=productMapper.updateByPrimaryKeySelective(product);
+        return rs;
+    }
+
 
 }
