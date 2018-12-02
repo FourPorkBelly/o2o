@@ -231,6 +231,12 @@ public class ProductController {
         }
         return modelMap;
     }
+
+    /**
+     * 判断session中是否存在该商品
+     * @param productId
+     * @return
+     */
     private boolean isProductId(Integer productId){
         //从session中获取productList
         List<Product> productList = (List<Product>) session.getAttribute("productList");

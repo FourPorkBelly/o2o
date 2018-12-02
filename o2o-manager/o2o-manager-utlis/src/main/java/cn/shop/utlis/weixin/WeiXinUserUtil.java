@@ -55,6 +55,7 @@ public class WeiXinUserUtil {
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
 		//相应URL发送请求获取token json字符串
+		System.out.println("jsonObject:"+jsonObject);
 		String accessToken = jsonObject.getString("access_token");
 		if (null == accessToken) {
 			log.debug("获取用户accessToken失败。");
