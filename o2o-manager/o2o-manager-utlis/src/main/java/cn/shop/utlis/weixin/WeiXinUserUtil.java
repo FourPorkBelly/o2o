@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class WeiXinUserUtil {
 
-	/*@Value("${WECHAT_APPID}")*/
 	private static String WECHAT_APPID = "wx8c3a841c6efd97e9";
-	/*@Value("${WECHAT_APPSECRET}")*/
 	private static String WECHAT_APPSECRET = "d058758c0b2f23e2431435be1689b683";
+	/*@Value("${WECHAT_APPID}")*//*
+	private static String WECHAT_APPID = "wxf0be675cc70f0cc1";
+	*//*@Value("${WECHAT_APPSECRET}")*//*
+	private static String WECHAT_APPSECRET = "e5d0a582b49fb9a3f667e38d4b48abba";*/
 
 	private static Logger log = LoggerFactory.getLogger(MenuManager.class);
 
@@ -52,14 +54,10 @@ public class WeiXinUserUtil {
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
 				+ "&grant_type=authorization_code&connect_redirect=1";
-		//String urlaccess_token = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appId+"&secret="+appsecret+"&code="+code;
 		System.out.println("URL:"+url);
-		//System.out.println("urlaccess_token:"+urlaccess_token);
-		//JSONObject jsonObjectaccess_token = WeixinUtil.httpsRequest(urlaccess_token, "GET", null);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
 		//相应URL发送请求获取token json字符串
-		//String accessToken = jsonObjectaccess_token.getString("access_token");
         String accessToken = jsonObject.getString("access_token");
                 System.out.println("accessToken:"+accessToken);
 		if (null == accessToken) {
