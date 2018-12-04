@@ -4,6 +4,7 @@ import cn.shop.mapper.UserAwardMapMapper;
 import cn.shop.pojo.UserAwardMap;
 import cn.shop.pojo.UserAwardMapExample;
 import cn.shop.potal.service.UserAwardMapProtalService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,31 @@ public class UserAwardMapProtalServiceImpl implements UserAwardMapProtalService 
     public int insertSelective(UserAwardMap record) {
         return userAwardMapMapper.insertSelective(record);
     }
-
-
-
+    /**
+     * @Description:   查询用户的积分消费记录行数
+     * @Author:         oy
+     * @CreateDate:     2018/11/29 0029 上午 8:39
+     */
+    @Override
+    public long countByExample(Integer userid) {
+        UserAwardMapExample userAwardMapExample=new UserAwardMapExample();
+        UserAwardMapExample.Criteria criteria=userAwardMapExample.createCriteria();
+        criteria.andUserIdEqualTo(userid);
+        return userAwardMapMapper.countByExample(userAwardMapExample);
+    }
+    /**
+     * @Description:    查询用户的积分消费 加分页
+     * @Author:         oy
+     * @CreateDate:     2018/11/29 0029 上午 8:40
+     */
+    @Override
+    public List<UserAwardMap> selectByExample(Integer userid,Integer pagenum,Integer pagesize) {
+        UserAwardMapExample userAwardMapExample=new UserAwardMapExample();
+        UserAwardMapExample.Criteria criteria=userAwardMapExample.createCriteria();
+        criteria.andUserIdEqualTo(userid);
+        if(pagenum!=null&&pagenum>-1&&pagesize!=null&&pagesize>-1){
+            PageHelper.startPage(pagenum,pagesize);
+        }
+        return userAwardMapMapper.selectByExample(userAwardMapExample);
+    }
 }

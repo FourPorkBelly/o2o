@@ -56,9 +56,9 @@ public class AwardPotalController {
         Integer point=0;
         if(shopid!=null&&shopid>-1){
             //查询此用户有在这个店铺是否有积分
-            if(userShopMaoPotalService.selectByExample(8,shopid,null,null).size()>0){
+            if(userShopMaoPotalService.selectByExample(11,shopid,null,null).size()>0){
                 //得到积分
-             userShopMap=userShopMaoPotalService.selectByExample(8,shopid,null,null).get(0);
+             userShopMap=userShopMaoPotalService.selectByExample(11,shopid,null,null).get(0);
              point=userShopMap.getPoint();
             }
             //将数据返回到页面
@@ -87,13 +87,15 @@ public class AwardPotalController {
         //创建一个积分对象
         UserShopMap userShopMap=null;
         //查询是在此店铺是否有积分
-        if(userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).size()>0){
+        if(userShopMaoPotalService.selectByExample(11,shop.getShopId(),null,null).size()>0){
             //得到商铺积分
-            userShopMap=userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).get(0);
+            userShopMap=userShopMaoPotalService.selectByExample(11,shop.getShopId(),null,null).get(0);
             //判断积分是否足够
             if(userShopMap.getPoint()>award.getPoint()||userShopMap.getPoint()==award.getPoint()){
                 //修改用户在店铺的积分
                 userShopMap.setPoint(userShopMap.getPoint()-award.getPoint());
+                //修改时间
+                userShopMap.setCreateTime(new Date());
                 if(userShopMaoPotalService.updateByExample(userShopMap)>0){
                     //添加积分消费记录
                     UserAwardMap userAwardMap=new UserAwardMap();

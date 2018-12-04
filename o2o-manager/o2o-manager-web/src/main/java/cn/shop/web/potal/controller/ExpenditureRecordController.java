@@ -1,16 +1,15 @@
 package cn.shop.web.potal.controller;
 
 import cn.shop.pojo.UserProductMap;
+import cn.shop.potal.service.UserAwardMapProtalService;
 import cn.shop.potal.service.UserProductMapPotalService;
 import cn.shop.potal.service.UserShopMapPotalService;
 import cn.shop.shop.service.ShopService;
 import cn.shop.utlis.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +23,8 @@ public class ExpenditureRecordController {
     private ShopService shopService;
     @Autowired
     private UserShopMapPotalService userShopMapPotalService;
+    @Autowired
+    private UserAwardMapProtalService userAwardMapProtalService;
     /**
      * @Description:   查询用户的消费记录
      * @Author:         oy
@@ -69,6 +70,28 @@ public class ExpenditureRecordController {
             map.put("success",true);
             map.put("userShopMapList",userShopMapPotalService.selectByExample(11,null,pageIndex,pageSize));
             map.put("count",userShopMapPotalService.countByExample(11));
+        }
+        return  map;
+    }
+    /**
+     * @Description:   积分消费记录
+     * @Author:         oy
+     * @CreateDate:     2018/11/29 0029 上午 8:46
+     */
+    @RequestMapping("/listuserawardmapsbycustomer")
+    @ResponseBody
+    public Map<String,Object> getUserAwardMapList(HttpServletRequest request){
+        Map<String,Object> map=new HashMap<String,Object>();
+        //从session获取用户
+        //获取页码
+        Integer pageIndex=HttpServletRequestUtil.getInt(request,"pageIndex");
+        //获取行数
+        Integer pageSize=HttpServletRequestUtil.getInt(request,"pageSize");
+        if(pageIndex!=null&&pageIndex>-1&&pageSize!=null&&pageSize>-1){
+            //得到消费记录
+            map.put("userAwardMapList",userAwardMapProtalService.selectByExample(11,pageIndex,pageSize));
+            map.put("success",true);
+            map.put("count",userAwardMapProtalService.countByExample(11));
         }
         return  map;
     }

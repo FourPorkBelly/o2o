@@ -12,5 +12,6 @@ import java.util.List;
  */
 public interface UserAwardMapProtalService {
     int insertSelective(UserAwardMap record);
-
+    long countByExample(Integer userid);
+    List<UserAwardMap> selectByExample(Integer userid,Integer pagenum,Integer pagesize);
 }
