@@ -120,6 +120,22 @@
       #{adminFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}, 
       #{enableStatus,jdbcType=INTEGER})
   </insert>
+  <!-- 插入数据并返回主键 -->
+  <insert id="insertUserId" parameterType="cn.shop.pojo.PersonInfo">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_person_info (user_id, name, birthday,
+      gender, phone, email,
+      profile_img, customer_flag, shop_owner_flag,
+      admin_flag, create_time, last_edit_time,
+      enable_status)
+    values (#{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP},
+      #{gender,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{profileImg,jdbcType=VARCHAR}, #{customerFlag,jdbcType=INTEGER}, #{shopOwnerFlag,jdbcType=INTEGER},
+      #{adminFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP},
+      #{enableStatus,jdbcType=INTEGER})
+  </insert>
   <insert id="insertSelective" parameterType="cn.shop.pojo.PersonInfo">
     insert into tb_person_info
     <trim prefix="(" suffix=")" suffixOverrides=",">

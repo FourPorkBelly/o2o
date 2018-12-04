@@ -102,7 +102,7 @@ public class WeiXinController {
 						auth = new WechatAuth();
 						auth.setOpenId(openId);
 						auth.setPersonInfo(personInfo);
-						wechatAuthService.register(auth);
+						wechatAuthService.addWechatAuth(auth);
 					}
 				} catch (Exception e) {
 					log.debug("exception:" + e.getMessage());
