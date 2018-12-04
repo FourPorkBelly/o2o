@@ -11,7 +11,6 @@
 
     <!-- 扫描包加载Service实现类 -->
     <context:component-scan base-package="cn.shop.*.service"></context:component-scan>
-
     <!-- 事务管理器 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

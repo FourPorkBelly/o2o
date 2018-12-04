@@ -169,8 +169,6 @@ public class ShopController {
         PersonInfo user = new PersonInfo();
         Shop shop = new Shop();
         PersonInfo owner = new PersonInfo();
-        owner.setUserId(8);
-        owner.setName("李翔");
         //从session中获取用户信息
         owner = (PersonInfo) session.getAttribute("user");
         //判断用户信息

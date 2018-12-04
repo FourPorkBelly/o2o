@@ -52,15 +52,16 @@ public class WeiXinUserUtil {
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
 				+ "&grant_type=authorization_code&connect_redirect=1";
-		String urlaccess_token = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appId+"&secret="+appsecret+"&code="+code;
+		//String urlaccess_token = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appId+"&secret="+appsecret+"&code="+code;
 		System.out.println("URL:"+url);
-		System.out.println("urlaccess_token:"+urlaccess_token);
-		JSONObject jsonObjectaccess_token = WeixinUtil.httpsRequest(urlaccess_token, "GET", null);
+		//System.out.println("urlaccess_token:"+urlaccess_token);
+		//JSONObject jsonObjectaccess_token = WeixinUtil.httpsRequest(urlaccess_token, "GET", null);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
 		//相应URL发送请求获取token json字符串
-		String accessToken = jsonObjectaccess_token.getString("access_token");
-		System.out.println("accessToken:"+accessToken);
+		//String accessToken = jsonObjectaccess_token.getString("access_token");
+        String accessToken = jsonObject.getString("access_token");
+                System.out.println("accessToken:"+accessToken);
 		if (null == accessToken) {
 			log.debug("获取用户accessToken失败。");
 			return null;
@@ -76,9 +77,9 @@ public class WeiXinUserUtil {
 	}
 
 	public static WeiXinUser getUserInfo(String accessToken, String openId) {
-		/*String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
-				+ accessToken + "&openid=" + openId + "&lang=zh_CN";*/
-		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId;
+		String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
+				+ accessToken + "&openid=" + openId + "&lang=zh_CN";
+		//String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId;
 		System.out.println("url:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		System.out.println("getUserInfo jsonObject:"+jsonObject);
