@@ -92,12 +92,11 @@ public class ProductController {
     private Map<String, Object> getProductCategoryListByShopId(
             HttpServletRequest request, Integer shopId) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
-//        从session中得到店铺信息
-//        Shop currentShop = (Shop) request.getSession().getAttribute(
-//                "currentShop");
-//        测试的值
-        Shop currentShop = new Shop();
-        currentShop.setShopId(20);
+        //从session中得到店铺信息
+        Shop currentShop = (Shop) request.getSession().getAttribute(
+                "currentShop");
+
+
 //        如果店铺不为空并且店铺ID部位空，查询该店铺的商铺类别
         if ((currentShop != null) && (currentShop.getShopId() != null)) {
             List<ProductCategory> productCategoryList = productCategoryService
@@ -121,7 +120,8 @@ public class ProductController {
      */
     @RequestMapping(value = "/modifyproduct",method = RequestMethod.POST)
     @ResponseBody
-    private Map<String, Object> addProduct(Product product,String imgAddr) {
+    private Map<String, Object> addProduct(Product product,String imgAddrs) {
+        System.out.println("imgAddrs:"+imgAddrs);
         Map<String, Object> modelMap = new HashMap<String, Object>();
 //        判断验证码是否输入正确
         if (!CodeUtil.checkVerifyCode(request)) {
@@ -141,7 +141,7 @@ public class ProductController {
 //               默认设置商品上架
                 product.setEnableStatus(1);
 //                将图片地址插入product_img表（详情图）
-                ProductExecution pe=productService.addProduct(product,imgAddr);
+                ProductExecution pe=productService.addProduct(product,imgAddrs);
                 if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
                     modelMap.put("success", true);
                     modelMap.put("errMsg", "添加成功");
@@ -203,13 +203,14 @@ public class ProductController {
     }
     @ResponseBody
     @RequestMapping(value="/updateProduct")
-    public Map<String, Object> modifyProduct(Product product,String imgArr){
+    public Map<String, Object> modifyProduct(Product product,String imgAddrs){
+        System.out.println("imgAddrs:"+imgAddrs);
         System.out.println(product);
         Map<String, Object> modelMap = new HashMap<String, Object>();
         if (product != null) {
             try {
 
-                Product rs = productService.modifyProduct(product,imgArr);
+                Product rs = productService.updateProduct(product,imgAddrs);
 
                 System.out.println("修改商品——————————————————————————————————————————————-");
                 if (rs!=null) {
@@ -220,6 +221,7 @@ public class ProductController {
                     modelMap.put("errMsg", "修改失败");
                 }
             } catch (RuntimeException e) {
+                e.printStackTrace();
                 modelMap.put("success", false);
                 modelMap.put("errMsg", e.toString());
                 return modelMap;
