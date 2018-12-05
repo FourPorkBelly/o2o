@@ -22,6 +22,6 @@ public interface WechatAuthService {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	WechatAuthExecution register(WechatAuth wechatAuth) throws RuntimeException;
+	WechatAuthExecution addWechatAuth(WechatAuth wechatAuth) throws RuntimeException;
 
 }

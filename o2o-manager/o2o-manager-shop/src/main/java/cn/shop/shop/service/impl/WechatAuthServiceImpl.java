@@ -30,7 +30,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 	private PersonInfoMapper personInfoMapper;
 
 	/**
-	 * 通过openid获取信息
+	 * 通过openid获取微信账号信息
 	 * @param openId
 	 * @return
 	 */
@@ -46,20 +46,22 @@ public class WechatAuthServiceImpl implements WechatAuthService {
             List<WechatAuth> wechatAuthList = wechatAuthMapper.selectByExample(example);
             wechatAuth = wechatAuthList.get(0);
         }catch (Exception e){
-            e.printStackTrace();
+			System.out.println("该用户不存在");
         }
+		System.out.println("return wechatAuth");
         return wechatAuth;
 	}
 
     /**
-     * 添加用户信息
+     * 添加微信账号信息
      * @param wechatAuth
      * @return
      * @throws RuntimeException
      */
 	@Override
 	@Transactional
-	public WechatAuthExecution register(WechatAuth wechatAuth) throws RuntimeException {
+	public WechatAuthExecution addWechatAuth(WechatAuth wechatAuth) throws RuntimeException {
+		System.out.println("wechatAuth:"+wechatAuth);
 	    //判断信息是否为空
 		if (wechatAuth == null || wechatAuth.getOpenId() == null) {
 			return new WechatAuthExecution(WechatAuthStateEnum.NULL_AUTH_INFO);
@@ -87,7 +89,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 					PersonInfo personInfo = wechatAuth.getPersonInfo();
 					//添加用户信息
 					int effectedNum = personInfoMapper
-							.insert(personInfo);
+							.insertUserId(personInfo);
 					wechatAuth.setUserId(personInfo.getUserId());
 					if (effectedNum <= 0) {
 						throw new RuntimeException("添加用户信息失败");
@@ -114,5 +116,4 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 					+ e.getMessage());
 		}
 	}
-
 }

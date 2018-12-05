@@ -64,14 +64,12 @@ public class WeiXinLoginController {
 	@RequestMapping(value = "/logincheck", method = { RequestMethod.GET })
 	public String doGet(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("weixin login get...");
-		System.out.println("微信登录授权方法被调用");
 		//获取微信公众号传输过来的code，通过code课获取access_token，进而获取用户信息
 		String code = request.getParameter("code");
-		System.out.println("code:"+code);
 		//这个state可以用来传我们自定义的消息，方便程序调用。
 		String roleType = request.getParameter("state");
-		System.out.println("state:"+roleType);
 		log.debug("weixin login code:" + code);
+		//微信账户信息
 		WechatAuth auth = null;
 		WeiXinUser user = null;
 		String openId = null;
@@ -88,7 +86,9 @@ public class WeiXinLoginController {
 				//通过access_toKen和openId获取用户昵称等信息
 				user = WeiXinUserUtil.getUserInfo(accessToken, openId);
 				log.debug("weixin login user:" + user.toString());
+				//将openID存入session
 				request.getSession().setAttribute("openId", openId);
+				//从数据库获取微信账户信息
 				auth = WechatAuthService.getWechatAuthByOpenId(openId);
 			} catch (IOException e) {
 				log.error("error in getUserAccessToken or getUserInfo or findByOpenId: "
@@ -97,17 +97,21 @@ public class WeiXinLoginController {
 			}
 		}
 		log.debug("weixin login success.");
+		System.out.println("weixin login success.");
 		log.debug("login role_type:" + roleType);
-        System.out.println(user);
-		/*if (FRONTEND.equals(roleType)) {
+		System.out.println("login role_type:" + roleType);
+		//前面获取到openID后，可以通过他去数据库判断该微信号是否存在
+		//如果不存在则进行创建，存在直接登录
+		if (FRONTEND.equals(roleType)) {
+			//获取用户信息
 			PersonInfo personInfo = WeiXinUserUtil
 					.getPersonInfoFromRequest(user);
+			//判断是否为空
 			if (auth == null) {
-				personInfo.setCustomerFlag(1);
 				auth = new WechatAuth();
 				auth.setOpenId(openId);
 				auth.setPersonInfo(personInfo);
-				WechatAuthExecution we = WechatAuthService.register(auth);
+				WechatAuthExecution we = WechatAuthService.addWechatAuth(auth);
 				if (we.getState() != WechatAuthStateEnum.SUCCESS.getState()) {
 					return null;
 				}
@@ -116,6 +120,8 @@ public class WeiXinLoginController {
 			request.getSession().setAttribute("user", personInfo);
 			return "frontend/index";
 		}
+
+
 		if (SHOPEND.equals(roleType)) {
 			PersonInfo personInfo = null;
 			WechatAuthExecution we = null;
@@ -125,7 +131,7 @@ public class WeiXinLoginController {
 				personInfo = WeiXinUserUtil.getPersonInfoFromRequest(user);
 				personInfo.setShopOwnerFlag(1);
 				auth.setPersonInfo(personInfo);
-				we = WechatAuthService.register(auth);
+				we = WechatAuthService.addWechatAuth(auth);
 				if (we.getState() != WechatAuthStateEnum.SUCCESS.getState()) {
 					return null;
 				}
@@ -141,7 +147,7 @@ public class WeiXinLoginController {
 				request.getSession().setAttribute("shopList", se.getShopList());
 				return "shop/shoplist";
 			}
-		}*/
+		}
 		return null;
 	}
 }

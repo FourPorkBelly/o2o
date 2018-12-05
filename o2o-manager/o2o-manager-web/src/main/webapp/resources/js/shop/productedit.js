@@ -35,8 +35,19 @@ $(function() {
 								$('#product-desc').val(product.productDesc);
 								$('#priority').val(product.priority);
 								$('#normal-price').val(product.normalPrice);
-								$('#promotion-price').val(
-										product.promotionPrice);
+								$('#promotion-price').val(product.promotionPrice);
+
+								//显示商品图片
+								//缩略图
+								$("#imgAddr").attr("src",product.imgAddr);
+								$("#imgAddr").show();
+								$("#imgsrc0").attr("src",product.productImgs[0].imgAddr);
+                                $("#imgsrc0").show();
+								//详情图片
+								for (var i=1;i<product.productImgs.length;i++){
+                                    $('#detail-img').append('<img id="imgsrc'+imgindex+'" src='+product.productImgs[i].imgAddr+' width="60px" height="60px"><br><input type="file" class="detail-img" name="uploadFile" id="updateimg'+(imgindex)+'" indexx='+imgindex+' >');
+                                    imgindex++;
+								}
 								//获取原本的商品类别，店铺所有商品类别
 								var optionHtml = '';
 								var optionArr = data.productCategoryList;
