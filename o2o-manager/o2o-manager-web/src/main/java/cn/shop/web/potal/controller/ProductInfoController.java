@@ -124,28 +124,30 @@ public class ProductInfoController {
      */
     @RequestMapping(value = "/purchaseproduct",method = RequestMethod.POST)
     @ResponseBody
-    public  Map<String, Object> purchaseproduct(@Param("productId") Integer productId){
+    public  Map<String, Object> purchaseproduct(@Param("productId") Integer productId,HttpServletRequest request){
         Map<String, Object> map = new HashMap<String, Object>();
         //从Session中获取用户
+        PersonInfo user = (PersonInfo) request.getSession()
+                .getAttribute("user");
         //查询此商品的积分
         Product product=productPotalService.selectByPrimaryKey(productId);
         //查询店铺
         Shop shop=shopService.getByShopId(product.getShopId());
-        //查询改用户在此店铺是否有积分
+        //创建一个用户积分记录
         UserShopMap userShopMap=null;
         //创建一个用户消费记录
         UserProductMap userProductMap=new UserProductMap();
-        userProductMap.setUserId(11);
+        userProductMap.setUserId(user.getUserId());
         userProductMap.setProductId(product.getProductId());
         userProductMap.setShopId(shop.getShopId());
-        userProductMap.setUserName("音策");
+        userProductMap.setUserName(user.getName());
         userProductMap.setProductName(product.getProductName());
         userProductMap.setPoint(product.getPoint());
         userProductMap.setCreateTime(new Date());
-        //查询此用户在此店铺是否有积分
-        if(userShopMapPotalService.selectByExample(11,shop.getShopId(),null,null).size()>0){
-            //赋值
-            userShopMap=userShopMapPotalService.selectByExample(11,shop.getShopId(),null,null).get(0);
+        //查询此用户在此店铺是否有积分 用户id 店铺id null
+        if(userShopMapPotalService.selectByExample(user.getUserId(),shop.getShopId(),null,null).size()>0){
+            //赋值 用户id 店铺id null
+            userShopMap=userShopMapPotalService.selectByExample(user.getUserId(),shop.getShopId(),null,null).get(0);
             //原因积分加上商品积分
             userShopMap.setPoint(userShopMap.getPoint()+product.getPoint());
             //修改在以有的用户上加积分
@@ -156,18 +158,18 @@ public class ProductInfoController {
                 }else{
                     map.put("success",false);
                 }
-
             }else{
                 map.put("success",false);
             }
         }else{
+            //给用户积分赋值
             userShopMap=new UserShopMap();
             userShopMap.setPoint(product.getPoint());
             userShopMap.setCreateTime(new Date());
             userShopMap.setShopName(shop.getShopName());
             userShopMap.setShopId(shop.getShopId());
-            userShopMap.setUserId(11);
-            userShopMap.setUserName("音策");
+            userShopMap.setUserId(user.getUserId());
+            userShopMap.setUserName(user.getName());
             //新增积分
             if(userShopMapPotalService.insertSelective(userShopMap)>0){
                 //新增消费记录
