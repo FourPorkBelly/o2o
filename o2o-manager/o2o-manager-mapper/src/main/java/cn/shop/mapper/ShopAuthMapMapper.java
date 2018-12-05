@@ -18,7 +18,11 @@ public interface ShopAuthMapMapper {
 
     List<ShopAuthMap> selectByExample(ShopAuthMapExample example);
 
+    List<ShopAuthMap> selectByExampleWithPersonInfoShop(ShopAuthMapExample example);
+
     ShopAuthMap selectByPrimaryKey(Integer shopAuthId);
+
+    ShopAuthMap selectByPrimaryKeyWithPersonInfoShop(Integer shopAuthId);
 
     int updateByExampleSelective(@Param("record") ShopAuthMap record, @Param("example") ShopAuthMapExample example);
 

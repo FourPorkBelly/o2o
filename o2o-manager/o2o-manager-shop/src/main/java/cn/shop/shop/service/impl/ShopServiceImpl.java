@@ -98,10 +98,12 @@ public class ShopServiceImpl implements ShopService {
             criteria.andOwnerIdEqualTo(shop.getOwnerId());
         }
         ShopExecution shopExecution = new ShopExecution();
+        //传入分页参数
         PageHelper.startPage(pageIndex,pageSize);
 
         List<Shop> list = shopMapper.selectByExampleWidthAreaPersonInfoShopCategory(example);
 
+        //获取分页后的数据
         PageInfo pageInfo = new PageInfo(list);
         if (list!=null&&list.size()>0) {
             shopExecution.setShopList(list);
@@ -111,5 +113,17 @@ public class ShopServiceImpl implements ShopService {
         }
 
         return shopExecution;
+    }
+    /**
+     * 根据employeeId查询商铺信息
+     * @param employeeId
+     * @return
+     */
+    @Override
+    public ShopExecution getByEmployeeId(Integer employeeId) {
+        List<Shop> shopList = shopMapper.selectByEmployeeId(employeeId);
+        ShopExecution se = new ShopExecution();
+        se.setShopList(shopList);
+        return se;
     }
 }

@@ -17,6 +17,9 @@ public interface ShopMapper {
     int insertSelective(Shop record);
 
     List<Shop> selectByExample(ShopExample example);
+
+    List<Shop> selectByEmployeeId(@Param("employeeId") Integer employeeId);
+
     List<Shop> selectByExampleWidthAreaPersonInfoShopCategory(ShopExample example);
 
     Shop selectByPrimaryKey(Integer shopId);

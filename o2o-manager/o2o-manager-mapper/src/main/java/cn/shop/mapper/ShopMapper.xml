@@ -20,6 +20,11 @@
     <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
     <result column="advice" jdbcType="VARCHAR" property="advice" />
   </resultMap>
+
+
+
+
+
   <!-- 查询店铺所有的信息 -->
 
   <resultMap id="BaseResultMapWidthAreaPersonInfoShopCategory" type="cn.shop.pojo.Shop">
@@ -52,6 +57,17 @@
     <association property="shopCategory" column="shop_category_id" javaType="cn.shop.pojo.ShopCategory">
       <id column="shop_category_idsc" property="shopCategoryId"></id>
       <result column="shop_category_namesc" property="shopCategoryName"></result>
+    </association>
+    <association property="shopAuthMap" column="shop_id" javaType="cn.shop.pojo.ShopAuthMap">
+      <id column="shop_auth_id" property="shopAuthId" />
+      <result column="employee_id" property="employeeId" />
+      <result column="shop_id" property="shopId" />
+      <result column="name" property="name" />
+      <result column="title" property="title" />
+      <result column="title_flag" property="titleFlag" />
+      <result column="create_time" property="createTime" />
+      <result column="last_edit_time" property="lastEditTime" />
+      <result column="enable_status" property="enableStatus" />
     </association>
   </resultMap>
 
@@ -145,6 +161,35 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+  <!-- 目的：为dao接口方法提供sql语句配置 -->
+  <select id="selectByEmployeeId" resultMap="BaseResultMapWidthAreaPersonInfoShopCategory"
+          parameterType="java.lang.Integer">
+    <!-- 具体的sql -->
+    SELECT
+    s.shop_id,
+    s.shop_name,
+    s.shop_desc,
+    s.phone,
+    s.shop_img,
+    s.longitude,
+    s.latitude,
+    s.priority,
+    s.create_time,
+    s.last_edit_time,
+    s.enable_status,
+    s.advice,
+    p.employee_id,
+    p.name
+    FROM
+    tb_shop s
+    LEFT JOIN
+    tb_shop_auth_map
+    p ON s.shop_id =
+    p.shop_id
+    WHERE
+    p.employee_id =
+    #{employeeId}
   </select>
 <!-- 根据条件查询 -->
   <select id="selectByExampleWidthAreaPersonInfoShopCategory" parameterType="cn.shop.pojo.ShopExample" resultMap="BaseResultMapWidthAreaPersonInfoShopCategory">

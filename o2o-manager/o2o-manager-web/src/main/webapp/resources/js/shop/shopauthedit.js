@@ -1,15 +1,13 @@
 $(function() {
-	var shopAuthId = getQueryString('shopAuthId');
-	shopAuthId = 1;
-	var infoUrl = '/myo2o/shop/getshopauthmapbyid?shopAuthId=' + shopAuthId;
+	var shopAuthId = getQueryString('shopauthId');
+	var infoUrl = '/shop/getshopauthmapbyid?shopAuthId=' + shopAuthId;
 
-	var shopAuthPostUrl = '/myo2o/shop/modifyshopauthmap';
-
+	var shopAuthPostUrl = '/shop/modifyshopauthmap';
 	if (shopAuthId) {
 		getInfo(shopAuthId);
 	} else {
-		$.toast('用户不存在！');
-		window.location.href = '/myo2o/shop/shopmanage';
+		alert('用户不存在！');
+		window.location.href = '/shop/shopmanage';
 	}
 
 	function getInfo(id) {

@@ -18,8 +18,7 @@
 	<header class="bar bar-nav">
 		<h1 class="title">商品编辑</h1>
 	</header>
-	<form action="" method="POST" id="productForm" enctype="multipart/form-data>
-        <!--"-->
+	<form action="" method="POST" id="productForm" enctype="multipart/form-data">
 		<div class="content">
 			<div class="list-block">
 				<ul>
@@ -31,9 +30,8 @@
 							<div class="item-inner">
 								<div class="item-title label">商品名称</div>
 								<div class="item-input">
-									<!--<input type="hidden" id="productId" name="productId">-->
+									<input type="hidden" id="productId" name="productId">
 									<input type="text" name="productName" id="product-name" placeholder="商品名称">
-                                    <input type="hidden" name="enableStatus" value="1">
 								</div>
 							</div>
 						</div>
@@ -99,9 +97,9 @@
 							<div class="item-inner">
 								<div class="item-title label">缩略图</div>
 								<div class="item-input">
+									<img src="" style="width: 60px;height: 60px" id="imgAddr" hidden><br>
 									<input type="file" id="small-img" class="updateimg" name="uploadFile">
-									<input type="hidden" name="imgAddr" id="imgAddr">
-                                    <img src="" hidden id="slimg" name="imgAddrs">
+									<input type="hidden" name="imgAddr" id="shopImg">
 								</div>
 							</div>
 						</div>
@@ -114,8 +112,9 @@
 							<div class="item-inner detail-img-div">
 								<div class="item-title label">详情图片</div>
 								<div class="item-input" id="detail-img">
-									<input type="file" class="detail-img" id="updateimg0" name="uploadFile">
-									<input type="hidden" name="imgAddrs" id="imgAddrs">
+									<input type="hidden" name="imgAddrs" id="shopImgs">
+									<img id="imgsrc0" src="" width="60px" height="60px" hidden><br/>
+									<input type="file" class="detail-img" id="updateimg0" name="uploadFile" indexx="0">
 
 									<!-- <input type="file" class="detail-img" id="detail-img-1">
                                     <input type="file" class="detail-img" id="detail-img-2"> -->
@@ -180,9 +179,9 @@
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 	<script type='text/javascript'
 		src='../resources/js/common/commonutil.js' charset='utf-8'></script>
-	<script type="text/javascript" src="../resources/js/jquery.min.js" charset='utf-8'></script>
-	<script type="text/javascript" src="../resources/js/ajaxfileupload.js" charset='utf-8'></script>
 	<script type='text/javascript'
-	src='../resources/js/shop/productedit.js' charset='utf-8'></script>
+			src='../resources/js/shop/productedit.js' charset='utf-8'></script>
+	<script type="text/javascript" src="../resources/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../resources/js/ajaxfileupload.js"></script>
 </body>
 </html>

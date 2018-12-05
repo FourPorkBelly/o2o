@@ -52,4 +52,5 @@ public class Shop {
     //店铺类型
     private ShopCategory shopCategory;
 
+    private ShopAuthMap shopAuthMap;
 }

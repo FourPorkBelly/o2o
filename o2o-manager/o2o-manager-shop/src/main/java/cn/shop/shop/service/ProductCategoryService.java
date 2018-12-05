@@ -18,9 +18,17 @@ public interface ProductCategoryService {
     List<ProductCategory> getProductCategoryList(Integer shopId);
 
     /**
-     * 批量添加
+     * 批量添加商品类别信息
      * @param productCategoryList
      * @return
      */
     ProductCategoryExecution addProductCategoryList(List<ProductCategory> productCategoryList);
+
+    /**
+     * 删除商品类别信息
+     * @param shopid
+     * @param productCategoryId
+     * @return
+     */
+    ProductCategoryExecution deleteProductCategory(Integer shopid,Integer productCategoryId);
 }

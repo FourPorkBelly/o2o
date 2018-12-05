@@ -9,13 +9,13 @@ import cn.shop.pojo.ProductExample;
 import cn.shop.pojo.ProductImg;
 import cn.shop.pojo.ProductImgExample;
 import cn.shop.shop.service.ProductService;
-import cn.shop.utlis.baidu.Point;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +30,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductImgMapper productImgMapper;
 
-
     @Transactional
     protected int insertProject(Product product){
         int effectedNum = productMapper.insertSelective(product);
@@ -44,11 +43,13 @@ public class ProductServiceImpl implements ProductService {
     public ProductExecution queryProduct(Product productCondition) {
         ProductExample example = new ProductExample();
         ProductExample.Criteria criteria = example.createCriteria();
+        //判断shopid是否为空
         if (productCondition.getShopId()!=null){
             criteria.andShopIdEqualTo(productCondition.getShopId());
         }
+        //分页
         PageHelper.startPage(1, 999);
-
+        //执行查询
         List<Product> productList = productMapper.selectByExample(example);
 
         ProductExecution pe = new ProductExecution();
@@ -101,9 +102,20 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product getProductById(int productId) {
-        return productMapper.selectByPrimaryKey(productId);
+        //执行查询
+        Product product = productMapper.selectByPrimaryKey(productId);
+        //获得图片信息
+        List<ProductImg> productImgList = getProductImgByProductId(product.getProductId());
+        //图片信息存入商品信息中
+        product.setProductImgs(productImgList);
+        return product;
     }
 
+    /**
+     * 修改
+     * @param product
+     * @return
+     */
     @Transactional
     protected int updatePro(Product product){
         return productMapper.updateByPrimaryKeySelective(product);
@@ -124,14 +136,46 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
-    @Override
-    public Integer deleteProduct(Integer productId) {
-        Product product=productMapper.selectByPrimaryKey(productId);
-//        0下架  1商品可见
-        product.setEnableStatus(0);
-        Integer rs=productMapper.updateByPrimaryKeySelective(product);
-        return rs;
+    /**
+     * 通过商品id获取图片集合
+     * @param productId
+     * @return
+     */
+    private List<ProductImg> getProductImgByProductId(Integer productId){
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+        return productImgMapper.selectByExample(example);
     }
 
+    /**
+     * 批量添加图片
+     * @param imgs
+     * @return
+     */
+    private int addProductImgs(String imgs,Integer productId){
+        int count = 0;
+        //imgs拆分为数组
+        String[] img = imgs.split(",");
+        //创建ProductImg对象
+        ProductImg productImg = new ProductImg();
+        //创建时间
+        productImg.setCreateTime(new Date());
+        //商品id
+        productImg.setProductId(productId);
+        List<ProductImg> productImgs = new ArrayList<>();
+        //创建多个对象
+        for (String s : img) {
+            productImg.setImgAddr(s);
+            productImgs.add(productImg);
+        }
+        //执行插入
+        try {
+            count = productImgMapper.insertList(productImgs);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 }

@@ -11,8 +11,8 @@ $(function() {
                 shopauthList.map(function (item, index) {
                     tempHtml += ''
                          +      '<div class="row row-shopauth">'
-                         +          '<div class="col-40">'+ item.name +'</div>'
-                         +          '<div class="col-20">'+ item.title +'</div>'
+                         +          '<div class="col-40">'+ item.employee.name +'</div>'
+                         +          '<div class="col-20">'+ item.employee.title +'</div>'
                          +          '<div class="col-40">'
                          +              '<a href="#" class="edit" data-employee-id="'+ item.employeeId +'" data-auth-id="'+ item.shopAuthId +'" data-status="'+ item.enableStatus +'">编辑</a>'
                          +              '<a href="#" class="delete" data-employee-id="'+ item.employeeId +'" data-auth-id="'+ item.shopAuthId +'" data-status="'+ item.enableStatus +'">删除</a>'

@@ -11,6 +11,36 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="point" jdbcType="INTEGER" property="point" />
   </resultMap>
+<!-- 多表查询 -->
+  <resultMap id="BaseResultMapWhitPersonInfoProductShop" type="cn.shop.pojo.UserProductMap">
+    <id column="user_product_id" jdbcType="INTEGER" property="userProductId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="point" jdbcType="INTEGER" property="point" />
+    <association property="shop" column="shop_id" javaType="cn.shop.pojo.Shop">
+      <id column="shop_ids" property="shopId"></id>
+      <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
+      <result column="area_id" jdbcType="INTEGER" property="areaId" />
+      <result column="shop_category_id" jdbcType="INTEGER" property="shopCategoryId" />
+      <result column="parent_category_id" jdbcType="INTEGER" property="parentCategoryId" />
+      <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+      <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
+      <result column="shop_addr" jdbcType="VARCHAR" property="shopAddr" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="shop_img" jdbcType="VARCHAR" property="shopImg" />
+      <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+      <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+      <result column="priority" jdbcType="INTEGER" property="priority" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+      <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
+      <result column="advice" jdbcType="VARCHAR" property="advice" />
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -73,6 +103,14 @@
     user_product_id, user_id, product_id, shop_id, user_name, product_name, create_time, 
     point
   </sql>
+  <!-- 查询多个表 -->
+  <sql id="Base_Column_ListWhitPersonInfoProductShop">
+       up.user_product_id,up.user_id,up.product_id,
+       up.shop_id,up.user_name,up.product_name,up.create_time,up.point,
+       s.shop_id shop_ids,s.owner_id,s.area_id,s.shop_category_id,s.parent_category_id,
+       s.shop_name,s.shop_desc,s.shop_addr,s.phone,s.shop_img,s.longitude,s.latitude,
+       s.priority,s.create_time,s.last_edit_time,s.enable_status,s.advice
+  </sql>
   <select id="selectByExample" parameterType="cn.shop.pojo.UserProductMapExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -87,10 +125,34 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <!-- 查询多表 selectByExampleWhitPersonInfoProductShop -->
+  <select id="selectByExampleWhitPersonInfoProductShop" parameterType="cn.shop.pojo.UserProductMapExample" resultMap="BaseResultMapWhitPersonInfoProductShop">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_ListWhitPersonInfoProductShop" />
+    from tb_user_product_map up left join tb_shop s on up.shop_id = s.shop_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_user_product_map
+    where user_product_id = #{userProductId,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id查询多张表 -->
+  <select id="selectByPrimaryKeyWhitPersonInfoProductShop" parameterType="java.lang.Integer" resultMap="BaseResultMapWhitPersonInfoProductShop">
+    select
+    <include refid="Base_Column_ListWhitPersonInfoProductShop" />
+    from tb_user_product_map up left join tb_shop s on up.shop_id = s.shop_id
     where user_product_id = #{userProductId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

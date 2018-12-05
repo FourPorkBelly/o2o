@@ -14,6 +14,8 @@ public interface PersonInfoMapper {
 
     int insert(PersonInfo record);
 
+    int insertUserId(PersonInfo record);
+
     int insertSelective(PersonInfo record);
 
     List<PersonInfo> selectByExample(PersonInfoExample example);

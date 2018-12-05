@@ -2,10 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.shop.mapper.WechatAuthMapper">
   <resultMap id="BaseResultMap" type="cn.shop.pojo.WechatAuth">
+  <id column="wechat_auth_id" jdbcType="INTEGER" property="wechatAuthId" />
+  <result column="user_id" jdbcType="INTEGER" property="userId" />
+  <result column="open_id" jdbcType="VARCHAR" property="openId" />
+  <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+</resultMap>
+
+  <resultMap id="BaseResultMapWithPersonInfo" type="cn.shop.pojo.WechatAuth">
     <id column="wechat_auth_id" jdbcType="INTEGER" property="wechatAuthId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <association property="personInfo" column="user_id" javaType="cn.shop.pojo.PersonInfo">
+      <id column="userId" property="userId"></id>
+      <result column="name" property="name"></result>
+      <result column="birthday" property="birthday"></result>
+      <result column="gender" property="gender"></result>
+      <result column="phone" property="phone"></result>
+      <result column="email" property="email"></result>
+      <result column="profile_img" property="profileImg"></result>
+      <result column="customer_flag" property="customerFlag"></result>
+      <result column="shop_owner_flag" property="shopOwnerFlag"></result>
+      <result column="admin_flag" property="adminFlag"></result>
+      <result column="create_time" property="createTime"></result>
+      <result column="last_edit_time" property="lastEditTime"></result>
+      <result column="enable_status" property="enableStatus"></result>
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,6 +90,11 @@
   <sql id="Base_Column_List">
     wechat_auth_id, user_id, open_id, create_time
   </sql>
+  <sql id="Base_Column_ListWithPersonInfo">
+    w.wechat_auth_id, w.user_id, w.open_id, w.create_time,
+    p.user_id userId, name, p.birthday, p.gender, p.phone, p.email, p.profile_img, p.customer_flag, p.shop_owner_flag,
+    p.admin_flag, p.create_time, p.last_edit_time, p.enable_status
+  </sql>
   <select id="selectByExample" parameterType="cn.shop.pojo.WechatAuthExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -82,6 +109,23 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <!-- 条件查询微信和用户信息 -->
+  <select id="selectByExampleWithPersonInfo" parameterType="cn.shop.pojo.WechatAuthExample" resultMap="BaseResultMapWithPersonInfo">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_ListWithPersonInfo" />
+    from tb_wechat_auth w inner join tb_person_info p on w.user_id = p.user_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

@@ -18,7 +18,11 @@ public interface UserProductMapMapper {
 
     List<UserProductMap> selectByExample(UserProductMapExample example);
 
+    List<UserProductMap> selectByExampleWhitPersonInfoProductShop(UserProductMapExample example);
+
     UserProductMap selectByPrimaryKey(Integer userProductId);
+
+    UserProductMap selectByPrimaryKeyWhitPersonInfoProductShop(Integer userProductId);
 
     int updateByExampleSelective(@Param("record") UserProductMap record, @Param("example") UserProductMapExample example);
 

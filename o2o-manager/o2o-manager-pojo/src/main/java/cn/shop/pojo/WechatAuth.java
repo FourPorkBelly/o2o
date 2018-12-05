@@ -1,45 +1,26 @@
 package cn.shop.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Date;
 
+/**
+ * 微信登录实体类
+ */
+@Getter
+@Setter
+@ToString
 public class WechatAuth {
+    //主键id
     private Integer wechatAuthId;
-
+    //用户id
     private Integer userId;
-
+    //微信获取用户信息的凭证，对于公众号具有唯一性
     private String openId;
-
+    //创建时间
     private Date createTime;
-
-    public Integer getWechatAuthId() {
-        return wechatAuthId;
-    }
-
-    public void setWechatAuthId(Integer wechatAuthId) {
-        this.wechatAuthId = wechatAuthId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId == null ? null : openId.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+    //用户信息
+    private PersonInfo personInfo;
 }

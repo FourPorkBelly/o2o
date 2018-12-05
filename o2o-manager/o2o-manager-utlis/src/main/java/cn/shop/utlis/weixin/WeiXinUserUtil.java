@@ -11,11 +11,16 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.shop.pojo.PersonInfo;
-import cn.shop.utlis.DESUtils;
-import cn.shop.utlis.weixin.message.pojo.UserAccessToken;
+import org.springframework.beans.factory.annotation.Value;
 
 public class WeiXinUserUtil {
+
+	private static String WECHAT_APPID = "wx8c3a841c6efd97e9";
+	private static String WECHAT_APPSECRET = "d058758c0b2f23e2431435be1689b683";
+	/*@Value("${WECHAT_APPID}")*//*
+	private static String WECHAT_APPID = "wxf0be675cc70f0cc1";
+	*//*@Value("${WECHAT_APPSECRET}")*//*
+	private static String WECHAT_APPSECRET = "e5d0a582b49fb9a3f667e38d4b48abba";*/
 
 	private static Logger log = LoggerFactory.getLogger(MenuManager.class);
 
@@ -29,25 +34,37 @@ public class WeiXinUserUtil {
 
 	public static UserAccessToken getUserAccessToken(String code)
 			throws IOException {
+		/*
+		* https://api.weixin.qq.com/sns/oauth2/access_token?secret=e5d0a582b49fb9a3f667e38d4b48abba&appid=wxf0be675cc70f0cc1&grant_type=authorization_code&code=06159AFe1mvmNr0mlvFe1vTzFe159AFI
+		* */
 		Properties pro = new Properties();
 		pro.load(WeiXinUserUtil.class.getClassLoader().getResourceAsStream(
 				"weixin.properties"));
-		String appId = DESUtils
-				.getDecryptString(pro.getProperty("weixinappid"));
+		//测试号信息里的appId
+		/*String appId = DESUtils
+				.getDecryptString(pro.getProperty("weixinappid"));*/
+		String appId =WECHAT_APPID;
 		log.debug("appId:" + appId);
-		String appsecret = DESUtils.getDecryptString(pro
-				.getProperty("weixinappsecret"));
-		log.debug("secret:" + appsecret);
+		//测试号信息里的appsecret
+		/*String appsecret = DESUtils.getDecryptString(pro
+				.getProperty("weixinappsecret"));*/
+		String appsecret = WECHAT_APPSECRET;
+				log.debug("secret:" + appsecret);
+		//根据传入的code，拼接出访问微信定义好的接口的URL
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
 				+ appId + "&secret=" + appsecret + "&code=" + code
-				+ "&grant_type=authorization_code";
+				+ "&grant_type=authorization_code&connect_redirect=1";
+		System.out.println("URL:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		log.debug("userAccessToken:" + jsonObject.toString());
-		String accessToken = jsonObject.getString("access_token");
+		//相应URL发送请求获取token json字符串
+        String accessToken = jsonObject.getString("access_token");
+                System.out.println("accessToken:"+accessToken);
 		if (null == accessToken) {
 			log.debug("获取用户accessToken失败。");
 			return null;
 		}
+		System.out.println("getUserAccessToken jsonObject:"+jsonObject);
 		UserAccessToken token = new UserAccessToken();
 		token.setAccessToken(accessToken);
 		token.setExpiresIn(jsonObject.getString("expires_in"));
@@ -60,7 +77,10 @@ public class WeiXinUserUtil {
 	public static WeiXinUser getUserInfo(String accessToken, String openId) {
 		String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
 				+ accessToken + "&openid=" + openId + "&lang=zh_CN";
+		//String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId;
+		System.out.println("url:"+url);
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
+		System.out.println("getUserInfo jsonObject:"+jsonObject);
 		WeiXinUser user = new WeiXinUser();
 		String openid = jsonObject.getString("openid");
 		if (openid == null) {
@@ -81,7 +101,7 @@ public class WeiXinUserUtil {
 
 	public static boolean validAccessToken(String accessToken, String openId) {
 		String url = "https://api.weixin.qq.com/sns/auth?access_token="
-				+ accessToken + "&openid=" + openId;
+				+ accessToken + "&openid=" + openId+"&connect_redirect=1 ";
 		JSONObject jsonObject = WeixinUtil.httpsRequest(url, "GET", null);
 		int errcode = jsonObject.getInt("errcode");
 		if (errcode == 0) {

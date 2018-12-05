@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,8 @@ public class ProductController {
     private ProductCategoryService productCategoryService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private HttpSession session;
     /**
      * 根据商铺id查询商品（预分页）
      *
@@ -47,15 +50,34 @@ public class ProductController {
     @ResponseBody
     private Map<String, Object> listProductsByShop(@RequestParam(value = "pageIndex") Integer pageIndex, @RequestParam(value = "pageSize") Integer pageSize, @RequestParam(value = "shopId") Integer shopId) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
-        Product product = new Product();
-//        将shopid存入product对象
-        product.setShopId(shopId);
-        ProductExecution pe = productService.queryProduct(product);
-//        将list放入map中
-        modelMap.put("productList", pe.getProductList().getList());
-//        将商品数放入map
-        modelMap.put("count", pe.getCount());
-        modelMap.put("success", true);
+        //从session中获取shop信息
+        Shop currentShop = (Shop) session.getAttribute("currentShop");
+        if(currentShop!=null){
+            try {
+                Product product = new Product();
+                //将shopid存入product对象
+                product.setShopId(currentShop.getShopId());
+                ProductExecution pe = productService.queryProduct(product);
+                List<Product> productList = pe.getProductList().getList();
+                //如果查询到数据就把数据保存到session中
+                if(productList!=null&&productList.size()>0){
+                    session.setAttribute("productList",productList);
+                }
+                //将list放入map中
+                modelMap.put("productList", productList);
+                //将商品数放入map
+                modelMap.put("count", pe.getCount());
+                modelMap.put("success", true);
+            }catch (Exception e){
+                e.printStackTrace();
+                modelMap.put("success",false);
+                modelMap.put("errMsg","发生未知错误");
+            }
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errMsg","信息错误");
+        }
+
         return modelMap;
     }
 
@@ -73,22 +95,19 @@ public class ProductController {
 //        从session中得到店铺信息
 //        Shop currentShop = (Shop) request.getSession().getAttribute(
 //                "currentShop");
-
 //        测试的值
-        Shop currentShop=new Shop();
+        Shop currentShop = new Shop();
         currentShop.setShopId(20);
 //        如果店铺不为空并且店铺ID部位空，查询该店铺的商铺类别
         if ((currentShop != null) && (currentShop.getShopId() != null)) {
-            List<ProductCategory> productCategoryList=productCategoryService.getProductCategoryList(shopId);
-            for (ProductCategory p:productCategoryList){
-                System.out.println(p.getProductCategoryName());
-            }
+            List<ProductCategory> productCategoryList = productCategoryService
+                    .getProductCategoryList(currentShop.getShopId());
 //            将商品类别存入map
-            modelMap.put("productCategoryList",productCategoryList);
+            modelMap.put("productCategoryList", productCategoryList);
 //            返回查询成功，便于判断
-            modelMap.put("success",true);
+            modelMap.put("success", true);
         } else {
-            modelMap.put("success",false);
+            modelMap.put("success", false);
 //            返回错误信息
             modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
         }
@@ -121,16 +140,12 @@ public class ProductController {
                 product.setShopId(currentShop.getShopId());
 //               默认设置商品上架
                 product.setEnableStatus(1);
-//                将图片地址插入product_img表 pe对象（详情图）
+//                将图片地址插入product_img表（详情图）
                 ProductExecution pe=productService.addProduct(product,imgAddr);
-//                判断结果状态是否等于枚举(0操作成功)
                 if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
-//                    添加成功则返回成功
-
                     modelMap.put("success", true);
                     modelMap.put("errMsg", "添加成功");
                 } else {
-//                    添加失败返回false的success  并将错误信息
                     modelMap.put("success", false);
                     modelMap.put("errMsg", pe.getStateInfo());
                 }
@@ -154,35 +169,51 @@ public class ProductController {
      */
     @RequestMapping(value = "/getproductbyid", method = RequestMethod.GET)
     @ResponseBody
-    private Map<String, Object> getProductById(@RequestParam(value = "productId") int productId) {
+    private Map<String, Object> getProductById(@RequestParam(value = "productId",defaultValue = "0") Integer productId) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
-        if (productId > -1) {
-            Product product = productService.getProductById(productId);
-            List<ProductCategory> productCategoryList = productCategoryService
-                    .getProductCategoryList(product.getShopId());
+        //判断productId是否存在
+        if(isProductId(productId)){
+            //从session中获取shop
+            Shop currentShop = (Shop) session.getAttribute("currentShop");
+            if (currentShop!=null) {
+                //创建查询条件
+                Product product = productService.getProductById(productId);
+                System.out.println("product:"+product);
+                //获得目录信息
+                List<ProductCategory> productCategoryList = productCategoryService
+                        .getProductCategoryList(currentShop.getShopId());
+
 //            将商品类别存入map
-            modelMap.put("productCategoryList", productCategoryList);
+                modelMap.put("productCategoryList", productCategoryList);
 //            商品对象存入map
-            modelMap.put("product", product);
+                modelMap.put("product", product);
 //            返回查询成功，便于判断
-            modelMap.put("success", true);
-        } else {
+                modelMap.put("success", true);
+            } else {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
+            }
+        }else{
+            //如果不存在就返回错误信息
             modelMap.put("success", false);
-            modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
+            modelMap.put("errMsg", "信息错误");
         }
+
         return modelMap;
     }
-
     @ResponseBody
-    @RequestMapping(value="/updateProduct",method = RequestMethod.POST)
-    public Map<String, Object> modifyProduct(Product product,@RequestParam(value = "imgAddrs")String imgAddr){
+    @RequestMapping(value="/updateProduct")
+    public Map<String, Object> modifyProduct(Product product,String imgArr){
         System.out.println(product);
         Map<String, Object> modelMap = new HashMap<String, Object>();
         if (product != null) {
             try {
-                Product rs = productService.modifyProduct(product,imgAddr);
+
+                Product rs = productService.modifyProduct(product,imgArr);
+
+                System.out.println("修改商品——————————————————————————————————————————————-");
                 if (rs!=null) {
-//                    如果插入成功则返回成功
+                    modelMap.put("product",rs);
                     modelMap.put("success", true);
                 } else {
                     modelMap.put("success", false);
@@ -193,33 +224,24 @@ public class ProductController {
                 modelMap.put("errMsg", e.toString());
                 return modelMap;
             }
+
         } else {
             modelMap.put("success", false);
             modelMap.put("errMsg", "请输入商品信息");
         }
         return modelMap;
     }
-
-    /**
-     * 下架商品
-     * @param productId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/deleteproduct",method = RequestMethod.GET)
-    public Map<String, Object> deleteproduct(Integer productId){
-        Map<String, Object> modelMap = new HashMap<String, Object>();
-
-        if (productId!=0){
-//
-            int rs=productService.deleteProduct(productId);
-            if (rs>0){
-                modelMap.put("success", false);
-            }else {
-                modelMap.put("success", false);
-                modelMap.put("errMsg", "下架失败");
+    private boolean isProductId(Integer productId){
+        //从session中获取productList
+        List<Product> productList = (List<Product>) session.getAttribute("productList");
+        //如果找到就返回true
+        if(productList!=null&&productList.size()>0){
+            for (Product product : productList) {
+                if(product.getProductId()==productId){
+                    return true;
+                }
             }
         }
-        return modelMap;
+        return false;
     }
 }
