@@ -22,6 +22,11 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     public List<ShopCategory> getShopCategoryList(ShopCategory shopCategory) {
         ShopCategoryExample example = new ShopCategoryExample();
         ShopCategoryExample.Criteria criteria = example.createCriteria();
+        if(shopCategory.getParentId()>0){
+            criteria.andParentIdEqualTo(shopCategory.getParentId());
+        }else {
+            criteria.andParentIdIsNull();
+        }
         return shopCategoryMapper.selectByExample(example);
     }
 

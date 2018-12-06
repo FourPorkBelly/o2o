@@ -42,7 +42,7 @@ $(function() {
 								$("#imgAddr").attr("src",product.imgAddr);
 								$("#imgAddr").show();
 								$("#imgsrc0").attr("src",product.productImgs[0].imgAddr);
-								$("#productImgs0").var(product.productImgs[0].imgAddr);
+								$("#productImgs0").val(product.productImgs[0].imgAddr);
                                 $("#imgsrc0").show();
 								//详情图片
 								for (var i=1;i<product.productImgs.length;i++){
@@ -185,6 +185,7 @@ $(function() {
                         if(imgid=="small-img"){
                         	$("#imgAddr").show();
                             $("#imgAddr").attr("src",data.url);
+                            $("#shopImg").attr("src",data.url);
 						}else{
                             $("#productImgs"+$(img).attr("indexx")).val(data.url);
                             $("#imgsrc"+$(img).attr("indexx")).attr("src",data.url);

@@ -142,7 +142,7 @@ public class WeiXinLoginController {
 					.getUserId());
 			request.getSession().setAttribute("user", personInfo);
 			if (se.getShopList() == null || se.getShopList().size() <= 0) {
-				return "shop/registershop";
+				return "shop/shoplist";
 			} else {
 				request.getSession().setAttribute("shopList", se.getShopList());
 				return "shop/shoplist";

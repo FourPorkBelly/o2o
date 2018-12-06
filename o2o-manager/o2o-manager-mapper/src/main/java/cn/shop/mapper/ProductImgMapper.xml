@@ -113,11 +113,11 @@
     values
     <foreach collection="list" item="productImg" index="index" separator=",">
       (
-      #{productImg.img_addr},
-      #{productImg.img_desc},
+      #{productImg.imgAddr},
+      #{productImg.imgDesc},
       #{productImg.priority},
-      #{productImg.create_time},
-      #{productImg.product_id}
+      #{productImg.createTime},
+      #{productImg.productId}
       )
     </foreach>
   </insert>

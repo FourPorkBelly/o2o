@@ -121,7 +121,6 @@ public class ProductController {
     @RequestMapping(value = "/modifyproduct",method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> addProduct(Product product,String imgAddrs) {
-        System.out.println("imgAddrs:"+imgAddrs);
         Map<String, Object> modelMap = new HashMap<String, Object>();
 //        判断验证码是否输入正确
         if (!CodeUtil.checkVerifyCode(request)) {
@@ -130,10 +129,8 @@ public class ProductController {
             return modelMap;
         }
 //        得到shop 以及shopid
-//        Shop currentShop = (Shop) request.getSession().getAttribute(
-//                "currentShop");
-        Shop currentShop=new Shop();
-        currentShop.setShopId(20);
+        Shop currentShop = (Shop) request.getSession().getAttribute(
+                "currentShop");
 //        判断product是否传入值，并且shopid不为空
         if (product!=null&&currentShop.getShopId()!=null){
             try {
@@ -201,6 +198,13 @@ public class ProductController {
 
         return modelMap;
     }
+
+    /**
+     *  修改
+     * @param product
+     * @param imgAddrs
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value="/updateProduct")
     public Map<String, Object> modifyProduct(Product product,String imgAddrs){
@@ -233,6 +237,12 @@ public class ProductController {
         }
         return modelMap;
     }
+
+    /**
+     *判断session中是否存在该商品
+     * @param productId
+     * @return
+     */
     private boolean isProductId(Integer productId){
         //从session中获取productList
         List<Product> productList = (List<Product>) session.getAttribute("productList");
