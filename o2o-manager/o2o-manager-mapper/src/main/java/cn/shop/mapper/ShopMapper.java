@@ -36,4 +36,8 @@ public interface ShopMapper {
     //分页查询店铺,可输入的条件有：店铺名（模糊），店铺状态，店铺Id,店铺类别,区域ID
     List<Shop> queryShopList(@Param("shopCondition") Shop shopCondition,
                              @Param("rowIndex") Integer rowIndex, @Param("pageSize") Integer pageSize);
+//    查询所有店铺
+//    List<Shop> selectShop();
+//    店铺
+    List<Shop> selectShopbyEnableStatus(Shop shop);
 }

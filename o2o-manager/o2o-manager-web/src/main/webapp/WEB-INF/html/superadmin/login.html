@@ -1,50 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="ZH-cn">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/easyui/themes/icon.css">
-<script type="text/javascript"
-	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
-<script type="text/javascript"
-	src="../resources/js/superadmin/common/easyui/js/jquery.easyui.min.js"></script>
-<script type="text/javascript"
-	src="../resources/js/superadmin/common/easyui/js/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript"
-	src="../resources/js/shop/base/commonutil.js"></script>
-<link rel="stylesheet"
-	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
-<script type="text/javascript"
-	src="../resources/js/superadmin/common/errorhandle.js"></script>
-<script type="text/javascript" src="../resources/js/superadmin/login.js"></script>
-<title>登录页</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login</title>
+  <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css">
+  <link rel="stylesheet" href="../resources/src/css/login.css">
 </head>
+
 <body>
-	<div id="login" style="padding: 5px; width: 400px; height: 220px;">
-		<table onkeydown="if(event.keyCode==13){doLogin();}" id="loginTable">
-			<tr>
-				<td align="right"><b style="font: 12px">用户名：</b></td>
-				<td><input type="text" class="easyui-validatebox" id="userName"
-					style="width: 200px;" maxlength="20" required="true"></input></td>
-			</tr>
-			<tr>
-				<td align="right"><b style="font: 12px">密码：</b></td>
-				<td><input type="password" class="easyui-validatebox"
-					id="password" style="width: 200px;" maxlength="20" required="true"></input></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td id="login_msg" style="color: red; font: 12px">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><a href="#"
-					class="easyui-linkbutton" icon="icon-ok" onclick="doLogin();">确定</a>
-					<a href="#" class="easyui-linkbutton" icon="icon-redo"
-					onclick="doReset();">重置</a></td>
-			</tr>
-		</table>
-	</div>
+  <div class="kit-login">
+    <div class="kit-login-bg"></div>
+    <div class="kit-login-wapper">
+      <h2 class="kit-login-slogan">欢迎使用 <br> o2o 1.0后台管理员系统</h2>
+      <div class="kit-login-form">
+        <h4 class="kit-login-title">登录</h4>
+        <form class="layui-form"  method="post">
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <i class="layui-icon">&#xe612;</i>
+              <span class="kit-login-input">
+                <input type="text" name="userName" lay-verify="required" placeholder="管理员用户名" />
+              </span>
+            </div>
+            <div class="kit-login-col"></div>
+          </div>
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <i class="layui-icon">&#xe64c;</i>
+              <span class="kit-login-input">
+                <input type="password" name="password" lay-verify="required" placeholder="密码" />
+              </span>
+            </div>
+            <div class="kit-login-col"></div>
+          </div>
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <input type="checkbox" name="rememberMe" title="记住帐号" lay-skin="primary">
+            </div>
+          </div>
+          <div class="kit-login-row">
+            <button class="layui-btn kit-login-btn" type="button" lay-submit="submit" lay-filter="login_hash">登录</button>
+          </div>
+          <div class="kit-login-row" style="margin-bottom:0;">
+            <a href="javascript:;" style="color: rgb(153, 153, 153); text-decoration: none; font-size: 13px;" id="forgot">忘记密码</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../resources/plugins/polyfill.min.js"></script>
+  <script src="../resources/plugins/layui/layui.js"></script>
+  <script>
+    layui.use(['layer', 'form'], function() {
+      var form = layui.form,
+        $ = layui.jquery;
+
+      $('#forgot').on('click', function() {
+        layer.msg('请联系管理员.');
+      });
+      //监听提交
+      form.on('submit(login_hash)', function(data) {
+          $.ajax({
+              url:'/superadmin/loginAdmin',
+              method:'POST',
+              data:data.field,
+              dataType:'json',
+              success:function(res){
+                  if(res.msg=="yes"){
+                      // layer.alert(res.msg);
+                      location.href='index.html';
+                  }
+                  else if (res.msg=="n") {
+                      layer.alert("账号密码错误！");
+                  }
+              },
+              error:function (data) {
+                  layer.alert("账号密码错误");
+              }
+          })
+          // return false;
+      });
+    });
+  </script>
 </body>
+
 </html>

@@ -27,4 +27,11 @@ public interface LocalAuthMapper {
     int updateByPrimaryKeySelective(LocalAuth record);
 
     int updateByPrimaryKey(LocalAuth record);
+
+    /**
+     * 管理员登录
+     * @param localAuth
+     * @return
+     */
+    LocalAuth adminlogin(LocalAuth localAuth);
 }

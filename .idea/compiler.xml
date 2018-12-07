@@ -17,6 +17,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common-parent" target="1.8" />
+      <module name="o2o-CMS-service" target="1.8" />
+      <module name="o2o-CMS-web" target="1.8" />
       <module name="o2o-manager" target="1.8" />
       <module name="o2o-manager-CMS" target="1.8" />
       <module name="o2o-manager-mapper" target="1.8" />
@@ -26,6 +28,7 @@
       <module name="o2o-manager-utlis" target="1.8" />
       <module name="o2o-manager-web" target="1.8" />
       <module name="o2o-utils" target="1.8" />
+      <module name="o2oCMS" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
