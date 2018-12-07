@@ -264,4 +264,21 @@ public class ProductController {
         }
         return false;
     }
+
+    /**
+     * 下架
+     * @param productId
+     * @return
+     */
+    @RequestMapping("deleteproduct")
+    @ResponseBody
+    public Map<String,Object> deleteProduct(Integer productId){
+        Map<String,Object> map = new HashMap<>();
+        if(isProductId(productId)){
+
+        }else{
+
+        }
+        return map;
+    }
 }
