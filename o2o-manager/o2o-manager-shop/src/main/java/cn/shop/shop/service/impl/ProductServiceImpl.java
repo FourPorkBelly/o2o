@@ -30,7 +30,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductImgMapper productImgMapper;
 
-    @Transactional
     protected int insertProject(Product product){
         int effectedNum = productMapper.insertSelective(product);
         return effectedNum;
@@ -66,7 +65,6 @@ public class ProductServiceImpl implements ProductService {
      * @param
      * @return
      */
-    @Transactional
     @Override
     public ProductExecution addProduct(Product product,String imgAddrs) {
         if (product != null  && product.getShopId() != null) {
@@ -112,14 +110,29 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public Product updateProduct(Product product,String imgAddrs) {
-        ProductImgExample example = new ProductImgExample();
-        ProductImgExample.Criteria criteria = example.createCriteria();
-        criteria.andProductIdEqualTo(product.getProductId());
-
-
-        Product product1=productMapper.selectByPrimaryKey(product.getProductId());
-        return product1;
+    public ProductExecution updateProduct(Product product,String imgAddrs) {
+        ProductExecution execution = new ProductExecution();
+        //删除图片信息
+        deleteProductImg(product.getProductId());
+        //重新添加图片信息
+        int imgs = addProductImgs(imgAddrs,product.getProductId());
+        if(imgs>0){
+            //创建条件
+            ProductExample example = new ProductExample();
+            ProductExample.Criteria criteria = example.createCriteria();
+            //根据productId修改
+            criteria.andProductIdEqualTo(product.getProductId());
+            //执行修改
+            int count = productMapper.updateByExampleSelective(product,example);
+            if(count>0){
+                execution.setState(ProductStateEnum.SUCCESS.getState());
+            }else{
+                execution.setState(ProductStateEnum.INNER_ERROR.getState());
+            }
+        }else {
+            execution.setState(ProductStateEnum.INNER_ERROR.getState());
+        }
+        return execution;
     }
 
     /**
@@ -163,30 +176,18 @@ public class ProductServiceImpl implements ProductService {
         }
         return count;
     }
+
     /**
-     * 批量修改图片
-     * @param imgAddrs
+     * 删除图片信息
+     * @param productId
      * @return
      */
-    private int updateProductImgs(String imgAddrs){
+    private int deleteProductImg(Integer productId){
         int count = 0;
-        String[] imgaddr = imgAddrs.split(imgAddrs);
-        List<ProductImg> imgs = new ArrayList<>();
-        ProductImg productImg = new ProductImg();
-        productImg.setCreateTime(new Date());
-        for (String s : imgaddr) {
-            if(s==null||"".equals(s)){
-                break;
-            }
-            productImg.setImgAddr(s);
-            imgs.add(productImg);
-        }
-        //执行插入
-        try {
-            count = productImgMapper.insertList(imgs);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+        count = productImgMapper.deleteByExample(example);
         return count;
     }
 }

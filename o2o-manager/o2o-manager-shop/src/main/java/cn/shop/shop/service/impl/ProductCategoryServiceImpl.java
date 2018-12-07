@@ -20,7 +20,6 @@ import java.util.List;
  * @creation time 2018/11/20 - 8:48
  */
 @Service
-@Transactional
 public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Autowired
     ProductCategoryMapper productCategoryMapper;

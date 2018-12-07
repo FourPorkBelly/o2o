@@ -29,14 +29,21 @@ $(function() {
 						+ shop.shopCategory.shopCategoryName + '</option>';
 				var tempAreaHtml = '';
 				data.areaList.map(function(item, index) {
-					tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '">'
-							+ item.areaName + '</option>';
+				    if(item.areaId==shop.areaId){
+                        tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '" selected>'
+                            + item.areaName + '</option>';
+                    }else{
+                        tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '">'
+                            + item.areaName + '</option>';
+                    }
+
 				});
 				$('#shop-parent').html(shopCategory);
 				$('#shop-parent').attr('disabled','disabled');
 				$('#area').html(tempAreaHtml);
 				$('#area').attr('data-id',shop.areaId);
                 getCategoryId(shop.shopCategory.shopCategoryId);
+                $('#shop-category').attr('disabled','disabled');
 			}
 		});
 	}
@@ -73,7 +80,6 @@ $(function() {
                         + '">' + item.shopCategoryName + '</option>';
                 });
                 $('#shop-category').html(tempHtml);
-                $('#shop-category').removeAttr('disabled');
             }
         });
     }

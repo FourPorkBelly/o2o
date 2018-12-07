@@ -32,7 +32,7 @@
     <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
     <result column="shop_category_id" jdbcType="INTEGER" property="shopCategoryId" />
-    <result column="parent_category_id" jdbcType="INTEGER" property="parentCategoryId" />
+    <result column="parent_category_ids" jdbcType="INTEGER" property="parentCategoryId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
     <result column="shop_addr" jdbcType="VARCHAR" property="shopAddr" />
@@ -139,7 +139,7 @@
 
   <!-- 查询店铺的所有信息 -->
   <sql id="Base_Column_ListWidthAreaPersonInfoShopCategory">
-    s.shop_id, s.owner_id, s.area_id, s.shop_category_id, s.parent_category_id, s.shop_name, s.shop_desc,
+    s.shop_id, s.owner_id, s.area_id, s.shop_category_id, s.parent_category_id parent_category_ids, s.shop_name, s.shop_desc,
        s.shop_addr, s.phone, s.shop_img, s.longitude, s.latitude, s.priority, s.create_time, s.last_edit_time,
        s.enable_status, s.advice ,
        a.area_id area_ida , a.area_name area_namea,

@@ -2,8 +2,11 @@ package cn.shop.shop.service.impl;
 
 import cn.shop.dto.ShopExecution;
 import cn.shop.enums.ShopStateEnum;
+import cn.shop.mapper.ShopCategoryMapper;
 import cn.shop.mapper.ShopMapper;
 import cn.shop.pojo.Shop;
+import cn.shop.pojo.ShopCategory;
+import cn.shop.pojo.ShopCategoryExample;
 import cn.shop.pojo.ShopExample;
 import cn.shop.shop.service.ShopService;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +26,8 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopMapper shopMapper;
 
+    @Autowired
+    private ShopCategoryMapper shopCategoryMapper;
     /**
      * 添加店铺
      * @param shop
@@ -53,7 +58,18 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     public Shop getByShopId(Integer shopId) {
-        return shopMapper.selectByPrimaryKeyWidthAreaPersonInfoShopCategory(shopId);
+        //根据id查询商品
+        Shop shop = shopMapper.selectByPrimaryKeyWidthAreaPersonInfoShopCategory(shopId);
+        Integer parentId = shop.getParentCategoryId();
+        //查询商品类别
+        try {
+            ShopCategory shopCategory = shopCategoryMapper.selectByPrimaryKey(parentId);
+            //将查询结果放入商品中
+            shop.setShopCategory(shopCategory);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return shop;
     }
     /**
      * 更新店铺信息

@@ -121,6 +121,7 @@ public class ProductController {
     @RequestMapping(value = "/modifyproduct",method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> addProduct(Product product,String imgAddrs) {
+        System.out.println("product:"+product);
         Map<String, Object> modelMap = new HashMap<String, Object>();
 //        判断验证码是否输入正确
         if (!CodeUtil.checkVerifyCode(request)) {
@@ -173,13 +174,13 @@ public class ProductController {
             //从session中获取shop
             Shop currentShop = (Shop) session.getAttribute("currentShop");
             if (currentShop!=null) {
-                //创建查询条件
+                //执行查询
                 Product product = productService.getProductById(productId);
-                System.out.println("product:"+product);
                 //获得目录信息
                 List<ProductCategory> productCategoryList = productCategoryService
                         .getProductCategoryList(currentShop.getShopId());
-
+                //将查询出来的商品存入session
+                session.setAttribute("currentProduct",product);
 //            将商品类别存入map
                 modelMap.put("productCategoryList", productCategoryList);
 //            商品对象存入map
@@ -206,19 +207,26 @@ public class ProductController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value="/updateProduct")
-    public Map<String, Object> modifyProduct(Product product,String imgAddrs){
-        System.out.println("imgAddrs:"+imgAddrs);
-        System.out.println(product);
+    @RequestMapping(value="/updateProduct",method = RequestMethod.POST)
+    public Map<String, Object> updateProduct(Product product,String imgAddrs){
         Map<String, Object> modelMap = new HashMap<String, Object>();
+        //        判断验证码是否输入正确
+        if (!CodeUtil.checkVerifyCode(request)) {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "输入了错误的验证码");
+            return modelMap;
+        }
         if (product != null) {
             try {
-
-                Product rs = productService.updateProduct(product,imgAddrs);
+                //从session 中获取商品信息
+                Product currentProduct = (Product) session.getAttribute("currentProduct");
+                product.setProductId(currentProduct.getProductId());
+                product.setProductImgs(currentProduct.getProductImgs());
+                ProductExecution execution = productService.updateProduct(product, imgAddrs);
 
                 System.out.println("修改商品——————————————————————————————————————————————-");
-                if (rs!=null) {
-                    modelMap.put("product",rs);
+                if (execution.getState()==ProductStateEnum.SUCCESS.getState()) {
+                    modelMap.put("errMsg",ProductStateEnum.SUCCESS.getStateInfo());
                     modelMap.put("success", true);
                 } else {
                     modelMap.put("success", false);

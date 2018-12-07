@@ -64,7 +64,7 @@ $(function() {
 
 											var isSelect = optionSelected === item.productCategoryId ? 'selected'
 													: '';
-											optionHtml += '<option data-value="'
+											optionHtml += '<option value="'
 													+ item.productCategoryId
 													+ '"'
 													+ isSelect
@@ -81,6 +81,10 @@ $(function() {
 		$.getJSON(categoryUrl, function(data) {
 			if (data.success) {
 				var productCategoryList = data.productCategoryList;
+                if(productCategoryList.length<=0){
+                    alert("未添加商品类别，请添加。");
+                    window.location.href="productcategorymanage";
+                }
 				var optionHtml = '';
 				productCategoryList.map(function(item, index) {
 					optionHtml += '<option value="'
@@ -185,7 +189,7 @@ $(function() {
                         if(imgid=="small-img"){
                         	$("#imgAddr").show();
                             $("#imgAddr").attr("src",data.url);
-                            $("#shopImg").attr("src",data.url);
+                            $("#shopImg").val(data.url);
 						}else{
                             $("#productImgs"+$(img).attr("indexx")).val(data.url);
                             $("#imgsrc"+$(img).attr("indexx")).attr("src",data.url);

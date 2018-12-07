@@ -38,5 +38,5 @@ public interface ProductService {
      * @param product
      * @return
      */
-    Product updateProduct(Product product,String imgAddrs);
+    ProductExecution updateProduct(Product product,String imgAddrs);
 }
