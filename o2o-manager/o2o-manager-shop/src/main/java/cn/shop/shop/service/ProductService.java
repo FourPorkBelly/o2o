@@ -21,10 +21,10 @@ public interface ProductService {
     /**
      * 添加商品信息
      * @param product
-     * @param imgAddr
+     * @param
      * @return
      */
-    ProductExecution addProduct(Product product,String imgAddr);
+    ProductExecution addProduct(Product product,String imgAddrs);
 
     /**
      * 根据id获取商品信息
@@ -38,6 +38,5 @@ public interface ProductService {
      * @param product
      * @return
      */
-    Product modifyProduct(Product product,String imgArr);
-    Integer deleteProduct(Integer productId);
+    Product updateProduct(Product product,String imgAddrs);
 }

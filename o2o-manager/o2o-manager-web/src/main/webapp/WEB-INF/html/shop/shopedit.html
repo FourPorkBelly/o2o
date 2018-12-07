@@ -43,6 +43,20 @@
 							<div class="item-inner">
 								<div class="item-title label">商铺分类</div>
 								<div class="item-input">
+									<select id="shop-parent" name="parentCategoryId">
+									</select>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-media">
+								<i class="icon icon-form-email"></i>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">详细分类</div>
+								<div class="item-input">
 									<select id="shop-category" name="shopCategoryId">
 									</select>
 								</div>
@@ -97,7 +111,8 @@
 							<div class="item-inner">
 								<div class="item-title label">缩略图</div>
 								<div class="item-input">
-									<input type="file" id="uploadFileImg"  name="uploadFile" accept=".BMP,.PNG,.JPEG,.GIF,.jpg" ><br>
+									<input type="file" id="imgAddr"  name="uploadFile">
+									<br>
 									<img id="hximage" src="" width="50" height="50" hidden style="padding-top: 3px">
 									<input type="hidden" name="shopImg" value="" id="shopImg">
 								</div>

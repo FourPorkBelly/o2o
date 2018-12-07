@@ -44,7 +44,13 @@ public class CoreServiceUtil {
 
 			// 文本消息
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-				respContent = "您发送的是文本消息！";
+				respContent = "你好：\n" +
+						"想咨询北大青鸟学校或有任何疑问\n" +
+						"可以直接致电：\n" +
+						"0731-83994363（肖老师）\n" +
+						"或者咨询QQ：\n" +
+						"1975191887（24小时在线）\n";
+				/*respContent = "您发送的是文本消息！";*/
 			}
 			// 图片消息
 			else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
@@ -68,7 +74,14 @@ public class CoreServiceUtil {
 				String eventType = requestMap.get("Event");
 				// 订阅
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-					respContent = "谢谢您的关注！";
+					respContent = "/机智 你好，欢迎关注北大青鸟长沙新途\n" +
+							"热烈祝贺我校荣获2017北大青鸟：\n" +
+							"“优秀教学质量奖”\n" +
+							"“区域优良化管理奖”\n" +
+							"“中心激励奖”三项大奖\n" +
+							"\n" +
+							"我校Java、.Net、UI设计、大数据、Python云计算、全栈开发、电商网营专业等火热报名中......留下姓名+电话，即可获得免费试学名额！名额有限，先报先得哦~";
+					/*respContent = "谢谢您的关注！";*/
 				}
 				// 取消订阅
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
