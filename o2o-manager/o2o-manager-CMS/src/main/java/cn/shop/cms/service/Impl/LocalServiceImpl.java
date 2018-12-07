@@ -3,6 +3,7 @@ package cn.shop.cms.service.Impl;
 import cn.shop.cms.service.LocalService;
 import cn.shop.dto.PersonInfoExecution;
 import cn.shop.dto.ShopExecution;
+import cn.shop.enums.PersonInfoStateEnum;
 import cn.shop.enums.ShopStateEnum;
 import cn.shop.mapper.LocalAuthMapper;
 import cn.shop.mapper.PersonInfoMapper;
@@ -42,29 +43,47 @@ public class LocalServiceImpl implements LocalService {
     /**
      * 查询用户信息
      * @param personInfo
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
     @Override
-    public List<PersonInfo> queryPersonInfo(PersonInfo personInfo, Integer pageIndex, Integer pageSize) {//
-        PersonInfoExample example = new PersonInfoExample();
-        PersonInfoExample.Criteria criteria = example.createCriteria();
-        if (personInfo!=null){
-            if (personInfo.getName()!=null&&!personInfo.getName().equals("")){
-                criteria.andNameLike("%"+personInfo.getName()+"%");
-            }
-        }
+    public PersonInfoExecution queryPersonInfo(PersonInfo personInfo, int page, int limit) {
+//        PersonInfoExample example=new PersonInfoExample();
+//        PersonInfoExample.Criteria criteria= example.createCriteria();
+//        if (personInfo!=null) {
+//            if (personInfo.getName() != null){
+//                criteria.andNameLike(personInfo.getName());
+//            }
+//        }
         PersonInfoExecution personInfoExecution=new PersonInfoExecution();
-        PageHelper.startPage(pageIndex,pageSize);
-        List<PersonInfo> personInfoList=personInfoMapper.selectByExample(null);
-        PageInfo pageInfo = new PageInfo(personInfoList);
-        if (personInfoList!=null&&personInfoList.size()>0) {
-            personInfoExecution.setPersonInfoList(personInfoList);
-            personInfoExecution.setCount((int)pageInfo.getTotal());
+        PageHelper.startPage(page,limit);
+        List<PersonInfo> list=personInfoMapper.queryUserInfo(personInfo);
+        PageInfo pageInfo = new PageInfo(list);
+        if (list!=null&&list.size()>0) {
+            personInfoExecution.setPersonInfoList(list);
+            personInfoExecution.setCount((int)(pageInfo.getTotal()));
         }else {
-            personInfoExecution.setState(ShopStateEnum.INNER_ERROR.getState());
+            personInfoExecution.setState(PersonInfoStateEnum.INNER_ERROR.getState());
         }
-        return personInfoList;
+        return personInfoExecution;
+    }
+
+    /**
+     * 禁用用户
+     * @param personInfo
+     * @return
+     */
+    @Override
+    public int disableUser(PersonInfo personInfo) {
+
+        return personInfoMapper.updateByPrimaryKeySelective(personInfo);
+    }
+
+    @Override
+    public int getUserEnable(int userid) {
+        PersonInfo demo=personInfoMapper.selectByPrimaryKey(userid);
+        if (demo!=null){
+            return demo.getEnableStatus();
+        }
+        return 0;
     }
 }

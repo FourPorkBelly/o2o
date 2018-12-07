@@ -70,14 +70,16 @@
               data:data.field,
               dataType:'json',
               success:function(res){
-                  if(res.msg='y'){
-                      layer.alert("登录成功！");
+                  if(res.msg=="yes"){
+                      // layer.alert(res.msg);
                       location.href='index.html';
                   }
-                  else
-                      alert(res.msg);
+                  else if (res.msg=="n") {
+                      layer.alert("账号密码错误！");
+                  }
               },
               error:function (data) {
+                  layer.alert("账号密码错误");
               }
           })
           // return false;

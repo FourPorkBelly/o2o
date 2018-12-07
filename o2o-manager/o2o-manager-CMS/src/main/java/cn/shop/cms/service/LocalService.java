@@ -1,5 +1,6 @@
 package cn.shop.cms.service;
 
+import cn.shop.dto.PersonInfoExecution;
 import cn.shop.pojo.LocalAuth;
 import cn.shop.pojo.PersonInfo;
 
@@ -11,5 +12,8 @@ import java.util.List;
  */
 public interface LocalService {
     LocalAuth login(LocalAuth localAuth);
-    List<PersonInfo> queryPersonInfo(PersonInfo personInfo,Integer pageIndex,Integer pageSize);
+    PersonInfoExecution queryPersonInfo(PersonInfo personInfo, int page, int limit);
+    int disableUser(PersonInfo personInfo);
+
+    int getUserEnable(int userid);
 }

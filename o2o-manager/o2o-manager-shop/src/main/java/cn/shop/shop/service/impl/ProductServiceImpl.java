@@ -122,6 +122,7 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
+
     /**
      * 通过商品id获取图片集合
      * @param productId

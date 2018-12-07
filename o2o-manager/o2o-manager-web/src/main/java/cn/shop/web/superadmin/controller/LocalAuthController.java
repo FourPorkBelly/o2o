@@ -1,24 +1,20 @@
 package cn.shop.web.superadmin.controller;
 
 import cn.shop.cms.service.LocalService;
+import cn.shop.dto.PersonInfoExecution;
 import cn.shop.mapper.PersonInfoMapper;
 import cn.shop.pojo.LocalAuth;
 import cn.shop.pojo.PersonInfo;
-import cn.shop.pojo.PersonInfoExample;
-import cn.shop.pojo.Shop;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -49,13 +45,16 @@ public class LocalAuthController {
         Map<String,Object> map = new HashMap<>();
         if (localAuth!=null){
             LocalAuth user=localService.login(localAuth);
+
             if (user!=null){
+                System.out.println(user.getPassword()+user.getUserName());
                 System.out.println("成功");
                 request.getSession().setAttribute("user",user);
                 map.put("user",user);
-                map.put("msg","y");
+                map.put("msg","yes");
             }else {
-                map.put("msg","失败");
+                System.out.println("登录失败");
+                map.put("msg","n");
             }
         }
         return map;
@@ -71,17 +70,26 @@ public class LocalAuthController {
         Map<String,Object> map=new HashMap<>();
 //        从session得到登录的账号
         LocalAuth user=(LocalAuth)request.getSession().getAttribute("user");
-        String loginName=user.getUserName();
-//        得到用户对象
-        PersonInfo personInfo = personInfoMapper.selectByPrimaryKey(user.getUserId());
-        try {
+        String loginName=null;
+        if (user!=null){
+            loginName=user.getUserName();
+            //        得到用户对象
+            PersonInfo personInfo = personInfoMapper.selectByPrimaryKey(user.getUserId());
+            try {
 //            将账号名，用户头像放入map
-            map.put("userName",loginName);
-            map.put("img",personInfo.getProfileImg());
-        }catch (Exception e){
-            map.put("loginName","***");
-            e.printStackTrace();
+                map.put("msg","success");
+                map.put("userName",loginName);
+                map.put("img",personInfo.getProfileImg());
+            }catch (Exception e){
+                map.put("msg","n");
+                map.put("loginName","未登录");
+                e.printStackTrace();
+            }
+        }else {
+            map.put("msg","n");
+            map.put("msg","错误");
         }
+
         return map;
     }
 
@@ -94,28 +102,30 @@ public class LocalAuthController {
         request.getSession().removeAttribute("user");
         return "/superadmin/login";
     }
-    @RequestMapping("/queryPersonList")
+
+    /**
+     * 查询用户
+     * @param page
+     * @param limit
+     * @return
+     */
+    @RequestMapping(value = "/queryPersonList",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
     @ResponseBody
-    public String queryPerson(PersonInfo personInfo, @RequestParam(value = "page", required = false)Integer pageIndex,@RequestParam(value = "limit", required = false) Integer pageSize){
+    public String queryPerson(String name, int page,int limit){
+        System.out.println(name+"name");
         response.setContentType("text/html;charset=utf-8");
-        PersonInfoExample example=new PersonInfoExample();
-        PersonInfoExample.Criteria criteria=example.createCriteria();
-        if (personInfo!=null){
-            if (personInfo.getName()!=null){
-                criteria.andNameLike(personInfo.getName());
-            }
+        PersonInfo personInfo=new PersonInfo();
+        if (name!=null){
+            personInfo.setName(name);
         }
-        try {
-            PrintWriter out=response.getWriter();
-            List<PersonInfo> personInfoList = localService.queryPersonInfo(personInfo,pageIndex,pageSize);
+            PersonInfoExecution personInfoExecution = localService.queryPersonInfo(personInfo, page, limit);
+            List<PersonInfo> personInfoList=personInfoExecution.getPersonInfoList();
             JSONArray jsonArray = new JSONArray();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (PersonInfo s:personInfoList){
                 if (s!=null){
                     JSONObject jsonObject = new JSONObject();
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String createTime = formatter.format(s.getCreateTime());
-
-
                     jsonObject.put("userId",s.getUserId());
                     jsonObject.put("name",s.getName());
                     if (s.getBirthday()==null){
@@ -158,14 +168,45 @@ public class LocalAuthController {
                 }
 
             }
-            int count=personInfoList.size();
+            int count=personInfoExecution.getCount();
             String jso="{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+jsonArray.toString()+"}";
-            out.print(jso);
-            System.out.println(jso);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return jso;
+    }
 
-        return null;
+    /**
+     * 禁用用户
+     * @param userid
+     * @return
+     */
+    @RequestMapping(value = "/disableUser",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
+    @ResponseBody
+    public String disableUser(int userid){
+        response.setContentType("text/html;charset=utf-8");
+        PersonInfo personInfo=new PersonInfo();
+        personInfo.setUserId(userid);
+        personInfo.setEnableStatus(0);
+        int i=localService.disableUser(personInfo);
+        if (i>0){
+            return "y";
+        }
+        return "n";
+    }
+    /**
+     * 启用用户
+     * @param userid
+     * @return
+     */
+    @RequestMapping(value = "/enableUser",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
+    @ResponseBody
+    public String enableUser(int userid){
+        response.setContentType("text/html;charset=utf-8");
+        PersonInfo personInfo=new PersonInfo();
+        personInfo.setUserId(userid);
+        personInfo.setEnableStatus(1);
+        int i=localService.disableUser(personInfo);
+        if (i>0){
+            return "y";
+        }
+        return "n";
     }
 }

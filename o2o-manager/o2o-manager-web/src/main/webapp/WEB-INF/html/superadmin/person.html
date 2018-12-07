@@ -3,25 +3,28 @@
 
 <head>
     <meta charset="utf-8">
-    <title>商铺信息</title>
+    <title>用户列表</title>
     <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css" media="all">
 </head>
 
 <body>
 <div class="demoTable">
-    搜索用户：
+    搜索ID：
     <div class="layui-inline">
-        <input class="layui-input" name="username" id="demoReload" autocomplete="off">
+        <input class="layui-input" name="shopName"  value="" type="text" id="demoReload" autocomplete="off">
     </div>
-    <div class="layui-btn" data-type="reload">搜索</div>
+    <button class="layui-btn" id="sc" data-type="reload">搜索</button>
 </div>
 <table class="layui-hide" lay-filter="demo" id="test">
 </table>
 <script src="../resources/plugins/layui/layui.js"></script>
+<script src="../resources/js/jquery.min.js"></script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">禁用</a>
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="pass">启用</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="unpass">禁用</a>
 </script>
 <script>
+
     layui.use('table', function(){
         var table = layui.table;
         table.render({
@@ -30,58 +33,100 @@
             ,method:'get'
             ,title:'用户表'
             ,cols: [[
-                {field:'userId', title: '用户id', width:80,  fixed: true}
-                ,{field:'name', title: '用户名', width:70, fixed: true}
-                ,{field:'birthday', title: '出生日期', width:100, fixed: true}
-                ,{field:'gender', title: '性别', width:100, fixed: true}
-                ,{field:'phone', title: '手机', width:100, fixed: true}
-                ,{field:'email', title: '邮箱', width:100, fixed: true}
-                ,{field:'phone', title: '电话', width:70, fixed: true}
+                {field:'userId', title: '用户id', width:100,  fixed: true}
+                ,{field:'name', title: '用户名', width:100, fixed: true}
+                // ,{field:'birthday', title: '出生日期', width:100, fixed: true}
+                ,{field:'gender', title: '性别', width:70, fixed: true}
+                ,{field:'phone', title: '手机', width:120, fixed: true}
+                ,{field:'email', title: '邮箱', width:120, fixed: true}
+                ,{field:'phone', title: '电话', width:120, fixed: true}
                 ,{field:'flag', title: '用户类别', width:100, fixed: true}
-                ,{field:'create_time', title: '创建时间', width:100, fixed: true}
-                ,{fixed: 'status', title: '用户状态', toolbar: '#barDemo', width:150}
+                ,{field:'create_time', title: '创建时间', width:162, fixed: true}
+                ,{field:'status', title: '用户状态', width:100, fixed: true}
+                ,{fixed: 'x', title: '用户状态', toolbar: '#barDemo', width:150, fixed: true}
             ]]
             ,page: true
-            ,height:542
-            ,width:1352
+            ,height:470
+            ,width:1152
         });
-        var $ = layui.$, active = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-
-                table.reload('testReload', {
-                    where: {
-                        username: demoReload.val()
-                    }
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'unpass'){
+                layer.confirm('确认禁用吗', function(index){
+                    $.ajax({
+                        url: "/superadmin/disableUser",
+                        type: 'get',
+                        data:{"userid":data.userId},
+                        dataType: "json",
+                        success: function(da){
+                                if(da=="y"){
+                                    layer.msg("禁用成功", {icon: 6});
+                                    layer.close(index);
+                            }else if(da=="n"){
+                                layer.msg("操作失败", {icon: 5});
+                            }
+                        }
+                    });
+                    layer.msg("禁用成功", {icon: 6});
+                    // layer.close(index);
                 });
             }
-        };
-        $('.demoTable .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-        // //报错！
-        // $('#sou').on('click', function(){
-        //     var type = $(this).data('type');
-        //     active[type] ? active[type].call(this) : '';
-        // });
-        // var active = {
-        //     reload: function(){
-        //         //执行重载
-        //         table.reload('test', {
-        //             url : '/cmsshop/queryShopList',
-        //             method:'get',
-        //             page: {
-        //                 curr: 1 //重新从第 1 页开始
-        //             }
-        //             ,where: { //类似于 data
-        //                 shopName: $('#demoReload').html()
-        //             }
-        //         });
-        //     }
-        // };
+            if(obj.event === 'pass'){
+                layer.confirm('确认启用吗', function(index){
+                    $.ajax({
+                        url: "/superadmin/enableUser",
+                        type: 'get',
+                        data:{"userid":data.userId},
+                        dataType: "json",
+                        success: function(data){
 
+                            if(data=="y"){
+                                layer.close(index);
+
+                            }else{
+                                layer.msg("操作失败", {icon: 5});
+                            }
+                        }
+                    });
+                    layer.msg("启用成功", {icon: 6});
+                    layer.close(index);
+                });
+            }
+        });
     });
+
+    $("#sc").click(function () {
+        layui.use('table',function (){
+            var weburl='/superadmin/queryPersonList?1=1';
+            var demo=$("#demoReload").val();
+            if (demo!=''){
+                weburl+='&name='+demo;
+            }
+            var table = layui.table;
+            table.render({
+                elem: '#test'
+                ,url: weburl
+                ,method:'get'
+                ,title:'用户表'
+                ,cols: [[
+                    {field:'userId', title: '用户id', width:100,  fixed: true}
+                    ,{field:'name', title: '用户名', width:100, fixed: true}
+                    ,{field:'birthday', title: '出生日期', width:100, fixed: true}
+                    ,{field:'gender', title: '性别', width:70, fixed: true}
+                    ,{field:'phone', title: '手机', width:120, fixed: true}
+                    ,{field:'email', title: '邮箱', width:120, fixed: true}
+                    ,{field:'phone', title: '电话', width:120, fixed: true}
+                    ,{field:'flag', title: '用户类别', width:100, fixed: true}
+                    ,{field:'create_time', title: '创建时间', width:162, fixed: true}
+                    ,{fixed: 'status', title: '用户状态', toolbar: '#barDemo', width:150}
+                ]]
+                ,page: true
+                ,height:470
+                ,width:1152
+            });
+        });
+
+    })
 </script>
 
 </body>

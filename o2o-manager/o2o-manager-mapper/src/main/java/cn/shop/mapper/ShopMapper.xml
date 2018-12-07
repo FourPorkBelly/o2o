@@ -196,7 +196,7 @@
     select
     <if test="distinct">
       distinct
-    </if>
+    </if>selectByExampleWidthAreaPersonInfoShopCategory
     <include refid="Base_Column_ListWidthAreaPersonInfoShopCategory" />
     from tb_shop s inner join tb_area a on s.area_id = a.area_id
     inner join tb_person_info p on s.owner_id = p.user_id
@@ -225,7 +225,22 @@
     inner join tb_shop_category sc on s.shop_category_id = sc.shop_category_id
     where s.shop_id = #{shopId,jdbcType=INTEGER}
   </select>
+    <!-- 查询审核过的店铺 -->
+    <select id="selectShopbyEnableStatus" parameterType="cn.shop.pojo.Shop" resultMap="BaseResultMapWidthAreaPersonInfoShopCategory">
+        select
+        <include refid="Base_Column_ListWidthAreaPersonInfoShopCategory" />
+        from tb_shop s inner join tb_area a on s.area_id = a.area_id
+        inner join tb_person_info p on s.owner_id = p.user_id
+        inner join tb_shop_category sc on s.shop_category_id = sc.shop_category_id
+        where   s.enable_status=#{enableStatus}
+        <if test="shopName!=null">
+            and s.shop_name like CONCAT('%',#{shopName},'%')
 
+
+
+        </if>
+
+    </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_shop
@@ -618,7 +633,5 @@
     priority DESC
     LIMIT #{rowIndex},#{pageSize};
   </select>
-  <select id="selectShop" resultType="cn.shop.pojo.Shop">
-    SELECT * from tb_shop
-  </select>
+
 </mapper>

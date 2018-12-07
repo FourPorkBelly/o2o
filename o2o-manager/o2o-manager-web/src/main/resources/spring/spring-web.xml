@@ -49,6 +49,7 @@
     </bean>
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="cn.shop.web.*.controller,cn.shop.wechat" />
+
     <!--&lt;!&ndash; 5.权限拦截器 &ndash;&gt;
     <mvc:interceptors>
         <mvc:interceptor>

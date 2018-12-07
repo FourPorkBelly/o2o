@@ -29,19 +29,10 @@ public class ShopServicecmsImpl implements ShopServicecms {
      */
     @Override
     public ShopExecution queryShopList(Shop shop, int page, int limit) {
-        ShopExample example = new ShopExample();
-        ShopExample.Criteria criteria = example.createCriteria();
-        if (shop!=null){
-            if(StringUtil.isNotEmpty(shop.getShopName())){
-                criteria.andShopNameLike("%"+shop.getShopName()+"%");
-            }
-
-        }
         ShopExecution shopExecution = new ShopExecution();
+
         PageHelper.startPage(page,limit);
-
-        List<Shop> list = shopMapper.selectByExampleWidthAreaPersonInfoShopCategory(example);
-
+        List<Shop> list = shopMapper.selectShopbyEnableStatus(shop);
         PageInfo pageInfo = new PageInfo(list);
         if (list!=null&&list.size()>0) {
             shopExecution.setShopList(list);
@@ -50,5 +41,25 @@ public class ShopServicecmsImpl implements ShopServicecms {
             shopExecution.setState(ShopStateEnum.INNER_ERROR.getState());
         }
         return shopExecution;
+    }
+
+    @Override
+    public ShopExecution queryAuditShopList(Shop shop, int page, int limit) {
+        ShopExecution shopExecution = new ShopExecution();
+        PageHelper.startPage(page,limit);
+        List<Shop> list = shopMapper.selectShopbyEnableStatus(shop);
+        PageInfo pageInfo = new PageInfo(list);
+        if (list!=null&&list.size()>0) {
+            shopExecution.setShopList(list);
+            shopExecution.setCount((int)pageInfo.getTotal());
+        }else {
+            shopExecution.setState(ShopStateEnum.INNER_ERROR.getState());
+        }
+        return shopExecution;
+    }
+
+    @Override
+    public int passShop(Shop shop) {
+        return shopMapper.updateByPrimaryKeySelective(shop);
     }
 }

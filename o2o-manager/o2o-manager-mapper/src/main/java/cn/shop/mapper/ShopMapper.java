@@ -37,5 +37,7 @@ public interface ShopMapper {
     List<Shop> queryShopList(@Param("shopCondition") Shop shopCondition,
                              @Param("rowIndex") Integer rowIndex, @Param("pageSize") Integer pageSize);
 //    查询所有店铺
-    List<Shop> selectShop();
+//    List<Shop> selectShop();
+//    店铺
+    List<Shop> selectShopbyEnableStatus(Shop shop);
 }

@@ -44,11 +44,11 @@
                     <a class="" href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span> 商铺管理</span></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" kit-target data-options="{url:'shop.html',icon:'&#xe6c6;',title:'店铺管理',id:'1'}">
+                            <a href="javascript:;" kit-target data-options="{url:'shop',icon:'&#xe6c6;',title:'店铺管理',id:'1'}">
                                 <i class="layui-icon">&#xe6c6;</i><span> 店铺管理</span></a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" data-url="form.html" data-icon="fa-user" data-title="表单" kit-target data-id='2'><i class="fa fa-user" aria-hidden="true"></i><span> 表单</span></a>
+                            <a href="javascript:;" data-url="auditshop.html" data-icon="fa-user" data-title="店铺审核" kit-target data-id='2'><i class="fa fa-user" aria-hidden="true"></i><span> 店铺审核</span></a>
                         </dd>
                         <dd>
                             <a href="javascript:;" data-url="nav.html" data-icon="&#xe628;" data-title="导航栏" kit-target data-id='3'><i class="layui-icon">&#xe628;</i><span> 导航栏</span></a>
@@ -104,8 +104,13 @@
             url : "/superadmin/getLoginName",
             dataType : "json",
             success : function(result) {
+                if (result.msg=="success") {
                 document.getElementById("pay").innerHTML=result.userName;
                 document.getElementById("img").src = result.img;
+                }else if (result.msg=="n"){
+                    alert("請求失敗,请登录");
+                    location.href='/superadmin/login';
+                }
             },
             error : function() {
                 alert("請求失敗,请登录");

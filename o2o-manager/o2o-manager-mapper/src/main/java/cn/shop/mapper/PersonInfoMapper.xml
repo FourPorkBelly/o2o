@@ -351,8 +351,11 @@
       enable_status = #{enableStatus,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <select id="queryUserInfo"  resultType="cn.shop.pojo.PersonInfo">
-    select * from tb_person_info limit #{pageIndex},#{pageSize}
-
+  <select id="queryUserInfo" parameterType="cn.shop.pojo.PersonInfo"  resultType="cn.shop.pojo.PersonInfo">
+    select * from tb_person_info
+     <if test="name!=null">
+         where  name like CONCAT('%',#{name},'%')
+     </if>
+    order by admin_flag
   </select>
 </mapper>
