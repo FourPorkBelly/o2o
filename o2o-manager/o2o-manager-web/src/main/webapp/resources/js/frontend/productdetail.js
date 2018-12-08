@@ -14,7 +14,7 @@ $(function() {
                         }
 						if (data.success) {
 							var product = data.product;
-							$('#product-img').attr('src', product.imgAddr);
+							/*$('#product-img').attr('src', product.imgAddr);*/
 							$('#product-time').text(
 									new Date(product.lastEditTime)
 											.Format("yyyy-MM-dd"));
@@ -29,10 +29,11 @@ $(function() {
 								imgListHtml += '<div> <img src="'
 										+ item.imgAddr + '"/></div>';
 							});
+                            //$('#imgList>div').html(imgListHtml);
 							// 生成购买商品的二维码供商家扫描
 							/*imgListHtml += '<div> <img src="/myo2o/frontend/generateqrcode4product?productId='
 									+ product.productId + '"/></div>';*/
-							$('#imgList').html(imgListHtml);
+							//$('#imgList').html(imgListHtml);
 						}
 					});
 	$('#me').click(function() {
@@ -60,4 +61,6 @@ $(function() {
         });
     });
 	$.init();
+
+
 });
