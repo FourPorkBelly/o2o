@@ -1,10 +1,14 @@
 $(function() {
-	var shopId = 1;
-	var listUrl = '/myo2o/shop/listawardsbyshop?pageIndex=1&pageSize=9999&shopId='
+	var shopId = getQueryString("shopId");
+	var listUrl = '/shop/listawardsbyshop?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
-	var deleteUrl = '/myo2o/shop/modifyaward';
+	var deleteUrl = '/shop/updatestatusaward';
 
 	function getList() {
+        $("a").each(function (i,e) {
+            var url = $(e).attr("href");
+            $(e).attr("href",url+"?shopId="+shopId);
+        })
 		$.getJSON(listUrl, function(data) {
 			if (data.success) {
 				var awardList = data.awardList;
@@ -55,23 +59,22 @@ $(function() {
 
 	function deleteItem(awardId, enableStatus) {
 		var award = {};
-		award.awardId = awardId;
-		award.enableStatus = enableStatus;
 		$.confirm('确定么?', function() {
 			$.ajax({
 				url : deleteUrl,
 				type : 'POST',
 				data : {
-					awardStr : JSON.stringify(award),
-					statusChange : true
+                    "awardId":awardId,
+                    "enableStatus":enableStatus
+					,statusChange : true
 				},
 				dataType : 'json',
 				success : function(data) {
 					if (data.success) {
-						$.toast('操作成功！');
+						$.toast(data.errMsg);
 						getList();
 					} else {
-						$.toast('操作失败！');
+						$.toast(data.errMsg);
 					}
 				}
 			});
@@ -85,18 +88,18 @@ $(function() {
 					function(e) {
 						var target = $(e.currentTarget);
 						if (target.hasClass('edit')) {
-							window.location.href = '/myo2o/shop/awardedit?awardId='
+							window.location.href = '/shop/awardedit?shopId='+shopId+'&awardId='
 									+ e.currentTarget.dataset.id;
 						} else if (target.hasClass('delete')) {
 							deleteItem(e.currentTarget.dataset.id,
 									e.currentTarget.dataset.status);
 						} else if (target.hasClass('preview')) {
-							window.location.href = '/myo2o/frontend/awarddetail?awardId='
+							window.location.href = '/frontend/awarddetail?awardId='
 									+ e.currentTarget.dataset.id;
 						}
 					});
 
 	$('#new').click(function() {
-		window.location.href = '/myo2o/shop/awardedit';
+		window.location.href = '/shop/awardedit?shopId='+shopId;
 	});
 });

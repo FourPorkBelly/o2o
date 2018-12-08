@@ -44,12 +44,7 @@
 						</div>-->
 						<!-- 轮播 -->
 						<div class="layui-carousel" id="imgList">
-							<div carousel-item>
-								<div>条目1</div>
-								<div>条目2</div>
-								<div>条目3</div>
-								<div>条目4</div>
-								<div>条目5</div>
+							<div carousel-item id="layui_carousel">
 							</div>
 						</div>
 						<div class="card-content">
@@ -103,21 +98,24 @@
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 	<script type='text/javascript'
 		src='../resources/js/common/commonutil.js' charset='utf-8'></script>
+	<script type="text/javascript" src="../resources/js/jquery.min.js"></script>
 	<script src="../resources/plugins/layui/layui.js"></script>
-	<script type='text/javascript'
-		src='../resources/js/frontend/productdetail.js' charset='utf-8'></script>
 	<script>
+        var ins;
         layui.use('carousel', function(){
             var carousel = layui.carousel;
             //建造实例
-            carousel.render({
+            ins = carousel.render({
                 elem: '#imgList'
                 ,width: '300px' //设置容器宽度,
-				,height:'300px'
+                ,height:'300px'
                 ,arrow: 'always' //始终显示箭头
                 //,anim: 'updown' //切换动画方式
             });
         });
 	</script>
+	<script type='text/javascript'
+		src='../resources/js/frontend/productdetail.js' charset='utf-8'></script>
+
 </body>
 </html>

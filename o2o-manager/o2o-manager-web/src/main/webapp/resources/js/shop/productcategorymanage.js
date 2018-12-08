@@ -3,7 +3,7 @@ $(function() {
 	var listUrl = '/shop/getproductcategorylist?shopId=' + shopId;
 	var addUrl = '/shop/addproductcategorys';
 	var deleteUrl = '/shop/removeproductcategory';
-
+	$(".return-href").attr('href',"/shop/shopmanage?shopId="+shopId);
 	$
 			.getJSON(
 					listUrl,

@@ -2,7 +2,7 @@ package cn.shop.enums;
 
 public enum AwardStateEnum {
 	OFFLINE(-1, "非法奖品"), SUCCESS(0, "操作成功"), INNER_ERROR(-1001, "操作失败"), EMPTY(
-			-1002, "奖品信息为空");
+			-1002, "奖品信息为空"),ADDED_ERROR(-1003,"请先修改过期日期再进行上架");
 
 	private int state;
 

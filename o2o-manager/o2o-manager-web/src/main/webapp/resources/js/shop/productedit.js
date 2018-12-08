@@ -2,7 +2,7 @@ $(function() {
 	//从url里获取productId的值
 	var productId = getQueryString('productId');
 	//测试的商铺id**********************************
-	var shopId = 20;
+	var shopId = getQueryString('shopId');
 	//通过productId获取商品信息的url
 	var infoUrl = '/product/getproductbyid?productId=' + productId;
 	//获取当前店铺商品类别的url
@@ -83,7 +83,7 @@ $(function() {
 				var productCategoryList = data.productCategoryList;
                 if(productCategoryList.length<=0){
                     alert("未添加商品类别，请添加。");
-                    window.location.href="productcategorymanage";
+                    window.location.href="/shop/productcategorymanage?shopId="+shopId;
                 }
 				var optionHtml = '';
 				productCategoryList.map(function(item, index) {
@@ -155,7 +155,7 @@ $(function() {
                     // $('#productId').val(data.productId);
 					if(data.success){
                         alert(data.errMsg);
-                        window.location.href="productmanage.html"
+                        window.location.href="productmanage.html?shopId="+shopId;
 					}else{
                         alert(data.errMsg);
 					}

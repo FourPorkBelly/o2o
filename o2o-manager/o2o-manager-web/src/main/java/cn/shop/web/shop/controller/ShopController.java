@@ -209,17 +209,19 @@ public class ShopController {
             if(shopList!=null&&shopList.size()>0){
                 for (Shop shop : shopList) {
                     if (shop.getShopId()==shopId) {
+                        System.out.println("该商铺存在。");
                         map.put("redirect",false);
                         session.setAttribute("currentShop",shop);
                         return map;
                     }
                 }
             }
+            System.out.println("该商铺不存在");
             map.put("redirect",true);
+            map.put("errMsg","该商铺不存在");
             map.put("url","/shop/shoplist");
         }
         return map;
     }
-
 
 }

@@ -1,10 +1,14 @@
 $(function() {
-	var shopId = 1;
+	var shopId = getQueryString("shopId");
 	var listUrl = '/product/queryProduct?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
 	var deleteUrl = '/product/deleteproduct';
 	var statusproduct = '/product/statusproduct';
 	function getList() {
+		$("a").each(function (i,e) {
+            var url = $(e).attr("href");
+            $(e).attr("href",url+"?shopId="+shopId);
+        })
 		$.getJSON(listUrl, function(data) {
 			if (data.success) {
 				var productList = data.productList;
@@ -128,6 +132,6 @@ $(function() {
 					});
 
 	$('#new').click(function() {
-		window.location.href = '/shop/productedit';
+		window.location.href = '/shop/productedit?shopId='+shopId;
 	});
 });
