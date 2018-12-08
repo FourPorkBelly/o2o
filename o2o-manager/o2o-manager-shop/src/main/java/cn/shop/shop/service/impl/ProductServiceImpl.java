@@ -30,7 +30,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductImgMapper productImgMapper;
 
-    @Transactional
     protected int insertProject(Product product){
         int effectedNum = productMapper.insertSelective(product);
         return effectedNum;
@@ -63,12 +62,11 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 添加商品
      * @param product
-     * @param imgAddr
+     * @param
      * @return
      */
-    @Transactional
     @Override
-    public ProductExecution addProduct(Product product,String imgAddr) {
+    public ProductExecution addProduct(Product product,String imgAddrs) {
         if (product != null  && product.getShopId() != null) {
             product.setCreateTime(new Date());
             product.setLastEditTime(new Date());
@@ -76,13 +74,8 @@ public class ProductServiceImpl implements ProductService {
             product.setEnableStatus(1);
             try {
                 int effectedNum=insertProject(product);
-                System.out.println(effectedNum+"---------------------------------->添加商品<----------------------------------");
-                System.out.println(product.getProductId()+"----------------------------------商品ID----------------------------------");
-                ProductImg productImg=new ProductImg();
-                productImg.setCreateTime(new Date());
-                productImg.setProductId(product.getProductId());
-                productImg.setImgAddr(imgAddr);
-                int imgs=productImgMapper.insertSelective(productImg);
+                //调用批量插入图片的方法
+                int imgs=addProductImgs(imgAddrs,product.getProductId());
                 if (imgs <= 0) {
                     throw new RuntimeException("创建商品失败");
                 }
@@ -112,29 +105,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * 修改
+     * 修改商品
      * @param product
      * @return
      */
-    @Transactional
-    protected int updatePro(Product product){
-        return productMapper.updateByPrimaryKeySelective(product);
-    }
-
     @Override
-    public Product modifyProduct(Product product,String imgArr) {
-        updatePro(product);
-        ProductImgExample example = new ProductImgExample();
-        ProductImgExample.Criteria criteria = example.createCriteria();
-        criteria.andProductIdEqualTo(product.getProductId());
-
-        ProductImg productImg=new ProductImg();
-        productImg.setImgAddr(imgArr);
-        productImg.setCreateTime(new Date());
-        int rs=productImgMapper.updateByExampleSelective(productImg,example);
-        Product product1=productMapper.selectByPrimaryKey(product.getProductId());
-        return product1;
+    public ProductExecution updateProduct(Product product,String imgAddrs) {
+        ProductExecution execution = new ProductExecution();
+        //删除图片信息
+        deleteProductImg(product.getProductId());
+        //重新添加图片信息
+        int imgs = addProductImgs(imgAddrs,product.getProductId());
+        if(imgs>0){
+            //创建条件
+            ProductExample example = new ProductExample();
+            ProductExample.Criteria criteria = example.createCriteria();
+            //根据productId修改
+            criteria.andProductIdEqualTo(product.getProductId());
+            //执行修改
+            int count = productMapper.updateByExampleSelective(product,example);
+            if(count>0){
+                execution.setState(ProductStateEnum.SUCCESS.getState());
+            }else{
+                execution.setState(ProductStateEnum.INNER_ERROR.getState());
+            }
+        }else {
+            execution.setState(ProductStateEnum.INNER_ERROR.getState());
+        }
+        return execution;
     }
+
 
     /**
      * 通过商品id获取图片集合
@@ -150,32 +150,45 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 批量添加图片
-     * @param imgs
+     * @param imgAddrs
+     * @param productId
      * @return
      */
-    private int addProductImgs(String imgs,Integer productId){
+    private int addProductImgs(String imgAddrs,Integer productId){
         int count = 0;
-        //imgs拆分为数组
-        String[] img = imgs.split(",");
-        //创建ProductImg对象
-        ProductImg productImg = new ProductImg();
-        //创建时间
-        productImg.setCreateTime(new Date());
-        //商品id
-        productImg.setProductId(productId);
-        List<ProductImg> productImgs = new ArrayList<>();
-        //创建多个对象
-        for (String s : img) {
-            productImg.setImgAddr(s);
-            productImgs.add(productImg);
-        }
         //执行插入
+        String[] imgaddr = imgAddrs.split(",");
+        List<ProductImg> imgs = new ArrayList<>();
+        ProductImg productImg = new ProductImg();
+        productImg.setCreateTime(new Date());
+        productImg.setProductId(productId);
+        for (String s : imgaddr) {
+            if(s==null||"".equals(s)){
+                break;
+            }
+            productImg.setImgAddr(s);
+            imgs.add(productImg);
+        }
         try {
-            count = productImgMapper.insertList(productImgs);
+            System.out.println("imgs:"+imgs.size());
+            count = productImgMapper.insertList(imgs);
         }catch (Exception e){
             e.printStackTrace();
         }
         return count;
     }
 
+    /**
+     * 删除图片信息
+     * @param productId
+     * @return
+     */
+    private int deleteProductImg(Integer productId){
+        int count = 0;
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+        count = productImgMapper.deleteByExample(example);
+        return count;
+    }
 }

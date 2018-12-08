@@ -42,10 +42,15 @@ $(function() {
 								$("#imgAddr").attr("src",product.imgAddr);
 								$("#imgAddr").show();
 								$("#imgsrc0").attr("src",product.productImgs[0].imgAddr);
+								$("#productImgs0").val(product.productImgs[0].imgAddr);
                                 $("#imgsrc0").show();
 								//详情图片
 								for (var i=1;i<product.productImgs.length;i++){
-                                    $('#detail-img').append('<img id="imgsrc'+imgindex+'" src='+product.productImgs[i].imgAddr+' width="60px" height="60px"><br><input type="file" class="detail-img" name="uploadFile" id="updateimg'+(imgindex)+'" indexx='+imgindex+' >');
+                                    $('#detail-img').append('<input type="hidden" id="productImgs'+i+'" name="imgAddrs" value="'+product.productImgs[i].imgAddr+'" id="">'+
+										'<img id="imgsrc'+imgindex+'" src='+product.productImgs[i].imgAddr+
+										' width="60px" height="60px"><br>'+
+										'<input type="file" class="detail-img" name="uploadFile" id="updateimg'+
+										(imgindex)+'" indexx='+imgindex+' >');
                                     imgindex++;
 								}
 								//获取原本的商品类别，店铺所有商品类别
@@ -59,7 +64,7 @@ $(function() {
 
 											var isSelect = optionSelected === item.productCategoryId ? 'selected'
 													: '';
-											optionHtml += '<option data-value="'
+											optionHtml += '<option value="'
 													+ item.productCategoryId
 													+ '"'
 													+ isSelect
@@ -76,6 +81,10 @@ $(function() {
 		$.getJSON(categoryUrl, function(data) {
 			if (data.success) {
 				var productCategoryList = data.productCategoryList;
+                if(productCategoryList.length<=0){
+                    alert("未添加商品类别，请添加。");
+                    window.location.href="productcategorymanage";
+                }
 				var optionHtml = '';
 				productCategoryList.map(function(item, index) {
 					optionHtml += '<option value="'
@@ -91,7 +100,7 @@ $(function() {
 	$('.detail-img-div').on('change','.detail-img:last-child', function() {
         updateimgss(this);
 		if ($('.detail-img').length < 6) {
-			$('#detail-img').append('<img id="imgsrc'+imgindex+'" src="" width="60px" height="60px" hidden><input type="file" class="detail-img" name="uploadFile" id="updateimg'+(imgindex)+'" indexx='+imgindex+' >');
+			$('#detail-img').append('<input type="hidden" name="imgAddrs" value="" id="productImgs'+imgindex+'"><img id="imgsrc'+imgindex+'" src="" width="60px" height="60px" hidden><input type="file" class="detail-img" name="uploadFile" id="updateimg'+(imgindex)+'" indexx='+imgindex+' >');
 		}
         imgindex++;
 
@@ -141,13 +150,16 @@ $(function() {
             // }
             /* 表单提交ajax */
             // var ssss = $("#productForm").serialize();
-			alert(productPostUrl);
             jQuery.post(productPostUrl, $("#productForm").serialize(),
                 function(data){
                     // $('#productId').val(data.productId);
+					if(data.success){
+                        alert(data.errMsg);
+                        window.location.href="productmanage.html"
+					}else{
+                        alert(data.errMsg);
+					}
 
-                    alert(data.errMsg);
-                    window.location.href="productmanage.html"
                 }, "json");
 		})
 	$("#small-img").change(function () {
@@ -177,13 +189,9 @@ $(function() {
                         if(imgid=="small-img"){
                         	$("#imgAddr").show();
                             $("#imgAddr").attr("src",data.url);
+                            $("#shopImg").val(data.url);
 						}else{
-                            var url = $('#shopImgs').val();
-                            if(url!=""&&url!=null){
-                                $('#shopImgs').val(url+","+data.url)
-                            }else{
-                                $('#shopImgs').val(url+data.url)
-                            }
+                            $("#productImgs"+$(img).attr("indexx")).val(data.url);
                             $("#imgsrc"+$(img).attr("indexx")).attr("src",data.url);
                             $("#imgsrc"+$(img).attr("indexx")).show();
 						}

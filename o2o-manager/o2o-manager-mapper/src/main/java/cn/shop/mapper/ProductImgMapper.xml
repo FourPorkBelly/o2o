@@ -107,18 +107,17 @@
                order="AFTER">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_product_img (product_img_id, img_addr, img_desc,
+    insert into tb_product_img (img_addr, img_desc,
     priority, create_time, product_id
     )
     values
     <foreach collection="list" item="productImg" index="index" separator=",">
       (
-      #{productImg.product_img_id},
-      #{productImg.img_addr},
-      #{productImg.img_desc},
+      #{productImg.imgAddr},
+      #{productImg.imgDesc},
       #{productImg.priority},
-      #{productImg.create_time},
-      #{productImg.product_id}
+      #{productImg.createTime},
+      #{productImg.productId}
       )
     </foreach>
   </insert>

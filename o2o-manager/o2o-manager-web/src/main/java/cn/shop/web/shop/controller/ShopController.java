@@ -3,10 +3,7 @@ package cn.shop.web.shop.controller;
 import cn.shop.dto.ProductCategoryExecution;
 import cn.shop.dto.ShopExecution;
 import cn.shop.enums.ShopStateEnum;
-import cn.shop.pojo.Area;
-import cn.shop.pojo.PersonInfo;
-import cn.shop.pojo.ProductCategory;
-import cn.shop.pojo.Shop;
+import cn.shop.pojo.*;
 import cn.shop.shop.service.AreaService;
 import cn.shop.shop.service.ProductCategoryService;
 import cn.shop.shop.service.ShopCategoryService;
@@ -51,9 +48,8 @@ public class ShopController {
     private Map<String,Object> registerShop(Shop shop){
         //从session中获取用户信息
         PersonInfo owner = (PersonInfo) session.getAttribute("user");
+        System.out.println("shop:"+shop);
         Map<String,Object> map = new HashMap<>();
-        owner = new PersonInfo();
-        owner.setUserId(8);
         shop.setOwnerId(owner.getUserId());
         if(!CodeUtil.checkVerifyCode(request)){
             map.put("success",false);
@@ -85,10 +81,12 @@ public class ShopController {
      */
     @RequestMapping("/getshopinitinfo")
     @ResponseBody
-    public Map<String,Object> getShopCategoryList(){
+    public Map<String,Object> getShopCategoryList(@RequestParam(value = "parentId",defaultValue = "0") Integer parentId){
         Map<String,Object> map = new HashMap<>();
         try {
-            map.put("shopCategoryList",shopCategoryService.getShopCategoryList(null));
+            ShopCategory shopCategory = new ShopCategory();
+            shopCategory.setParentId(parentId);
+            map.put("shopCategoryList",shopCategoryService.getShopCategoryList(shopCategory));
             map.put("areaList",areaService.getAreaList());
             map.put("success",true);
         }catch (Exception e){
@@ -172,8 +170,6 @@ public class ShopController {
         //从session中获取用户信息
         owner = (PersonInfo) session.getAttribute("user");
         //判断用户信息
-        owner = new PersonInfo();
-        owner.setUserId(8);
         if (owner!=null) {
             shop.setOwnerId(owner.getUserId());
             try {

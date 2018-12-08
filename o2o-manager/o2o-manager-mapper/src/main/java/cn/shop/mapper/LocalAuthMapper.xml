@@ -225,4 +225,9 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where local_auth_id = #{localAuthId,jdbcType=INTEGER}
   </update>
+  <select id="adminlogin" parameterType="cn.shop.pojo.LocalAuth" resultType="cn.shop.pojo.LocalAuth">
+    select * from tb_person_info p,tb_local_auth l
+    where p.user_id=l.user_id and p.admin_flag=1
+    AND l.user_name=#{userName} and l.`password`=#{password}
+  </select>
 </mapper>

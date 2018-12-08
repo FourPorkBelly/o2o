@@ -59,7 +59,6 @@ public class WechatAuthServiceImpl implements WechatAuthService {
      * @throws RuntimeException
      */
 	@Override
-	@Transactional
 	public WechatAuthExecution addWechatAuth(WechatAuth wechatAuth) throws RuntimeException {
 		System.out.println("wechatAuth:"+wechatAuth);
 	    //判断信息是否为空

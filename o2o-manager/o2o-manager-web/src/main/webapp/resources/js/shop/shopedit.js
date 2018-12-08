@@ -29,13 +29,21 @@ $(function() {
 						+ shop.shopCategory.shopCategoryName + '</option>';
 				var tempAreaHtml = '';
 				data.areaList.map(function(item, index) {
-					tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '">'
-							+ item.areaName + '</option>';
+				    if(item.areaId==shop.areaId){
+                        tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '" selected>'
+                            + item.areaName + '</option>';
+                    }else{
+                        tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '">'
+                            + item.areaName + '</option>';
+                    }
+
 				});
-				$('#shop-category').html(shopCategory);
-				$('#shop-category').attr('disabled','disabled');
+				$('#shop-parent').html(shopCategory);
+				$('#shop-parent').attr('disabled','disabled');
 				$('#area').html(tempAreaHtml);
 				$('#area').attr('data-id',shop.areaId);
+                getCategoryId(shop.shopCategory.shopCategoryId);
+                $('#shop-category').attr('disabled','disabled');
 			}
 		});
 	}
@@ -53,12 +61,28 @@ $(function() {
 					tempAreaHtml += '<option value="'+item.areaId+'" data-id="' + item.areaId + '">'
 							+ item.areaName + '</option>';
 				});
-				$('#shop-category').html(tempHtml);
-				$('#shop-category').removeAttr('disabled');
+				$('#shop-parent').html(tempHtml);
+				$('#shop-parent').removeAttr('disabled');
 				$('#area').html(tempAreaHtml);
+                getCategoryId(data.shopCategoryList[0].shopCategoryId);
 			}
 		});
 	}
+    $("#shop-parent").change(function () {
+        getCategoryId($(this).val());
+    })
+    function getCategoryId(parentId){
+        $.getJSON(initUrl+"?parentId="+parentId, function(data) {
+            if (data.success) {
+                var tempHtml = '';
+                data.shopCategoryList.map(function(item, index) {
+                    tempHtml += '<option value="'+item.shopCategoryId+'" data-id="' + item.shopCategoryId
+                        + '">' + item.shopCategoryName + '</option>';
+                });
+                $('#shop-category').html(tempHtml);
+            }
+        });
+    }
 
 	if (isEdit) {
 		getInfo(shopId);
@@ -116,7 +140,7 @@ $(function() {
         //$("#shopfrom").submit();
 	})
 	/* 图片验证上传 */
-	$("#uploadFileImg").change(function () {
+	$("#imgAddr").change(function () {
 		var img = $(this).val();
         if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(img)) {
             alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
@@ -128,7 +152,7 @@ $(function() {
             {
                 url:ajaxUrl, //用于文件上传的服务器端请求地址
                 secureuri: false, //是否需要安全协议，一般设置为false
-                fileElementId: 'uploadFileImg', //文件上传域的ID
+                fileElementId: 'imgAddr', //文件上传域的ID
                 dataType: 'json', //返回值类型 一般设置为json
                 success: function (data)  //服务器成功响应处理函数
                 {

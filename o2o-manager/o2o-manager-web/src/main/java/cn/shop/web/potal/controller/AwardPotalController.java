@@ -42,23 +42,25 @@ public class AwardPotalController {
     public Map<Object,Object> getByShopIdAward(HttpServletRequest request) throws Exception {
         Map<Object,Object> map=new HashMap<Object,Object>();
         //从Seesion中获取用户
+        PersonInfo user = (PersonInfo) request.getSession()
+                .getAttribute("user");
         //获取店铺Id
         Integer shopid= HttpServletRequestUtil.getInt(request,"shopId");
         //第几页
         Integer pagenum= HttpServletRequestUtil.getInt(request,"pageIndex");
         //每页显示几行
         Integer pagesize= HttpServletRequestUtil.getInt(request,"pageSize");
-        //商品名字
+        //商品名字 ISO-8859-1
         String name=new String(request.getParameter("productName").getBytes("ISO-8859-1"),"utf-8");
         //创建一个积分对象
         UserShopMap userShopMap=null;
         //积分
         Integer point=0;
         if(shopid!=null&&shopid>-1){
-            //查询此用户有在这个店铺是否有积分
-            if(userShopMaoPotalService.selectByExample(8,shopid,null,null).size()>0){
-                //得到积分
-             userShopMap=userShopMaoPotalService.selectByExample(8,shopid,null,null).get(0);
+            //查询此用户有在这个店铺是否有积分  用户Id 店铺Id 页码 数量
+            if(userShopMaoPotalService.selectByExample(user.getUserId(),shopid,null,null).size()>0){
+                //得到积分  用户Id 店铺Id 页码 数量
+             userShopMap=userShopMaoPotalService.selectByExample(user.getUserId(),shopid,null,null).get(0);
              point=userShopMap.getPoint();
             }
             //将数据返回到页面
@@ -77,30 +79,34 @@ public class AwardPotalController {
      */
     @RequestMapping(value = "/convertAward",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> convertAward(@Param("productId") Integer productId){
+    public Map<String,Object> convertAward(@Param("productId") Integer productId,HttpServletRequest request){
         Map<String,Object> map=new HashMap<String,Object>();
         //从Seesion中获取用户
+        PersonInfo user = (PersonInfo) request.getSession()
+                .getAttribute("user");
         //查询此奖品需要多少积分
         Award award=awardPotalService.selectByPrimaryKey(productId);
         //查询此奖品属于哪个商铺
         Shop shop=shopService.getByShopId(award.getShopId());
         //创建一个积分对象
         UserShopMap userShopMap=null;
-        //查询是在此店铺是否有积分
-        if(userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).size()>0){
-            //得到商铺积分
-            userShopMap=userShopMaoPotalService.selectByExample(8,shop.getShopId(),null,null).get(0);
+        //查询是在此店铺是否有积分 用户Id 店铺Id 页码 数量
+        if(userShopMaoPotalService.selectByExample(user.getUserId(),shop.getShopId(),null,null).size()>0){
+            //得到商铺积分用户Id 店铺Id 页码 数量
+            userShopMap=userShopMaoPotalService.selectByExample(user.getUserId(),shop.getShopId(),null,null).get(0);
             //判断积分是否足够
             if(userShopMap.getPoint()>award.getPoint()||userShopMap.getPoint()==award.getPoint()){
                 //修改用户在店铺的积分
                 userShopMap.setPoint(userShopMap.getPoint()-award.getPoint());
+                //修改时间
+                userShopMap.setCreateTime(new Date());
                 if(userShopMaoPotalService.updateByExample(userShopMap)>0){
                     //添加积分消费记录
                     UserAwardMap userAwardMap=new UserAwardMap();
-                    userAwardMap.setUserId(11);
+                    userAwardMap.setUserId(user.getUserId());
                     userAwardMap.setAwardId(award.getAwardId());
                     userAwardMap.setShopId(shop.getShopId());
-                    userAwardMap.setUserName("音策");
+                    userAwardMap.setUserName(user.getName());
                     userAwardMap.setAwardName(award.getAwardName());
                     userAwardMap.setExpireTime(award.getExpireTime());
                     userAwardMap.setCreateTime(new Date());

@@ -1,1 +1,8 @@
 https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8c3a841c6efd97e9&redirect_uri=https://myo2o.mynatapp.cc/wechatlogin/logincheck&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect&connect_redirect=1
+
+
+http://myo2o.mynatapp.cc/
+
+
+
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0be675cc70f0cc1&redirect_uri=https://myo2o.mynatapp.cc/wechatlogin/logincheck&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect&connect_redirect=1
