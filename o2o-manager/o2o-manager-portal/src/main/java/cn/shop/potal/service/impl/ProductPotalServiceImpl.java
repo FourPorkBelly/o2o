@@ -1,9 +1,11 @@
 package cn.shop.potal.service.impl;
 
+import cn.shop.mapper.ProductImgMapper;
 import cn.shop.mapper.ProductMapper;
 import cn.shop.pojo.Product;
 import cn.shop.pojo.ProductExample;
-import cn.shop.pojo.Shop;
+import cn.shop.pojo.ProductImg;
+import cn.shop.pojo.ProductImgExample;
 import cn.shop.potal.service.ProductPotalService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.util.List;
 public class ProductPotalServiceImpl implements ProductPotalService{
     @Autowired
     ProductMapper productMapper;
+    @Autowired
+    ProductImgMapper productImgMapper;
     /**
      * @Description:    按id查询店铺下面的所有商品 分页
      * @Author:         oy
@@ -68,7 +72,19 @@ public class ProductPotalServiceImpl implements ProductPotalService{
      */
     @Override
     public Product selectByPrimaryKey(Integer productId) {
-
-        return productMapper.selectByPrimaryKey(productId);
+        Product product = productMapper.selectByPrimaryKey(productId);
+        product.setProductImgs(getProductImgByProductId(productId));
+        return product;
+    }
+    /**
+     * 通过商品id获取图片集合
+     * @param productId
+     * @return
+     */
+    private List<ProductImg> getProductImgByProductId(Integer productId){
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+        return productImgMapper.selectByExample(example);
     }
 }

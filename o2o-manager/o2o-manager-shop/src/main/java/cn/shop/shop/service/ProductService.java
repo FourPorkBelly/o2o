@@ -39,4 +39,14 @@ public interface ProductService {
      * @return
      */
     ProductExecution updateProduct(Product product,String imgAddrs);
+
+    /**
+     * 商品下架
+     */
+    ProductExecution updateStatusProduct(Integer productId,Integer enableStatus);
+
+    /**
+     * 删除商品
+     */
+    ProductExecution deleteProduct(Integer productId);
 }

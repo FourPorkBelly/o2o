@@ -136,6 +136,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+
+
     /**
      * 通过商品id获取图片集合
      * @param productId
@@ -190,5 +192,43 @@ public class ProductServiceImpl implements ProductService {
         criteria.andProductIdEqualTo(productId);
         count = productImgMapper.deleteByExample(example);
         return count;
+    }
+
+    /**
+     * 商品上下架
+     * @param productId
+     * @return
+     */
+    @Override
+    public ProductExecution updateStatusProduct(Integer productId,Integer enableStatus) {
+        //创建商品
+        Product product = new Product();
+        product.setProductId(productId);
+        //设置商品状态
+        product.setEnableStatus(enableStatus);
+        //进行修改
+        try {
+            productMapper.updateByPrimaryKeySelective(product);
+            return new ProductExecution(ProductStateEnum.SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ProductExecution(ProductStateEnum.INNER_ERROR);
+        }
+    }
+
+    /**
+     * 删除商品
+     * @param productId
+     * @return
+     */
+    @Override
+    public ProductExecution deleteProduct(Integer productId) {
+        try {
+            productMapper.deleteByPrimaryKey(productId);
+            return new ProductExecution(ProductStateEnum.SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ProductExecution(ProductStateEnum.INNER_ERROR);
+        }
     }
 }

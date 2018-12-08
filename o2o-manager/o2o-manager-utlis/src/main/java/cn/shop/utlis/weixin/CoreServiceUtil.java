@@ -111,7 +111,7 @@ public class CoreServiceUtil {
 			}
 			textMessage.setContent(respContent);
 		} catch (Exception e) {
-			e.printStackTrace();
+			/*e.printStackTrace();*/
 		}
 
 		return textMessage;

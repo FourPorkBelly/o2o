@@ -266,7 +266,7 @@ public class ProductController {
     }
 
     /**
-     * 下架
+     * 删除商品
      * @param productId
      * @return
      */
@@ -274,10 +274,39 @@ public class ProductController {
     @ResponseBody
     public Map<String,Object> deleteProduct(Integer productId){
         Map<String,Object> map = new HashMap<>();
+        //判断要删除的商品是否存在
         if(isProductId(productId)){
 
         }else{
+            map.put("success", false);
+            map.put("errMsg", "该商品不存在");
+        }
+        return map;
+    }
 
+    /**
+     * 上下架
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("statusproduct")
+    public Map<String,Object> statusProduct(Integer productId,Integer enableStatus){
+        Map<String,Object> map = new HashMap<>();
+        //判断要下架的商品是否存在
+        if(isProductId(productId)){
+            ProductExecution execution = productService.updateStatusProduct(productId, enableStatus);
+            if(execution.getState()==ProductStateEnum.SUCCESS.getState()){
+                //操作成功
+                map.put("success", true);
+                map.put("errMsg",ProductStateEnum.SUCCESS.getStateInfo());
+            }else{
+                //操作失败
+                map.put("success", true);
+                map.put("errMsg",ProductStateEnum.INNER_ERROR.getStateInfo());
+            }
+        }else{
+            map.put("success", false);
+            map.put("errMsg", "该商品不存在");
         }
         return map;
     }

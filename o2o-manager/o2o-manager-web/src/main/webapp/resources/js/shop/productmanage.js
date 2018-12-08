@@ -3,7 +3,7 @@ $(function() {
 	var listUrl = '/product/queryProduct?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
 	var deleteUrl = '/product/deleteproduct';
-
+	var statusproduct = '/product/statusproduct';
 	function getList() {
 		$.getJSON(listUrl, function(data) {
 			if (data.success) {
@@ -54,8 +54,34 @@ $(function() {
 	}
 
 	getList();
+	/* 上下架 */
+    function sproduct(id, enableStatus) {
+        var product = {};
+        $.confirm('确定么?', function() {
+            $.ajax({
+                url : statusproduct,
+                type : 'POST',
+                data : {
+                    productId : id,
+                    statusChange : true,
+                    enableStatus:enableStatus
+                },
+                dataType : 'json',
+                success : function(data) {
+                    if (data.success) {
+                        $.toast('操作成功！');
+                        getList();
+                    } else {
+                        $.toast('操作失败！');
+                    }
+                }
+            });
+        });
+    }
 
+	/* 删除 */
 	function deleteItem(id, enableStatus) {
+		alert("删除")
 		var product = {};
 		product.productId = id;
 		product.enableStatus = enableStatus;
@@ -86,14 +112,17 @@ $(function() {
 					'a',
 					function(e) {
 						var target = $(e.currentTarget);
+						//编辑
 						if (target.hasClass('edit')) {
 							window.location.href = '/shop/productedit?productId='
 									+ e.currentTarget.dataset.id;
+							//上下架
 						} else if (target.hasClass('delete')) {
-							deleteItem(e.currentTarget.dataset.id,
+                            sproduct(e.currentTarget.dataset.id,
 									e.currentTarget.dataset.status);
+                            //预览
 						} else if (target.hasClass('preview')) {
-							window.location.href = '/frontend/productdetail?productId='
+							window.location.href = '/frontend/productdetail?isproductgo=1&productId='
 									+ e.currentTarget.dataset.id;
 						}
 					});
