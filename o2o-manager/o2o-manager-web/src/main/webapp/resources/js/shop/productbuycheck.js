@@ -1,5 +1,5 @@
 $(function() {
-    var shopId = 1;
+    var shopId = getQueryString("shopId");
     var productName = '';
 
     function getList() {

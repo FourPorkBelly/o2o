@@ -8,7 +8,7 @@
     <result column="shop_id" jdbcType="INTEGER" property="shopId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="point" jdbcType="INTEGER" property="point" />
   </resultMap>
 <!-- 多表查询 -->

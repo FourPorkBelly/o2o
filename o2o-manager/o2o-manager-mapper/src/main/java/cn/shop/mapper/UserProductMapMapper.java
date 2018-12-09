@@ -24,6 +24,12 @@ public interface UserProductMapMapper {
 
     UserProductMap selectByPrimaryKeyWhitPersonInfoProductShop(Integer userProductId);
 
+   /* UserProductMap selectGroupByProductId(@Param("shopId")Integer shopId);
+
+    UserProductMap selectGroupByCreateTime(@Param("shopId")Integer shopId);
+
+    UserProductMap selectByProduct(UserProductMap userProductMap);*/
+
     int updateByExampleSelective(@Param("record") UserProductMap record, @Param("example") UserProductMapExample example);
 
     int updateByExample(@Param("record") UserProductMap record, @Param("example") UserProductMapExample example);
