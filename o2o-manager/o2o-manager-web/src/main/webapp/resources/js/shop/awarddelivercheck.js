@@ -1,9 +1,9 @@
 $(function() {
-	var shopId = 1;
+    var shopId = getQueryString("shopId");
 	var awardName = '';
 
 	function getList() {
-		var listUrl = '/myo2o/shop/listuserawardmapsbyshop?pageIndex=1&pageSize=9999&shopId='
+		var listUrl = '/shop/listuserawardmapsbyshop?pageIndex=1&pageSize=9999&shopId='
 				+ shopId + '&awardName=' + awardName;
 		$.getJSON(listUrl, function(data) {
 			if (data.success) {
@@ -14,7 +14,7 @@ $(function() {
 							+ '<div class="col-33">' + item.awardName
 							+ '</div>'
 							+ '<div class="col-33 awarddeliver-time">'
-							+ new Date(item.createTime).Format("yyyy-MM-dd HH:mm:ss")
+							+ new Date(item.createTime).Format("yyyy-MM-dd")
 							+ '</div>' + '<div class="col-33">' + item.userName
 							+ '</div>' + '</div>';
 				});

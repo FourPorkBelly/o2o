@@ -15,7 +15,7 @@ public interface ShopAuthMapService {
      * @param pageSize
      * @return
      */
-    ShopAuthMapExecution getShopAuthMapList(Integer shopId,Integer pageIndex,Integer pageSize);
+    ShopAuthMapExecution getShopAuthMapList(Integer shopId,Integer pageIndex,Integer pageSize,Integer userId);
 
     /**
      * 根据shopAuthId返回对应的授权信息

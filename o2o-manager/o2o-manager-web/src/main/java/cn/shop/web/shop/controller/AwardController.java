@@ -2,6 +2,7 @@ package cn.shop.web.shop.controller;
 
 import cn.shop.dto.AwardExecution;
 import cn.shop.enums.AwardStateEnum;
+import cn.shop.enums.ShopStateEnum;
 import cn.shop.pojo.Award;
 import cn.shop.pojo.Shop;
 import cn.shop.shop.service.AwardService;
@@ -181,6 +182,7 @@ public class AwardController {
         }
         return map;
     }
+
 
     /**
      * 根据awardId判断是否存在

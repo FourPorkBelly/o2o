@@ -1,5 +1,6 @@
 package cn.shop.mapper;
 
+import cn.shop.pojo.Shop;
 import cn.shop.pojo.UserProductMap;
 import cn.shop.pojo.UserProductMapExample;
 import java.util.List;
@@ -17,6 +18,8 @@ public interface UserProductMapMapper {
     int insertSelective(UserProductMap record);
 
     List<UserProductMap> selectByExample(UserProductMapExample example);
+
+    List<UserProductMap> selectByShopIdConcat(@Param("shopId") Integer shopId,@Param("cxtj") String cxtj);
 
     List<UserProductMap> selectByExampleWhitPersonInfoProductShop(UserProductMapExample example);
 

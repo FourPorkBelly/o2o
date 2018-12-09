@@ -31,4 +31,6 @@ public class Award {
     private Integer enableStatus;
 
     private Integer shopId;
+
+    private PersonInfo personInfo;
 }

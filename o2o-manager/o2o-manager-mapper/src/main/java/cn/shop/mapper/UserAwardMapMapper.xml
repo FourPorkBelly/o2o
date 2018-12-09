@@ -130,6 +130,18 @@
       order by ${orderByClause}
     </if>
   </select>
+  <!-- 条件查询 -->
+  <select id="selectByShopIdAndAwardName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_user_award_map where shop_id=${shopId}
+    <if test=" awardName != null">
+      and concat(user_name,award_name) like '%${awardName}%'
+    </if>
+    order by create_time desc
+  </select>
+
+
 
 <!-- 查询多张表的数据selectByExampleWithPersonInfoAwardShop -->
   <select id="selectByExampleWithPersonInfoAwardShop" parameterType="cn.shop.pojo.UserAwardMapExample" resultMap="BaseResultMapWithPersonInfoAwardShop">

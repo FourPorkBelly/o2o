@@ -30,7 +30,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
      * @return
      */
     @Override
-    public ShopAuthMapExecution getShopAuthMapList(Integer shopId, Integer pageIndex, Integer pageSize) {
+    public ShopAuthMapExecution getShopAuthMapList(Integer shopId, Integer pageIndex, Integer pageSize,Integer userId) {
         //添加分页信息
         PageHelper.startPage(pageIndex,pageSize);
         //返回值
@@ -40,6 +40,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
         ShopAuthMapExample.Criteria criteria = example.createCriteria();
         //根据shopid进行查询
         criteria.andShopIdEqualTo(shopId);
+        criteria.andEmployeeIdNotEqualTo(userId);
         List<ShopAuthMap> list = shopAuthMapMapper.selectByExampleWithPersonInfoShop(example);
         //判断返回结果是否为空
         if(list==null&&list.size()==0){

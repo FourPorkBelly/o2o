@@ -20,7 +20,10 @@ public interface UserAwardMapMapper {
 
     List<UserAwardMap> selectByExampleWithPersonInfoAwardShop(UserAwardMapExample example);
 
+    List<UserAwardMap> selectByShopIdAndAwardName(@Param("shopId") Integer shopId,@Param("awardName") String awardName);
+
     UserAwardMap selectByPrimaryKeyWithPersonInfoAwardShop(Integer userAwardId);
+
     UserAwardMap selectByPrimaryKey(Integer userAwardId);
 
     int updateByExampleSelective(@Param("record") UserAwardMap record, @Param("example") UserAwardMapExample example);

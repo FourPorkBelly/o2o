@@ -18,6 +18,8 @@ public interface AwardMapper {
 
     List<Award> selectByExample(AwardExample example);
 
+    List<Award> selectByExampleWithUser(AwardExample example);
+
     Award selectByPrimaryKey(Integer awardId);
 
     int updateByExampleSelective(@Param("record") Award record, @Param("example") AwardExample example);

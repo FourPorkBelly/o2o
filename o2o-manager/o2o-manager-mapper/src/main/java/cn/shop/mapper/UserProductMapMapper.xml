@@ -126,6 +126,18 @@
     </if>
   </select>
 
+  <select id="selectByShopIdConcat" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_user_product_map
+    where shop_id=${shopId}
+    <if test="cxtj != null">
+     and concat(user_name,product_name) like '%${cxtj}%'
+    </if>
+    order by create_time asc
+  </select>
+
+
   <!-- 查询多表 selectByExampleWhitPersonInfoProductShop -->
   <select id="selectByExampleWhitPersonInfoProductShop" parameterType="cn.shop.pojo.UserProductMapExample" resultMap="BaseResultMapWhitPersonInfoProductShop">
     select

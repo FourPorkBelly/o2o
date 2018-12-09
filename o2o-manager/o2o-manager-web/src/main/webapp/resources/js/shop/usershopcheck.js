@@ -1,9 +1,12 @@
 $(function() {
-    var shopId = 1;
+    var shopId = getQueryString("shopId");
     var userName = '';
-
+    $("a").each(function (i,e) {
+        var url = $(e).attr("href");
+        $(e).attr("href",url+"?shopId="+shopId);
+    })
     function getList() {
-        var listUrl = '/myo2o/shop/listusershopmapsbyshop?pageIndex=1&pageSize=9999&shopId=' + shopId + '&userName=' + userName;
+        var listUrl = '/shop/listusershopmapsbyshop?pageIndex=1&pageSize=9999&shopId=' + shopId + '&userName=' + userName;
         $.getJSON(listUrl, function (data) {
             if (data.success) {
                 var userShopMapList = data.userShopMapList;

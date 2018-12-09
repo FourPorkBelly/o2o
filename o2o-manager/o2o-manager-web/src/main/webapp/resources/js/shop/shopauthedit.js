@@ -1,5 +1,6 @@
 $(function() {
 	var shopAuthId = getQueryString('shopauthId');
+    var shopId = getQueryString('shopId');
 	var infoUrl = '/shop/getshopauthmapbyid?shopAuthId=' + shopAuthId;
 
 	var shopAuthPostUrl = '/shop/modifyshopauthmap';
@@ -9,12 +10,16 @@ $(function() {
 		alert('用户不存在！');
 		window.location.href = '/shop/shopmanage';
 	}
-
+    $("a").each(function (i,e) {
+        var url = $(e).attr("href");
+        $(e).attr("href",url+"?shopId="+shopId);
+    })
 	function getInfo(id) {
 		$.getJSON(infoUrl, function(data) {
 			if (data.success) {
 				var shopAuthMap = data.shopAuthMap;
 				$('#shopauth-name').val(shopAuthMap.name);
+                $('#shopauth-name').attr("disabled","disabled");
 				$('#title').val(shopAuthMap.title);
 			}
 		});

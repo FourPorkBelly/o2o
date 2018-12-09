@@ -1,5 +1,6 @@
 package cn.shop.shop.service;
 
+import cn.shop.dto.UserProductMapExecution;
 import cn.shop.pojo.UserProductMap;
 
 import java.util.Map;
@@ -11,5 +12,6 @@ import java.util.Map;
  */
 public interface UserProductMapService {
 
-    Map<String,Object> getUserProductMapByShopId(UserProductMap userProductMap);
+    Map<String,Object> getUserProductMapByShopId(Integer ShopId,String cxtj);
+    UserProductMapExecution getUserProductMap(Integer ShopId);
 }

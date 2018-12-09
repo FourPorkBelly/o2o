@@ -2,7 +2,10 @@ $(function() {
     var shopId = getQueryString('shopId');
     var listUrl = '/shop/listshopauthmapsbyshop?pageIndex=1&pageSize=9999&shopId=' + shopId;
     var deleteUrl = '/shop/removeshopauthmap';
-
+    $("a").each(function (i,e) {
+        var url = $(e).attr("href");
+        $(e).attr("href",url+"?shopId="+shopId);
+    })
     function getList() {
         $.getJSON(listUrl, function (data) {
             if (data.success) {
@@ -12,7 +15,7 @@ $(function() {
                     tempHtml += ''
                          +      '<div class="row row-shopauth">'
                          +          '<div class="col-40">'+ item.employee.name +'</div>'
-                         +          '<div class="col-20">'+ item.employee.title +'</div>'
+                         +          '<div class="col-20">'+ item.title +'</div>'
                          +          '<div class="col-40">'
                          +              '<a href="#" class="edit" data-employee-id="'+ item.employeeId +'" data-auth-id="'+ item.shopAuthId +'" data-status="'+ item.enableStatus +'">编辑</a>'
                          +              '<a href="#" class="delete" data-employee-id="'+ item.employeeId +'" data-auth-id="'+ item.shopAuthId +'" data-status="'+ item.enableStatus +'">删除</a>'

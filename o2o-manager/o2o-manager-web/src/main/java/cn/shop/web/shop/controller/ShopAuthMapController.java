@@ -1,6 +1,7 @@
 package cn.shop.web.shop.controller;
 
 import cn.shop.dto.ShopAuthMapExecution;
+import cn.shop.pojo.PersonInfo;
 import cn.shop.pojo.Shop;
 import cn.shop.pojo.ShopAuthMap;
 import cn.shop.shop.service.ShopAuthMapService;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +27,8 @@ public class ShopAuthMapController {
     ShopAuthMapService shopAuthMapService;
     @Autowired
     HttpSession session;
+    @Autowired
+    private HttpServletRequest request;
     /**
      * 根据商铺id分页显示该店铺的授权信息
      * @param shopId
@@ -40,11 +45,15 @@ public class ShopAuthMapController {
         Shop currentShop = (Shop) session.getAttribute("currentShop");
         //空值判断
         if(currentShop!=null&&currentShop.getShopId()!=null){
+            //從session中取出用戶信息
+            PersonInfo user = (PersonInfo) session.getAttribute("user");
             //分页取出该店铺下的信息列表
-            ShopAuthMapExecution se = shopAuthMapService.getShopAuthMapList(currentShop.getShopId(),pageIndex,pageSize);
+            ShopAuthMapExecution se = shopAuthMapService.getShopAuthMapList(currentShop.getShopId(),pageIndex,pageSize,user.getUserId());
             for (ShopAuthMap shopAuthMap : se.getShopAuthMapList()) {
                 System.out.println(shopAuthMap);
             }
+            //查出的結果存入session
+            session.setAttribute("shopAuthMapList",se.getShopAuthMapList());
             map.put("shopAuthMapList",se.getShopAuthMapList());
             map.put("count",se.getCount());
             map.put("success",true);
@@ -64,18 +73,34 @@ public class ShopAuthMapController {
     @RequestMapping("/getshopauthmapbyid")
     public Map<String,Object> getShopAuthMapById(Integer shopAuthId){
         Map<String,Object> map = new HashMap<>();
-        //非空判断
-        if (shopAuthId!=null&&shopAuthId>=0) {
-            //根据前台传入的shopAuthId查找对应的授权信息
-            ShopAuthMap shopAuthMap = shopAuthMapService.getShopAuthMapById(shopAuthId);
-            System.out.println(shopAuthMap);
-            map.put("shopAuthMap",shopAuthMap);
-            map.put("success",true);
-        }else{
+        if(isShopAuthMapById(shopAuthId)){
+            //非空判断
+            if (shopAuthId!=null&&shopAuthId>=0) {
+                //根据前台传入的shopAuthId查找对应的授权信息
+                ShopAuthMap shopAuthMap = shopAuthMapService.getShopAuthMapById(shopAuthId);
+                //將信息存入session中
+                session.setAttribute("shopAuthMap",shopAuthMap);
+                map.put("shopAuthMap",shopAuthMap);
+                map.put("success",true);
+            }else{
+                map.put("success",false);
+                map.put("errMsg","传入类型错误");
+            }
+        }else {
             map.put("success",false);
             map.put("errMsg","传入类型错误");
         }
         return map;
     }
 
+    private boolean isShopAuthMapById(Integer shopAuthId){
+        //從session中獲取shopAuthMapList
+        List<ShopAuthMap> shopAuthMapList = (List<ShopAuthMap>) session.getAttribute("shopAuthMapList");
+        for (ShopAuthMap shopAuthMap : shopAuthMapList) {
+            if (shopAuthMap.getShopAuthId()==shopAuthId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

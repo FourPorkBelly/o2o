@@ -126,10 +126,6 @@
   <sql id="Base_Column_ListWithPersonInfoShop">
        sam.shop_auth_id,sam.employee_id,sam.shop_id,sam.name,sam.title,sam.title_flag,sam.create_time,
        sam.last_edit_time,sam.last_edit_time,sam.enable_status,
-       s.shop_id shop_ids,s.owner_id owner_ids,s.area_id area_ids,s.shop_category_id shop_category_ids,
-       s.parent_category_id parent_category_ids,s.shop_name shop_names,s.shop_desc shop_descs,s.shop_addr shop_addrs,
-       s.phone phones,s.shop_img shop_imgs,s.longitude longitudes,s.latitude latitudes,s.priority prioritys,
-       s.create_time create_times,s.last_edit_time last_edit_times,s.enable_status enable_statuss,s.advice advices,
        p.user_id user_idp,p.name namep,p.birthday birthdayp,p.gender genderp,p.phone phonep,p.email email,
        p.profile_img profile_imgp,p.customer_flag customer_flagp,p.shop_owner_flag shop_owner_flagp,
        p.admin_flag admin_flagp,p.create_time create_timep,p.last_edit_time last_edit_timep,p.enable_status enable_statusp
@@ -155,7 +151,7 @@
       distinct
     </if>
     <include refid="Base_Column_ListWithPersonInfoShop" />
-    from tb_shop_auth_map sam inner join tb_shop s on sam.shop_id = s.shop_id
+    from tb_shop_auth_map sam
     inner join tb_person_info p on sam.employee_id = p.user_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -167,7 +163,7 @@
 
   <select id="selectByPrimaryKeyWithPersonInfoShop" parameterType="java.lang.Integer" resultMap="BaseResultMapWithPersonInfoShop">
     select
-    <include refid="Base_Column_ListWithPersonInfoShop" />
+    <include refid="Base_Column_List" />
     from tb_shop_auth_map
     where shop_auth_id = #{shopAuthId,jdbcType=INTEGER}
   </select>
