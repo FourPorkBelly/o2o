@@ -123,7 +123,6 @@ public class LocalAuthController {
     @RequestMapping(value = "/queryPersonList",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
     @ResponseBody
     public String queryPerson(String name, int page,int limit){
-        System.out.println(name+"name");
         response.setContentType("text/html;charset=utf-8");
         PersonInfo personInfo=new PersonInfo();
         if (name!=null){

@@ -44,7 +44,6 @@ public class ShopCMSController {
         shops.setShopName(shopName);
         shops.setEnableStatus(1);
         response.setContentType("text/html;charset=utf-8");
-        System.out.println(shops.getShopName()+"--------------------------------------商铺名字");
         ShopExecution shopExecution=shopServicecms.queryShopList(shops,page, limit);
         List<Shop> shopList=shopExecution.getShopList();
         JSONArray jsonArray = new JSONArray();
@@ -64,7 +63,6 @@ public class ShopCMSController {
         int count=shopExecution.getCount();
         String jso="{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+jsonArray.toString()+"}";
 
-        System.out.println(jso);
         return jso;
     }
 
@@ -83,7 +81,6 @@ public class ShopCMSController {
         shops.setShopName(shopName);
         shops.setEnableStatus(0);
         response.setContentType("text/html;charset=utf-8");
-        System.out.println(shops.getShopName()+"--------------------------------------商铺名字");
         ShopExecution shopExecution=shopServicecms.queryShopList(shops,page, limit);
         List<Shop> shopList=shopExecution.getShopList();
         JSONArray jsonArray = new JSONArray();
@@ -103,7 +100,6 @@ public class ShopCMSController {
         int count=shopExecution.getCount();
         String jso="{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+jsonArray.toString()+"}";
 
-        System.out.println(jso);
         return jso;
     }
 

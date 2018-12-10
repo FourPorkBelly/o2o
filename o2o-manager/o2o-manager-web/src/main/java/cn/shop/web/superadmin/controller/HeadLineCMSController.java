@@ -56,7 +56,6 @@ public class HeadLineCMSController {
             object.put("lastEditTime",formatter.format(aeadLine.getLastEditTime()));
 //            将jsonobject对象放入jsonarray
             jsonArray.add(object);
-            System.out.println(object.get("lineName"));
         }
         String jso="{\"code\":0,\"msg\":\"\",\"count\":"+list.size()+",\"data\":"+jsonArray.toString()+"}";
         return jso;
