@@ -28,9 +28,14 @@ public class ShopCMSController {
     private ShopServicecms shopServicecms;
     @Autowired
     HttpServletResponse response;
+
     /**
      * 查询审核过的商铺
+     * @param shopName
+     * @param page
+     * @param limit
      * @return
+     * @throws IOException
      */
     @ResponseBody
     @RequestMapping(value = "/queryShopList",method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
@@ -39,7 +44,6 @@ public class ShopCMSController {
         shops.setShopName(shopName);
         shops.setEnableStatus(1);
         response.setContentType("text/html;charset=utf-8");
-        System.out.println(shops.getShopName()+"--------------------------------------商铺名字");
         ShopExecution shopExecution=shopServicecms.queryShopList(shops,page, limit);
         List<Shop> shopList=shopExecution.getShopList();
         JSONArray jsonArray = new JSONArray();
@@ -59,12 +63,16 @@ public class ShopCMSController {
         int count=shopExecution.getCount();
         String jso="{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+jsonArray.toString()+"}";
 
-        System.out.println(jso);
         return jso;
     }
+
     /**
      * 查询未审核过的商铺
+     * @param shopName
+     * @param page
+     * @param limit
      * @return
+     * @throws IOException
      */
     @ResponseBody
     @RequestMapping(value = "/queryAuditShopList",method = RequestMethod.GET,produces = "text/html;charset=UTF-8" )
@@ -73,7 +81,6 @@ public class ShopCMSController {
         shops.setShopName(shopName);
         shops.setEnableStatus(0);
         response.setContentType("text/html;charset=utf-8");
-        System.out.println(shops.getShopName()+"--------------------------------------商铺名字");
         ShopExecution shopExecution=shopServicecms.queryShopList(shops,page, limit);
         List<Shop> shopList=shopExecution.getShopList();
         JSONArray jsonArray = new JSONArray();
@@ -93,7 +100,6 @@ public class ShopCMSController {
         int count=shopExecution.getCount();
         String jso="{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+jsonArray.toString()+"}";
 
-        System.out.println(jso);
         return jso;
     }
 
@@ -105,10 +111,15 @@ public class ShopCMSController {
     @ResponseBody
     @RequestMapping(value = "/passShop",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
     public String passShop(@RequestParam(value = "shopId") int shopid){
+//        建立商铺对象shop
         Shop shop =new Shop();
+//        将shopid给到shop
         shop.setShopId(shopid);
+//        将店铺状态设为1 通过
         shop.setEnableStatus(1);
+//        返回执行结果rs
         int rs=shopServicecms.passShop(shop);
+//        如果结果大于0则返回成功
         if (rs>0){
             return "y";
         }
@@ -123,10 +134,15 @@ public class ShopCMSController {
     @ResponseBody
     @RequestMapping(value = "/unpassShop",method = RequestMethod.GET,produces={"application/json;charset=utf-8"})
     public String unpassShop(@RequestParam(value = "shopId") int shopid){
+//        建立商铺对象shop
         Shop shop =new Shop();
+//        将shopid给到shop
         shop.setShopId(shopid);
+//        将店铺状态设为-1 不通过
         shop.setEnableStatus(-1);
+//        返回执行结果rs
         int rs=shopServicecms.passShop(shop);
+//        如果返回结果大于0则执行操作成功
         if (rs>0){
             return "y";
         }

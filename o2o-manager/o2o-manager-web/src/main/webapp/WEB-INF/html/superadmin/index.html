@@ -50,32 +50,34 @@
                         <dd>
                             <a href="javascript:;" data-url="auditshop.html" data-icon="fa-user" data-title="店铺审核" kit-target data-id='2'><i class="fa fa-user" aria-hidden="true"></i><span> 店铺审核</span></a>
                         </dd>
-                        <dd>
-                            <a href="javascript:;" data-url="nav.html" data-icon="&#xe628;" data-title="导航栏" kit-target data-id='3'><i class="layui-icon">&#xe628;</i><span> 导航栏</span></a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;" data-url="list4.html" data-icon="&#xe614;" data-title="列表四" kit-target data-id='4'><i class="layui-icon">&#xe614;</i><span> 列表四</span></a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;" kit-target data-options="{url:'https://www.baidu.com',icon:'&#xe658;',title:'百度一下',id:'5'}"><i class="layui-icon">&#xe658;</i><span> 百度一下</span></a>
-                        </dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span> 用户管理</span></a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" kit-target data-options="{url:'person.html',icon:'&#xe658;',title:'用户列表',id:'6'}"><i class="layui-icon">&#xe658;</i><span> 用户列表</span></a></dd>
-                        <dd><a href="javascript:;" kit-target data-options="{url:'tab.html',icon:'&#xe658;',title:'TAB',id:'7'}"><i class="layui-icon">&#xe658;</i><span> Tab</span></a></dd>
-                        <dd><a href="javascript:;" kit-target data-options="{url:'onelevel.html',icon:'&#xe658;',title:'OneLevel',id:'50'}"><i class="layui-icon">&#xe658;</i><span> OneLevel</span></a></dd>
-                        <dd><a href="javascript:;" kit-target data-options="{url:'app.html',icon:'&#xe658;',title:'App',id:'8'}"><i class="layui-icon">&#xe658;</i><span> app.js主入口</span></a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" data-url="/components/table/table.html" data-name="table" kit-loader><i class="fa fa-plug" aria-hidden="true"></i><span> 表格(page)</span></a>
+                    <a class="" href="javascript:;"><i class="fa fa-plug" aria-hidden="true"></i><span> 首页管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" kit-target data-options="{url:'shopcategory',icon:'&#xe6c6;',title:'一级类别',id:'3'}">
+                                <i class="layui-icon">&#xe6c6;</i><span> 商铺一级类别管理</span></a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" kit-target data-options="{url:'shopcategory2',icon:'&#xe6c6;',title:'二级类别',id:'4'}">
+                                <i class="layui-icon">&#xe6c6;</i><span> 商铺二级类别管理</span></a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" kit-target data-options="{url:'head-line',icon:'&#xe6c6;',title:'头条管理',id:'9'}">
+                                <i class="layui-icon">&#xe6c6;</i><span> 头条管理</span></a>
+                        </dd>
+                    </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" data-url="/views/form.html" data-name="form" kit-loader><i class="fa fa-plug" aria-hidden="true"></i><span> 表单(page)</span></a>
-                </li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a href="javascript:;" data-url="/views/form.html" data-name="form" kit-loader><i class="fa fa-plug" aria-hidden="true"></i><span> 表单(page)</span></a>-->
+                <!--</li>-->
             </ul>
         </div>
     </div>
@@ -87,7 +89,7 @@
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         2018 &copy;
-        <a href="http://kit.zhengjinfan.cn/">kit.zhengjinfan.cn/</a> MIT license
+        <a href="http://kit.zhengjinfan.cn/"></a>
 
     </div>
 </div>
@@ -105,7 +107,7 @@
             dataType : "json",
             success : function(result) {
                 if (result.msg=="success") {
-                document.getElementById("pay").innerHTML=result.userName;
+                document.getElementById("pay").innerHTML="欢迎管理员："+result.userName;
                 document.getElementById("img").src = result.img;
                 }else if (result.msg=="n"){
                     alert("請求失敗,请登录");
