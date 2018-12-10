@@ -3,8 +3,10 @@ package cn.shop.web.superadmin.controller;
 import cn.shop.cms.service.LocalService;
 import cn.shop.dto.PersonInfoExecution;
 import cn.shop.mapper.PersonInfoMapper;
+import cn.shop.mapper.ShopMapper;
 import cn.shop.pojo.LocalAuth;
 import cn.shop.pojo.PersonInfo;
+import cn.shop.pojo.Shop;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,28 +35,33 @@ public class LocalAuthController {
     @Autowired
     private PersonInfoMapper personInfoMapper;
     @Autowired
+    private ShopMapper shopMapper;
+    @Autowired
     HttpServletRequest request;
     @Autowired
     HttpServletResponse response;
 
     /**
      * 管理员登录
+     * @param localAuth
+     * @return
      */
     @ResponseBody
     @RequestMapping(value = "/loginAdmin",method = RequestMethod.POST)
     public Map<String,Object> adminLogin(LocalAuth localAuth){
         Map<String,Object> map = new HashMap<>();
+//        接收对象如果不为空执行登录
         if (localAuth!=null){
+//            执行查询结果
             LocalAuth user=localService.login(localAuth);
-
+//            如果查询结果不为空则登录成功
             if (user!=null){
-                System.out.println(user.getPassword()+user.getUserName());
-                System.out.println("成功");
+//                登录成功后将管理员对象存入session以及map
                 request.getSession().setAttribute("user",user);
                 map.put("user",user);
+//                返回执行信息
                 map.put("msg","yes");
             }else {
-                System.out.println("登录失败");
                 map.put("msg","n");
             }
         }
@@ -71,15 +78,17 @@ public class LocalAuthController {
         Map<String,Object> map=new HashMap<>();
 //        从session得到登录的账号
         LocalAuth user=(LocalAuth)request.getSession().getAttribute("user");
-        String loginName=null;
+        String loginName="";
         if (user!=null){
             loginName=user.getUserName();
-            //        得到用户对象
+            //得到用户对象
             PersonInfo personInfo = personInfoMapper.selectByPrimaryKey(user.getUserId());
+
             try {
 //            将账号名，用户头像放入map
                 map.put("msg","success");
                 map.put("userName",loginName);
+
                 map.put("img",personInfo.getProfileImg());
             }catch (Exception e){
                 map.put("msg","n");
@@ -100,6 +109,7 @@ public class LocalAuthController {
      */
     @RequestMapping(value = "/outLogin")
     public String outLogin(){
+//        从session移除user
         request.getSession().removeAttribute("user");
         return "/superadmin/login";
     }

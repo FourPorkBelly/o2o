@@ -17,7 +17,7 @@
 <!--<ul class="flow-default" id="flow"></ul>-->
 <!--111111-->
 <script type="text/javascript" src="../resources/js/xadmin.js"></script>
-<script type="text/html" id="barDemo">
+<script type="text/html" id="Demo">
     <a title="编辑" lay-event="update"   href="javascript:;">
         <i class="layui-icon">&#xe642;</i>
     </a>
@@ -66,20 +66,20 @@
         $('td div img').attr('style','max-width:70px;display:block!important');
     }
     layui.use('table',function (){
-        var weburl='/shopcate/queryshopcate2';
+        var weburl='/headline/queryHeadLine';
         var table = layui.table;
         table.render({
             elem: '#test'
             ,url:weburl
             ,method:'get'
-            ,title:'店铺表'
+            ,title:'头条表'
             ,cols: [[
-                {field:'shopCategoryId', title: '商铺类别ID', width:80,  fixed: true}
-                ,{field:'shopCategoryName', title: '类别名称', width:100, fixed: true}
-                ,{field:'shopCategoryImg',title:'类别图片',width:120,fixed:'left',templet:'<div class="layer-photos-demo" onclick=""><img src="{{ d.shopCategoryImg}}"></div>'}
+                {field:'lineId', title: '头条id', width:80,  fixed: true}
+                ,{field:'lineName', title: '头条名称', width:100, fixed: true}
+                ,{field:'lineImg',title:'类别图片',width:120,fixed:'left',templet:'<div class="layer-photos-demo" onclick=""><img src="{{d.lineImg}}"></div>'}
                 ,{field:'priority', title: '权重', width:70, fixed: true}
                 ,{field:'lastEditTime', title: '最后修改时间', width:170, fixed: true}
-                ,{field:'update', title: '修改', toolbar: '#barDemo', width:70, fixed: true}
+                ,{field:'update', title: '修改', toolbar: '#Demo', width:70, fixed: true}
             ]]
             ,id: 'testReload'
             ,page: true
@@ -97,7 +97,7 @@
 
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            x_admin_show("修改商铺类别","/shopcate/getShopCategoryById?shopCategoryId="+data.shopCategoryId,600,500);
+            x_admin_show("修改商铺类别","/headline/getAeadLineById?headLineId="+data.lineId,600,500);
         });
 
     } );

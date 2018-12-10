@@ -7,6 +7,7 @@ import cn.shop.enums.PersonInfoStateEnum;
 import cn.shop.enums.ShopStateEnum;
 import cn.shop.mapper.LocalAuthMapper;
 import cn.shop.mapper.PersonInfoMapper;
+import cn.shop.mapper.ShopMapper;
 import cn.shop.pojo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +26,8 @@ public class LocalServiceImpl implements LocalService {
     private LocalAuthMapper localAuthMapper;
     @Autowired
     private PersonInfoMapper personInfoMapper;
+    @Autowired
+    private ShopMapper shopMapper;
     /**
      * 管理员登录
      * @param localAuth
@@ -78,6 +81,11 @@ public class LocalServiceImpl implements LocalService {
         return personInfoMapper.updateByPrimaryKeySelective(personInfo);
     }
 
+    /**
+     * 得到用户状态
+     * @param userid
+     * @return
+     */
     @Override
     public int getUserEnable(int userid) {
         PersonInfo demo=personInfoMapper.selectByPrimaryKey(userid);
@@ -86,4 +94,15 @@ public class LocalServiceImpl implements LocalService {
         }
         return 0;
     }
+
+    @Override
+    public int getUserCount() {
+        return personInfoMapper.selectByExample(null).size();
+    }
+
+    @Override
+    public int getShopCount() {
+        return shopMapper.selectByExample(null).size();
+    }
+
 }

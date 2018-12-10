@@ -21,21 +21,33 @@ import java.util.List;
 public class ShopcategoryServiceImpl implements ShopcategoryService {
     @Autowired
     private ShopCategoryMapper shopCategoryMapper;
-    //获取一级商铺类别
+
+    /**
+     * 得到以及商铺类别
+     * @return
+     */
     @Override
     public List<ShopCategory> getShopCategoryList() {
         ShopCategoryExample example = new ShopCategoryExample();
         ShopCategoryExample.Criteria criteria = example.createCriteria();
+        //        查询ParentId为空的ShopCategory
         criteria.andParentIdIsNull();
         return shopCategoryMapper.selectByExample(example);
     }
-    //获取二级商铺类别
+    /**
+     * 得到二级商铺类别
+     * @param page
+     * @param limit
+     * @return
+     */
     @Override
     public ShopCategoryExecution getShopCategoryList2(int page,int limit) {
         ShopCategoryExecution execution=new ShopCategoryExecution();
         ShopCategoryExample example = new ShopCategoryExample();
         ShopCategoryExample.Criteria criteria = example.createCriteria();
+//        查询ParentId不为空的ShopCategory
         criteria.andParentIdIsNotNull();
+//        分页
         PageHelper.startPage(page,limit);
         List<ShopCategory> list = shopCategoryMapper.selectByExample(example);
         PageInfo pageInfo = new PageInfo(list);
@@ -48,15 +60,26 @@ public class ShopcategoryServiceImpl implements ShopcategoryService {
         return execution;
     }
 
+    /**
+     * 根据商铺类别id获取商铺类别对象
+     * @param shopCategoryId
+     * @return
+     */
     @Override
     public ShopCategory getShopCategoryById(int shopCategoryId) {
         ShopCategory shopCategory = shopCategoryMapper.selectByPrimaryKey(shopCategoryId);
+//        如果商铺查询的类别不为空则返回shopCategory对象
         if (shopCategory!=null){
             return shopCategory;
         }
         return null;
     }
 
+    /**
+     * 修改商铺类别信息
+     * @param shopCategory
+     * @return
+     */
     @Override
     public int updateShopCategory(ShopCategory shopCategory) {
         int i = shopCategoryMapper.updateByPrimaryKeySelective(shopCategory);

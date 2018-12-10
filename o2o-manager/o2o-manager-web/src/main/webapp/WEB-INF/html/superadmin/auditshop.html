@@ -9,10 +9,10 @@
 </head>
 
 <body>
-<div class="x-nav">
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
+<!--<div class="x-nav">-->
+    <!--<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">-->
+        <!--<i class="layui-icon" style="line-height:30px">ဂ</i></a>-->
+<!--</div>-->
 <br/>
 <div class="demoTable">
     搜索店铺名：
@@ -91,7 +91,8 @@
 
                             if(data=="y"){
                                 layer.msg("操作成功", {icon: 5});
-                                // obj.del();
+                                window.parent.location.reload();
+                                parent.layer.closeAll('iframe');
                                 layer.close(index);
                             }else{
                                 layer.msg("操作失败", {icon: 5});

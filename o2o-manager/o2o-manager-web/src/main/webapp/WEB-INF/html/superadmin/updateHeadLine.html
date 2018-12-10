@@ -10,19 +10,19 @@
 </head>
 <body>
 <form class="layui-form" id="form" action="" >
-    <input type="hidden" name="shopCategoryId" id="shopCategoryId">
+    <input type="hidden" name="lineId" id="shopCategoryId">
     <div class="layui-form-item">
-        <label class="layui-form-label">类别名称</label>
+        <label class="layui-form-label">头条名称</label>
         <div cuploadlass="layui-input-block">
 
-            <input type="text" id="shopCategoryName" style="width: 210px;"  name="title" required  lay-verify="required" placeholder="请输入商铺类别名称" autocomplete="off" class="layui-input">
+            <input type="text" id="shopCategoryName" style="width: 210px;"  name="lineName" required  lay-verify="required" placeholder="请输入商铺类别名称" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">类别图片</label>
         <div class="layui-input-block"><!---->
             <img id="shopCategoryImg"  src=""  width="200px" height="200px">
-            <input type="hidden"  name="shopCategoryImg"  id="shopcateimg" >
+            <input type="hidden"  name="lineImg"  id="shopcateimg" >
             <input type="file" id="file" style="opacity:0;filter:alpha(opacity=0);" name="uploadFile"  accept="image/*"  ><!--  onchange="changImg(event)"  -->
             <br/>
             <button type="button" onclick="document.getElementById('file').click()" style="position: absolute;left: 10px;top: 240px;" class="layui-btn" id="test1">上传图片</button>
@@ -52,13 +52,13 @@
         }
         $(function(){
             $.ajax({
-                url: "/shopcate/setShopCategory",
+                url: "/headline/setHeadLine",
                 type: "get",
                 dataType: "json",
                 success: function(data){
-                    $("#shopCategoryName").val(data.shopCategoryName);
+                    $("#shopCategoryName").val(data.lineName);
                     $("#shopCategoryImg").attr("src",data.img);
-                    $("#shopCategoryId").val(data.shopCategoryId);
+                    $("#shopCategoryId").val(data.lineId);
                 },
                 error:function (data) {
                     alert("error");
@@ -106,7 +106,7 @@
             $("#submit").click(function () {
 
                 $.ajax({
-                    url: "/shopcate/updateShopCategory",
+                    url: "/headline/updateHeadLine",
                     type: "post",
                     data: $('#form').serialize(),
                     dataType: "json",
@@ -120,6 +120,7 @@
                         alert(data.msg);
                     }
                 });
+
             })
 
         })
