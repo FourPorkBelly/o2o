@@ -7,13 +7,23 @@ import cn.shop.pojo.Shop;
 import cn.shop.pojo.ShopAuthMap;
 import cn.shop.shop.service.ShopAuthMapService;
 import cn.shop.utlis.CodeUtil;
+import cn.shop.utlis.HttpServletRequestUtil;
+import cn.shop.utlis.QRCodeUtil;
+import cn.shop.utlis.baidu.ShortNetAddress;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +41,11 @@ public class ShopAuthMapController {
     HttpSession session;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse response;
+
+
+    private static String URLPREFIX = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8c3a841c6efd97e9&redirect_uri=https://myo2o.mynatapp.cc/wechatlogin/logincheck&response_type=code&scope=snsapi_userinfo&state=2#wechat_redirect&connect_redirect=1";
     /**
      * 根据商铺id分页显示该店铺的授权信息
      * @param shopId
@@ -128,6 +143,53 @@ public class ShopAuthMapController {
         return map;
     }
 
+    @RequestMapping(value = "/removeshopauthmap",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> removeShopAuthMap(Integer shopAuthId){
+        Map<String,Object> map = new HashMap<>();
+        if(isShopAuthMapById(shopAuthId)){
+
+        }else {
+            map.put("success",false);
+            map.put("errMsg", ShopAuthMapStateEnum.NULL_SHOPAUTH_INFO.getStateInfo());
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value = "/generateqrcode4product", method = RequestMethod.GET)
+    @ResponseBody
+    public void generateQRCode4Product() {
+        System.out.println(URLPREFIX);
+        long productId = HttpServletRequestUtil.getLong(request, "productId");
+        PersonInfo user = (PersonInfo) request.getSession()
+                .getAttribute("user");
+        if (productId != -1 && user != null && user.getUserId() != null) {
+            long timpStamp = System.currentTimeMillis();
+            String content = "{\"productId\":" + productId + ",\"customerId\":"
+                    + user.getUserId() + ",\"createTime\":" + timpStamp + "}";
+            String longUrl = URLPREFIX;
+            String shortUrl = ShortNetAddress.getShortURL(longUrl);
+            BitMatrix qRcodeImg = QRCodeUtil.generateQRCodeStream(shortUrl,
+                    response);
+            try {
+                MatrixToImageWriter.writeToStream(qRcodeImg, "png",
+                        response.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     private boolean isShopAuthMapById(Integer shopAuthId){
         //從session中獲取shopAuthMapList
         List<ShopAuthMap> shopAuthMapList = (List<ShopAuthMap>) session.getAttribute("shopAuthMapList");
@@ -138,4 +200,5 @@ public class ShopAuthMapController {
         }
         return false;
     }
+
 }

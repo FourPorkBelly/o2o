@@ -4,12 +4,13 @@ $(function() {
 	var isproductgo = getQueryString('isproductgo');
 	var productUrl = '/frontend/listproductdetailpageinfo?productId='
 			+ productId;
+    var jq=$.noConflict();
 
 	$
 			.getJSON(
 					productUrl,
 					function(data) {
-                        if(isproductgo!=null||isproductgo!=""){
+                        if(isproductgo!=""){
                             $(".div-hide").hide();
                         }
 						if (data.success) {
@@ -33,10 +34,10 @@ $(function() {
                                     '</div>';
 							});
                             $('#imgList>div').html(imgListHtml);
-							// 生成购买商品的二维码供商家扫描
-							imgListHtml += '<div> <img src="/frontend/generateqrcode4product?productId='
+							/*// 生成购买商品的二维码供商家扫描
+							var imgHtml = '<div> <img src="/shop/generateqrcode4product?productId='
 									+ product.productId + '"/></div>';
-							//$('#imgList').html(imgListHtml);
+							$('#erweima').html(imgHtml);*/
                             ins.reload({
                                 elem: '#imgList'
 								,width:'100%'
@@ -50,12 +51,12 @@ $(function() {
 		$.openPanel('#panel-left-demo');
 	});
 	/* 左右滑动切换轮播图 */
-    $("#imgList").on("touchstart", function (e) {
+    jq("#imgList").on("touchstart", function (e) {
         var startX = e.originalEvent.targetTouches[0].pageX;//开始坐标X
-        $(this).on('touchmove', function (e) {
+        jq(this).on('touchmove', function (e) {
             arguments[0].preventDefault();//阻止手机浏览器默认事件
         });
-        $(this).on('touchend', function (e) {
+        jq(this).on('touchend', function (e) {
             var endX = e.originalEvent.changedTouches[0].pageX;//结束坐标X
             e.stopPropagation();//停止DOM事件逐层往上传播
             if (endX - startX > 30) {
@@ -64,7 +65,7 @@ $(function() {
             else if (startX - endX > 30) {
                 ins.slide("add");
             }
-            $(this).off('touchmove touchend');
+            jq(this).off('touchmove touchend');
         });
     });
 

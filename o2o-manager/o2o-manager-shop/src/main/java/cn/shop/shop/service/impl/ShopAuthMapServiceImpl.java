@@ -71,20 +71,27 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
      */
     @Override
     public ShopAuthMapExecution addShopAuthMap(ShopAuthMap shopAuthMap) {
-        //补全信息
-        shopAuthMap.setCreateTime(new Date());
-        shopAuthMap.setLastEditTime(new Date());
-        //返回值
-        ShopAuthMapExecution sme = new ShopAuthMapExecution();
-        int i = shopAuthMapMapper.insertSelective(shopAuthMap);
-        if(i>0){
-            //成功返回
-            sme.setState(ShopAuthMapStateEnum.SUCCESS.getState());
+        //判断空值，对商铺id和员工id做校验
+        if(shopAuthMap!=null&&shopAuthMap.getShopId()!=null&&shopAuthMap.getEmployeeId()!=null){
+            //补全信息
+            shopAuthMap.setCreateTime(new Date());
+            shopAuthMap.setLastEditTime(new Date());
+            shopAuthMap.setEnableStatus(1);
+            shopAuthMap.setTitleFlag(0);
+            try {
+                //添加授权信息
+                int i = shopAuthMapMapper.insertSelective(shopAuthMap);
+                if(i<=0){
+                    return new ShopAuthMapExecution(ShopAuthMapStateEnum.INNER_ERROR);
+                }
+                return new ShopAuthMapExecution(ShopAuthMapStateEnum.SUCCESS);
+            }catch (Exception e){
+                e.printStackTrace();
+                return new ShopAuthMapExecution(ShopAuthMapStateEnum.INNER_ERROR);
+            }
         }else{
-            //失败返回
-            sme.setState(ShopAuthMapStateEnum.INNER_ERROR.getState());
+            return new ShopAuthMapExecution(ShopAuthMapStateEnum.NULL_SHOPAUTH_INFO);
         }
-        return sme;
     }
     /**
      * 更新授权信息，包括职位，状态等

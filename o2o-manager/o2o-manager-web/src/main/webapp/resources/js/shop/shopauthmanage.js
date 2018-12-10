@@ -23,6 +23,10 @@ $(function() {
                          +      '</div>';
                 });
                 $('.shopauth-wrap').html(tempHtml);
+                // 生成购买商品的二维码供商家扫描
+                var imgHtml = '<div> <img src="/shop/generateqrcode4product?productId='
+                    + product.productId + '"/></div>';
+                $('#erweima').html(imgHtml);
             }
         });
     }
@@ -40,10 +44,10 @@ $(function() {
                 dataType: 'json',
                 success: function (data) {
                     if (data.success) {
-                        $.toast('删除成功！');
+                        $.toast('操作成功！');
                         getList();
                     } else {
-                        $.toast('删除失败！');
+                        $.toast('操作失败！');
                     }
                 }
             });
