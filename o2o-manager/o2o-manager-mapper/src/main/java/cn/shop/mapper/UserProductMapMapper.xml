@@ -134,7 +134,7 @@
     <if test="cxtj != null">
      and concat(user_name,product_name) like '%${cxtj}%'
     </if>
-    order by create_time asc
+    order by create_time desc
   </select>
 
 

@@ -57,7 +57,7 @@ $(function() {
 		$.getJSON(url, function(data) {
 			if (data.success) {
 				maxItems = data.count;
-              $("#point").html("以有积分"+data.point);
+              $("#point").html("已有积分"+data.point);
 				var html = '';
 				data.awardlist.map(function(item, index) {
 					html += '' + '<div class="card" data-product-id='
@@ -125,7 +125,6 @@ $(function() {
 					'.card',
 					function(e) {
 						var productId = e.currentTarget.dataset.productId;
-						alert(productId);
                         $.confirm('确定兑换吗?', function() {
                             // alert(point+"--"+productId);
                             $.ajax({
