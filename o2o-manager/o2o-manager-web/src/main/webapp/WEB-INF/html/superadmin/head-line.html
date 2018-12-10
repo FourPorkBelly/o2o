@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>商铺信息</title>
+    <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css" media="all">
+    <script src="../resources/js/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="demoTable">
+
+    <table class="layui-hide" lay-filter="demo" id="test">
+    </table>
+</div>
+<!--<ul class="flow-default" id="flow"></ul>-->
+<!--111111-->
+<script type="text/javascript" src="../resources/js/xadmin.js"></script>
+<script type="text/html" id="barDemo">
+    <a title="编辑" lay-event="update"   href="javascript:;">
+        <i class="layui-icon">&#xe642;</i>
+    </a>
+
+</script>
+<script src="../resources/plugins/layui/layui.js"></script>
+<script>
+    function x_admin_show(title,url,w,h){
+        if (title == null || title == '') {
+            title=false;
+        };
+        if (url == null || url == '') {
+            url="404.html";
+        };
+        if (w == null || w == '') {
+            w=($(window).width()*0.9);
+        };
+        if (h == null || h == '') {
+            h=($(window).height() - 50);
+        };
+        layer.open({
+            type: 2,
+            area: [w+'px', h +'px'],
+            fix: false, //不固定
+            maxmin: true,
+            shadeClose: true,
+            shade:0.4,
+            title: title,
+            content: url
+        });
+    }
+    function hoverOpenImg(){
+        var img_show = null; // tips提示
+        $('td div img').hover(function(){
+            var kd=$(this).width();
+            kd1=kd*3;          //图片放大倍数
+            kd2=kd*3+30;       //图片放大倍数
+            var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:"+kd1+"px;' />";
+            img_show = layer.tips(img, this,{
+                tips:[2, 'rgba(41,41,41,.5)']
+                ,area: [kd2+'px']
+            });
+        },function(){
+            layer.close(img_show);
+        });
+        $('td div img').attr('style','max-width:70px;display:block!important');
+    }
+    layui.use('table',function (){
+        var weburl='/shopcate/queryshopcate2';
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            ,url:weburl
+            ,method:'get'
+            ,title:'店铺表'
+            ,cols: [[
+                {field:'shopCategoryId', title: '商铺类别ID', width:80,  fixed: true}
+                ,{field:'shopCategoryName', title: '类别名称', width:100, fixed: true}
+                ,{field:'shopCategoryImg',title:'类别图片',width:120,fixed:'left',templet:'<div class="layer-photos-demo" onclick=""><img src="{{ d.shopCategoryImg}}"></div>'}
+                ,{field:'priority', title: '权重', width:70, fixed: true}
+                ,{field:'lastEditTime', title: '最后修改时间', width:170, fixed: true}
+                ,{field:'update', title: '修改', toolbar: '#barDemo', width:70, fixed: true}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height:486
+            ,width:922
+            ,done:function (res,curr,count) {
+                hoverOpenImg();//显示大图
+                $('table tr').on('click',function(){
+                    $('table tr').css('background','');
+                });
+            }
+        });
+
+
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            x_admin_show("修改商铺类别","/shopcate/getShopCategoryById?shopCategoryId="+data.shopCategoryId,600,500);
+        });
+
+    } );
+
+</script>
+
+</body>
+
+</html>

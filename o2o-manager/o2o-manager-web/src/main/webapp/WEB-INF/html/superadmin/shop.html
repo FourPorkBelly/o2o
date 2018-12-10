@@ -5,14 +5,6 @@
     <meta charset="utf-8">
     <title>商铺信息</title>
     <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css" media="all">
-    <!--<script type="text/javascript">-->
-        <!--$(function(){-->
-            <!--$("#sc").upload({-->
-                <!--action: '/cmsshop/queryShopList?1=1',-->
-                <!--name: 'file'-->
-            <!--});-->
-        <!--});-->
-    <!--</script>-->
     <script src="../resources/js/jquery.min.js"></script>
 </head>
 
@@ -21,8 +13,9 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
+<br/>
 <div class="demoTable">
-    搜索ID：
+    搜索店铺名：
     <div class="layui-inline">
         <input class="layui-input" name="shopName"  value="" type="text" id="demoReload" autocomplete="off">
     </div>
@@ -52,11 +45,6 @@
     }
             layui.use('table',function (){
                 var weburl='/cmsshop/queryShopList';
-                // // var demo=$("#demoReload").val();
-                // alert(demo);
-                // if (demo!=''){
-                //     weburl+='&shopName='+demo;
-                // }
                 var table = layui.table;
                 table.render({
                     elem: '#test'
@@ -87,23 +75,6 @@
                     }
                 });
             } );
-        // }
-    // var $ = layui.$, active = {
-    //     reload: function(){
-    //         var demoReload = $('#demoReload');
-    //
-    //         table.reload('testReload', {
-    //             url : '/cmsshop/queryShopList?shopName='+demoReload.val(),
-    //             method:'get',
-    //             page: {
-    //                 curr: 1 //重新从第 1 页开始
-    //             },
-    //             where: {
-    //                 shopName: demoReload.val()
-    //             }
-    //         });
-    //     }
-    // };
 
     $("#sc").click(function () {
         layui.use('table',function (){

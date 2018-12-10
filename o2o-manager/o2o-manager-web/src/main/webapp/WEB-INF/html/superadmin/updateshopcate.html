@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改头条图片信息</title>
+    <link rel="stylesheet" href="../resources/plugins/layui/css/layui.css" media="all">
+    <script src="../resources/js/jquery.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<form class="layui-form" id="form" action="" >
+    <input type="hidden" name="shopCategoryId" id="shopCategoryId">
+    <div class="layui-form-item">
+        <label class="layui-form-label">类别名称</label>
+        <div cuploadlass="layui-input-block">
+
+            <input type="text" id="shopCategoryName" style="width: 210px;"  name="title" required  lay-verify="required" placeholder="请输入商铺类别名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类别图片</label>
+        <div class="layui-input-block"><!---->
+            <img id="shopCategoryImg"  src=""  width="200px" height="200px">
+            <input type="hidden"  name="shopCategoryImg"  id="shopcateimg" >
+            <input type="file" id="file" style="opacity:0;filter:alpha(opacity=0);" name="uploadFile"  accept="image/*"  ><!--  onchange="changImg(event)"  -->
+            <br/>
+            <button type="button" onclick="document.getElementById('file').click()" style="position: absolute;left: 10px;top: 240px;" class="layui-btn" id="test1">上传图片</button>
+
+        </div>
+
+    </div>
+    <div style="position: absolute;left: 260px;top:293px;">
+        <button type="button" id="submit" class="layui-btn" >提交</button>
+    </div>
+
+</form>
+    <script>
+        function changImg(e){
+            for (var i = 0; i < e.target.files.length; i++) {
+                var file = e.target.files.item(i);
+                if (!(/^image\/.*$/i.test(file.type))) {
+                    continue; //不是图片 就跳出这一次循环
+                }
+                //实例化FileReader API
+                var freader = new FileReader();
+                freader.readAsDataURL(file);
+                freader.onload = function(e) {
+                    $("#shopCategoryImg").attr("src",e.target.result);
+                }
+            }
+        }
+        $(function(){
+            $.ajax({
+                url: "/shopcate/setShopCategory",
+                type: "get",
+                dataType: "json",
+                success: function(data){
+                    $("#shopCategoryName").val(data.shopCategoryName);
+                    $("#shopCategoryImg").attr("src",data.img);
+                    $("#shopCategoryId").val(data.shopCategoryId);
+                },
+                error:function (data) {
+                    alert("error");
+                }
+            });
+            $("#file").change(function () {
+                changImg(event);
+                updateimgss(this);
+            })
+            /* 图片验证上传 */
+            function updateimgss(img) {
+                var imgval = $(img).val();
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(imgval)) {
+                    alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+                    $(img).val("");
+                    return;
+                }
+                var imgid = $(img).attr("id");
+                var ajaxUrl = "/shop/update/upload";
+                $.ajaxFileUpload
+                (
+                    {
+                        url:ajaxUrl, //用于文件上传的服务器端请求地址
+                        secureuri: false, //是否需要安全协议，一般设置为false
+                        fileElementId: imgid, //文件上传域的ID
+                        dataType: 'json', //返回值类型 一般设置为json
+                        success: function (data)  //服务器成功响应处理函数
+                        {
+                            //判断是否上传成功
+                            if(data.error==0){
+                                // alert("图片上传成功"+data.url);
+                                $("#shopcateimg").val(data.url);
+                            }else {
+                                alert(data.message)
+                            }
+                        }
+                    }
+                )
+                return false;
+            }
+
+            /**
+             * 表单提交
+             */
+            $("#submit").click(function () {
+
+                $.ajax({
+                    url: "/shopcate/updateShopCategory",
+                    type: "post",
+                    data: $('#form').serialize(),
+                    dataType: "json",
+                    async: false,
+                    success: function(data){
+                        alert(data.msg)
+                    },
+                    error:function (data) {
+                        alert(data.msg);
+                    }
+                });
+            })
+
+        })
+    </script>
+<script type="text/javascript" src="../resources/js/ajaxfileupload.js"></script>
+</body>
+
+</html>

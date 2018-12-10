@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,8 +184,12 @@ public class LocalAuthController {
     public String disableUser(int userid){
         response.setContentType("text/html;charset=utf-8");
         PersonInfo personInfo=new PersonInfo();
+//        将用户id存入personinfo对象
         personInfo.setUserId(userid);
+//        设置用户状态为0不可用
         personInfo.setEnableStatus(0);
+//        设置用户最后修改时间
+        personInfo.setLastEditTime(new Date());
         int i=localService.disableUser(personInfo);
         if (i>0){
             return "y";
@@ -201,8 +206,13 @@ public class LocalAuthController {
     public String enableUser(int userid){
         response.setContentType("text/html;charset=utf-8");
         PersonInfo personInfo=new PersonInfo();
+//        将用户id存入personinfo对象
         personInfo.setUserId(userid);
+//        设置用户状态为1可用
         personInfo.setEnableStatus(1);
+//        设置用户最后修改时间
+        personInfo.setLastEditTime(new Date());
+//        返回启用结果
         int i=localService.disableUser(personInfo);
         if (i>0){
             return "y";

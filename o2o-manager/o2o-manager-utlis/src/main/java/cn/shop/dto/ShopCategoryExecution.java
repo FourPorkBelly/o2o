@@ -4,13 +4,20 @@ import java.util.List;
 
 import cn.shop.enums.ShopCategoryStateEnum;
 import cn.shop.pojo.ShopCategory;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ShopCategoryExecution {
 	// 结果状态
 	private int state;
 
 	// 状态标识
 	private String stateInfo;
+
+//	店铺类别数量 ---yzg
+	int count;
 
 	private ShopCategory shopCategory;
 
