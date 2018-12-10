@@ -53,7 +53,7 @@ $(function() {
     $('.shopauth-wrap').on('click', 'a', function (e) {
         var target = $(e.currentTarget);
         if (target.hasClass('edit')) {
-            window.location.href = '/shop/shopauthedit?shopauthId=' + e.currentTarget.dataset.authId;
+            window.location.href = '/shop/shopauthedit?shopauthId=' + e.currentTarget.dataset.authId+"&shopId="+shopId;
         } else if (target.hasClass('delete')) {
             deleteItem(e.currentTarget.dataset.authId);
         }

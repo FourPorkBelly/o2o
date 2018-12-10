@@ -1,10 +1,12 @@
 package cn.shop.web.shop.controller;
 
 import cn.shop.dto.ShopAuthMapExecution;
+import cn.shop.enums.ShopAuthMapStateEnum;
 import cn.shop.pojo.PersonInfo;
 import cn.shop.pojo.Shop;
 import cn.shop.pojo.ShopAuthMap;
 import cn.shop.shop.service.ShopAuthMapService;
+import cn.shop.utlis.CodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +51,6 @@ public class ShopAuthMapController {
             PersonInfo user = (PersonInfo) session.getAttribute("user");
             //分页取出该店铺下的信息列表
             ShopAuthMapExecution se = shopAuthMapService.getShopAuthMapList(currentShop.getShopId(),pageIndex,pageSize,user.getUserId());
-            for (ShopAuthMap shopAuthMap : se.getShopAuthMapList()) {
-                System.out.println(shopAuthMap);
-            }
             //查出的結果存入session
             session.setAttribute("shopAuthMapList",se.getShopAuthMapList());
             map.put("shopAuthMapList",se.getShopAuthMapList());
@@ -89,6 +88,42 @@ public class ShopAuthMapController {
         }else {
             map.put("success",false);
             map.put("errMsg","传入类型错误");
+        }
+        return map;
+    }
+
+
+    /**
+     * 修改店员信息
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/modifyshopauthmap")
+    public Map<String,Object> updateShopAuthMap(String title){
+        Map<String,Object> map = new HashMap<>();
+        if(!CodeUtil.checkVerifyCode(request)){
+            map.put("success",false);
+            map.put("errMsg","请输入正确的验证码");
+            return map;
+        }
+
+        //从session中获取店员信息
+        ShopAuthMap shopAuthMap = (ShopAuthMap) session.getAttribute("shopAuthMap");
+        if (shopAuthMap!=null){
+            ShopAuthMap authMap = new ShopAuthMap();
+            authMap.setShopAuthId(shopAuthMap.getShopAuthId());
+            authMap.setTitle(title);
+            ShopAuthMapExecution execution = shopAuthMapService.updateShopAuthMap(authMap);
+            if(execution.getState()==ShopAuthMapStateEnum.SUCCESS.getState()){
+                map.put("success",true);
+                map.put("errMsg",execution.getStateInfo());
+            }else{
+                map.put("success",false);
+                map.put("errMsg", ShopAuthMapStateEnum.NULL_SHOPAUTH_INFO.getStateInfo());
+            }
+        }else {
+            map.put("success",false);
+            map.put("errMsg", ShopAuthMapStateEnum.NULL_SHOPAUTH_INFO.getStateInfo());
         }
         return map;
     }

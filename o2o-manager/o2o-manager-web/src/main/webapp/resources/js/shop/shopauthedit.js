@@ -8,7 +8,7 @@ $(function() {
 		getInfo(shopAuthId);
 	} else {
 		alert('用户不存在！');
-		window.location.href = '/shop/shopmanage';
+		window.location.href = '/shop/shopmanage?shopId='+shopId;
 	}
     $("a").each(function (i,e) {
         var url = $(e).attr("href");
@@ -26,10 +26,7 @@ $(function() {
 	}
 
 	$('#submit').click(function() {
-		var shopAuth = {};
-		shopAuth.name = $('#shopauth-name').val();
-		shopAuth.title = $('#title').val();
-		shopAuth.shopAuthId = shopAuthId;
+		var title = $('#title').val();
 		var verifyCodeActual = $('#j_captcha').val();
 		if (!verifyCodeActual) {
 			$.toast('请输入验证码！');
@@ -40,13 +37,15 @@ $(function() {
 			type : 'POST',
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			data : {
-				shopAuthMapStr : JSON.stringify(shopAuth),
-				verifyCodeActual : verifyCodeActual
+                title : title,
+                j_captcha:verifyCodeActual
+
 			},
 			success : function(data) {
 				if (data.success) {
 					$.toast('提交成功！');
 					$('#captcha_img').click();
+					window.location.href="/shop/shopmanage?shopId='+shopId";
 				} else {
 					$.toast('提交失败！');
 					$('#captcha_img').click();

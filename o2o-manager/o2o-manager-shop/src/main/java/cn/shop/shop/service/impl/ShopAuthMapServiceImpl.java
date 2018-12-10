@@ -96,13 +96,16 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
         //补全信息
         shopAuthMap.setLastEditTime(new Date());
         //返回值
-        ShopAuthMapExecution sme = new ShopAuthMapExecution();
-        int i = shopAuthMapMapper.insertSelective(shopAuthMap);
-        if(i>0){
-            sme.setState(ShopAuthMapStateEnum.SUCCESS.getState());
-        }else{
-            sme.setState(ShopAuthMapStateEnum.INNER_ERROR.getState());
+        try {
+            int i = shopAuthMapMapper.updateByPrimaryKeySelective(shopAuthMap);
+            if(i>0){
+                return new ShopAuthMapExecution(ShopAuthMapStateEnum.SUCCESS);
+            }else{
+                return new ShopAuthMapExecution(ShopAuthMapStateEnum.INNER_ERROR);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ShopAuthMapExecution(ShopAuthMapStateEnum.INNER_ERROR);
         }
-        return sme;
     }
 }
